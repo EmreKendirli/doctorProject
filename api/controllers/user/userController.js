@@ -54,15 +54,9 @@ const userLogin = tryCatch(async (req, res) => {
 
     let same = false;
     if (user) {
-        if (false) {
-            return res.status(422).json({
-                succeded: false,
-                //messages: i18n.translate("USERS.USER_PHONE_NUMBER_VERIFIED", lang),
-            });
-        }
         same = await bcrypt.compare(password, user.password);
     } else {
-        //throw new AppError(i18n.translate("USERS.THERE_IS_NO_SUCH_USER", lang), 401);
+        throw new AppError("Kullanıcı Bulunamdı", 404);
     }
     if (same) {
         const user = await User.findOne(
@@ -109,7 +103,7 @@ const userLogin = tryCatch(async (req, res) => {
             },
         });
     } else {
-       // throw new AppError(i18n.translate("USERS.PASSWORDS_NOT_MATCHED", lang), 401);
+        throw new AppError("Şifre Yanlış", 401);
     }
 });
 const createToken = async (id) => {

@@ -12,8 +12,8 @@ const initialState = {
     // step 1
    
     title: "",
-    description: "",
-    alt_text: "",
+    content: "",
+    short_description: "",
  
     // step 2
    
@@ -52,8 +52,8 @@ export const crudFormSlice = createSlice({
         // step 1
        
         title: "",
-        description: "",
-        alt_text: "",
+        content: "",
+        short_description: "",
        
     
         // step 3 - Detail Information

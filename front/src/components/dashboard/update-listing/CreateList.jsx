@@ -579,18 +579,18 @@ const CreateList = ({
                 onBlur={handleBlur}
                 onChange={(e) => {
                   handleChange(e)
-                  dispatch(updateField({ field: "alt_Text", value: e.target.value }));
+                  dispatch(updateField({ field: "short_description", value: e.target.value }));
 
                 }}
-                value={values.alt_Text}
-                name="alt_Text"
+                value={values.short_description}
+                name="short_description"
                 className="form-control"
                 id="propertyDescription"
                 rows="7"
               />
-              {touched.alt_Text ? (
-                errors.alt_Text ? (
-                  <div className="text-danger mb-3">{errors.alt_Text}</div>
+              {touched.short_description ? (
+                errors.short_description ? (
+                  <div className="text-danger mb-3">{errors.short_description}</div>
                 ) : null
               ) : (
                 ""
@@ -603,16 +603,16 @@ const CreateList = ({
           <div className="col-lg-12 mb100" style={{ minHeight: "300px" }}>
             <div className="my_profile_setting_textarea" style={{ height: "100%" }}>
               <label htmlFor="propertyDescription">İlan Açıklaması*</label>
-              <ReactQuill theme="snow" value={values.description} style={{ height: "100%" }} onChange={(value) => {
-                setFieldValue('description', value)
+              <ReactQuill theme="snow" value={values.content} style={{ height: "100%" }} onChange={(value) => {
+                setFieldValue('content', value)
                 handleChange(value)
-                dispatch(updateField({ field: "description", value: value }));
+                dispatch(updateField({ field: "content", value: value }));
 
               }} />
 
-              {touched.description ? (
-                errors.description ? (
-                  <div className="text-danger mb-3">{errors.description}</div>
+              {touched.content ? (
+                errors.content ? (
+                  <div className="text-danger mb-3">{errors.content}</div>
                 ) : null
               ) : (
                 ""

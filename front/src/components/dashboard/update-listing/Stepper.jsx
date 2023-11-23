@@ -36,8 +36,8 @@ export default function StepperForm({ id, loadingStatus, setLoadingStatus }) {
     // step 1
    
     title: "",
-    description: "",
-    alt_text: "",
+    content: "",
+    short_description: "",
 
    
     // step 3 - Detail Information
@@ -72,11 +72,11 @@ export default function StepperForm({ id, loadingStatus, setLoadingStatus }) {
       is: 1,
       then: (schema) => schema.required("İlan başlığı zorunludur"),
     }),
-    description: Yup.string().when("step", {
+    content: Yup.string().when("step", {
       is: 1,
       then: (schema) => schema.required("İlan açıklaması zorunludur"),
     }),
-    alt_text: Yup.string().when("step", {
+    short_description: Yup.string().when("step", {
       is: 1,
       then: (schema) => schema.required("İlanın Kısa Açıklaması Zorunludur"),
     }),
@@ -88,17 +88,17 @@ export default function StepperForm({ id, loadingStatus, setLoadingStatus }) {
 
     // Step - 5
     seoTitle: Yup.string().when("step", {
-      is: 5,
+      is: 3,
       then: (schema) => schema.required("SEO Başlık kısmı zorunludur"),
     }),
 
     seoUrl: Yup.string().when("step", {
-      is: 5,
+      is: 3,
       then: (schema) => schema.required("Url Kısmı zorunludur"),
     }),
 
     seoDescription: Yup.string().when("step", {
-      is: 5,
+      is: 3,
       then: (schema) => schema.required("Seo açıklama kısmı zorunludur"),
     }),
   };
@@ -143,7 +143,7 @@ export default function StepperForm({ id, loadingStatus, setLoadingStatus }) {
         console.log(res);
         if (res && res.succeded && res.data) {
           console.log(res.data);
-          res.data && setOldImages(res.data.image)
+          // res.data && setOldImages(res.data.image)
           res.data && setBlogInfo(res.data)
           res.data && setOldFeatures(res.data?.coverPhoto)
         }

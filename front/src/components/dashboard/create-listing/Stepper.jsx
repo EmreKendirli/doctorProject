@@ -47,8 +47,8 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
     // step 1
   
     title: formStoreValues?.title || "",
-    description: formStoreValues?.description || "",
-    alt_text: formStoreValues?.alt_text || "",
+    content: formStoreValues?.content || "",
+    short_description: formStoreValues?.short_description || "",
    
 
     // step 2
@@ -93,11 +93,11 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
       is: 1,
       then: (schema) => schema.required("İlan başlığı zorunludur"),
     }),
-    description: Yup.string().when("step", {
+    content: Yup.string().when("step", {
       is: 1,
       then: (schema) => schema.required("İlan açıklaması zorunludur"),
     }),
-    alt_text: Yup.string().when("step", {
+    short_description: Yup.string().when("step", {
       is: 1,
       then: (schema) => schema.required("İlanın Kısa Açıklaması Zorunludur"),
     }),

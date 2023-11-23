@@ -3,44 +3,29 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   formValues: {
     step: 1,
-    lastStep: 5,
+    lastStep: 3,
 
     seoTitle: "",
     seoUrl: "",
     seoDescription: "",
 
     // step 1
-    advertTypeId: "",
-    processTypeId: "",
-    advertShapeId: "",
-    adverTitle: "",
+   
+    title: "",
     description: "",
-    advertPrice: "",
-    shortDescription: "",
-    isEncrypted: false,
-    isContract: false,
-    contractDate: '',
-    advertPassword: "",
-
+    alt_text: "",
+ 
     // step 2
-    address: "",
-    countryId: "652919953f904b78aff02cae",
-    cityId: "",
-    districtId: "",
-    neighbourhoodId: "",
-    isMapActive: false,
-    zipcode: "",
-    latitude: "",
-    longitude: "",
+   
     // step 3 - Detail Information
     features: [],
 
     // step 4  Upload Photo
-    advertPhoto: "",
+    blogPhoto: "",
     photoStatus: "",
 
     // step 5 Cover Photo
-    coverPhoto: "",
+    // coverPhoto: "",
   },
 };
 
@@ -58,44 +43,28 @@ export const crudFormSlice = createSlice({
     resetFields:state => {
       state.formValues= {
         step: 1,
-        lastStep: 5,
+        lastStep: 3,
     
         seoTitle: "",
         seoUrl: "",
         seoDescription: "",
     
         // step 1
-        advertTypeId: "",
-        processTypeId: "",
-        advertShapeId: "",
-        adverTitle: "",
+       
+        title: "",
         description: "",
-        advertPrice: "",
-        shortDescription: "",
-        isEncrypted: false,
-        isContract: false,
-        contractDate: '',
-        advertPassword: "",
+        alt_text: "",
+       
     
-        // step 2
-        address: "",
-        countryId: "652919953f904b78aff02cae",
-        cityId: "",
-        districtId: "",
-        neighbourhoodId: "",
-        isMapActive: false,
-        zipcode: "",
-        latitude: "",
-        longitude: "",
         // step 3 - Detail Information
         features: [],
     
         // step 4  Upload Photo
-        advertPhoto: "",
+        blogPhoto: "",
         photoStatus: "",
     
         // step 5 Cover Photo
-        coverPhoto: "",
+        // coverPhoto: "",
       }
     }
   },

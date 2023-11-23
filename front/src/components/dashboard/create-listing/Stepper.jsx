@@ -38,43 +38,29 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
   const dispatch = useDispatch()
   const [initialValueList, setInitialValueList] = useState({
     step: 1,
-    lastStep: 5,
+    lastStep: 3,
 
     seoTitle: formStoreValues?.seoTitle || "",
     seoUrl:  formStoreValues?.seoUrl || "",
     seoDescription: formStoreValues?.seoDescription || "",
 
     // step 1
-    advertTypeId: formStoreValues?.advertTypeId || "",
-    processTypeId: formStoreValues?.processTypeId || "",
-    advertShapeId: formStoreValues?.advertShapeId || "",
-    adverTitle: formStoreValues?.adverTitle || "",
+  
+    title: formStoreValues?.title || "",
     description: formStoreValues?.description || "",
-    advertPrice: formStoreValues?.advertPrice || "",
-    shortDescription: formStoreValues?.shortDescription || "",
-    isEncrypted: formStoreValues?.isEncrypted || false,
-    isContract: formStoreValues?.isContract || false,
-    contractDate: formStoreValues?.contractDate || "",
-    advertPassword: formStoreValues?.advertPassword || "",
+    alt_text: formStoreValues?.alt_text || "",
+   
 
     // step 2
-    address: formStoreValues?.address || "",
-    countryId: "652919953f904b78aff02cae",
-    cityId: formStoreValues?.cityId || "",
-    districtId: formStoreValues?.districtId || "",
-    neighbourhoodId: formStoreValues?.neighbourhoodId || "",
-    isMapActive: formStoreValues?.isMapActive || false,
-    zipcode: formStoreValues?.zipcode || "",
-    latitude: formStoreValues?.latitude || "",
-    longitude: formStoreValues?.longitude || "",
+   
     // step 3 - Detail Information
     features: formStoreValues?.features || [],
 
     // step 4  Upload Photo
-    advertPhoto: formStoreValues?.advertPhoto || "",
+    blogPhoto: formStoreValues?.blogPhoto || "",
     photoStatus:  formStoreValues?.photoStatus || "",
 
-    // step 5 Cover Photo
+    // // step 5 Cover Photo
     coverPhoto: formStoreValues?.coverPhoto || "",
   })
 
@@ -87,41 +73,23 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
   const steps = [
     {
       step: 1,
-      label: "İlan Bilgileri",
+      label: "Blog Bilgileri",
     },
+   
     {
       step: 2,
-      label: "Konum Bilgileri",
-    },
-    {
-      step: 3,
-      label: "Detaylı Bilgiler",
-    },
-    {
-      step: 4,
       label: "Fotoğraf Yükleyin",
     },
     {
-      step: 5,
+      step: 3,
       label: "Seo Ayarları",
     },
   ];
 
   const validationSchema = {
     // Step - 1
-    advertTypeId: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("Emlak tipi zorunludur"),
-    }),
-    processTypeId: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("İşlem tipi zorunludur"),
-    }),
-    advertShapeId: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("Kategori zorunludur"),
-    }),
-    adverTitle: Yup.string().when("step", {
+   
+    title: Yup.string().when("step", {
       is: 1,
       then: (schema) => schema.required("İlan başlığı zorunludur"),
     }),
@@ -129,81 +97,26 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
       is: 1,
       then: (schema) => schema.required("İlan açıklaması zorunludur"),
     }),
-    shortDescription: Yup.string().when("step", {
+    alt_text: Yup.string().when("step", {
       is: 1,
       then: (schema) => schema.required("İlanın Kısa Açıklaması Zorunludur"),
     }),
-    propertyOwnerName: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("Emlak Sahibi Zorunludur"),
-    }),
-    propertyOwnerNumber: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("Emlak Sahibi Numarası Zorunludur"),
-    }),
-    advertNote: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("İlan Notu Zorunludur"),
-    }),
-    advertPrice: Yup.number().when("step", {
-      is: 1,
-      then: (schema) =>
-        schema.required("Fiyat zorunludur"),
-    }),
-    isEncrypted: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("İlan Şifre Durum Bilgisi zorunludur"),
-    }),
-    isContract: Yup.string().when("step", {
-      is: 1,
-      then: (schema) => schema.required("İlan Sözleşme Durum Bilgisi zorunludur"),
-    }),
-    advertPassword: Yup.string().when(["step", "isEncrypted"], {
-      is: (step, isEncrypted) => step === 1 && isEncrypted == "true",
-      then: (schema) => schema.required("İlan Şifre Bilgisi zorunludur"),
-    }),
-    contractDate: Yup.string().when(["step", "isContract"], {
-      is: (step, isContract) => step === 1 && isContract == "true",
-      then: (schema) => schema.required("İlan Yayın Bitiş Tarih Bilgisi zorunludur"),
-    }),
+   
 
-    // Step - 2
-
-    address: Yup.string().when("step", {
-      is: 2,
-      then: (schema) => schema.required("Adres zorunludur"),
-    }),
-    countryId: Yup.string().when("step", {
-      is: 2,
-      then: (schema) => schema.required("Ülke zorunludur"),
-    }),
-    cityId: Yup.string().when("step", {
-      is: 2,
-      then: (schema) => schema.required("Şehir zorunludur"),
-    }),
-    districtId: Yup.string().when("step", {
-      is: 2,
-      then: (schema) => schema.required("İlçe seçimi zorunludur."),
-    }),
-    neighbourhoodId: Yup.string().when("step", {
-      is: 2,
-      then: (schema) => schema.required("Mahalle zorunludur"),
-    }),
-
-
+   
     // Step - 5
     seoTitle: Yup.string().when("step", {
-      is: 5,
+      is: 3,
       then: (schema) => schema.required("SEO Başlık kısmı zorunludur"),
     }),
 
     seoUrl: Yup.string().when("step", {
-      is: 5,
+      is: 3,
       then: (schema) => schema.required("Url Kısmı zorunludur"),
     }),
 
     seoDescription: Yup.string().when("step", {
-      is: 5,
+      is: 3,
       then: (schema) => schema.required("Seo açıklama kısmı zorunludur"),
     }),
   };
@@ -229,8 +142,9 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
     const res = advertServices
       .addAdvert(formValues)
       .then((res) => {
+        console.log('NE GELDİ', res);
         setLoadingStatus(false)
-        if (res && res.succedd) {
+        if (res && res.succeded) {
           Swal.fire({ title: 'Eklendi!', text: 'İlan Başarılı Bir Şekilde Gönderildi.', icon: 'success', customClass: 'sweet-alerts' });
           router.push("/ilanlarim");
         } else {
@@ -283,13 +197,14 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
     // console.log('GELİR Mİ', funcs)
 
    await advertServices
-      .addAdvert(formValues)
+      .addBlog(formValues)
       .then((res) => {
+        console.log('NE GELDİ', res);
         setBtnLoadingStatus(false)
-        if (res && res.succedd) {
-          Swal.fire({ title: 'Eklendi!', text: 'İlan Başarılı Bir Şekilde Gönderildi.', icon: 'success', customClass: 'sweet-alerts' });
+        if (res && res.succeded) {
+          Swal.fire({ title: 'Eklendi!', text: 'Blog Başarılı Bir Şekilde Gönderildi.', icon: 'success', customClass: 'sweet-alerts' });
           dispatch(resetFields());
-          router.push("/bloglarım");
+          router.push("/bloglarim");
         } else {
           setFieldValue("step", 1);
           Swal.fire({ title: 'Hata!', text: res, icon: 'error', customClass: 'sweet-alerts' });
@@ -375,7 +290,7 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
               <div className="my_dashboard_review">
                 <div className="row">
                   <div className="col-lg-12">
-                    <h3 className="mb30">İlan Oluşturun</h3>
+                    <h3 className="mb30">Blog Oluşturun</h3>
                   </div>
 
                   <CreateList
@@ -399,54 +314,9 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
             </>
           )}
 
+          
+
           {values.step === 2 && (
-            <>
-              {/* 2. Step MAP */}
-              <div className="my_dashboard_review">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <h3 className="mb30">Konum Bilgileri</h3>
-                  </div>
-
-                  <LocationField
-                    activation={values.step === 2}
-                    errors={errors}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    isSubmitting={isSubmitting}
-                    values={values}
-                    touched={touched}
-                    setValues={setValues}
-                    setFieldValue={setFieldValue}
-                    stepValue={values.step}
-                  />
-                </div>
-              </div>
-            </>
-          )}
-
-          {values.step === 3 && (
-            <>
-              {/* 3. Step  */}
-              <div className="my_dashboard_review mt30">
-                <div className="col-lg-12">
-                  <h3 className="mb30">Detaylı Bilgiler</h3>
-                </div>
-                <DetailedInfo
-                  errors={errors}
-                  handleChange={handleChange}
-                  handleBlur={handleBlur}
-                  isSubmitting={isSubmitting}
-                  values={values}
-                  touched={touched}
-                  isValid={isValid}
-                  setValues={setValues}
-                />
-              </div>
-            </>
-          )}
-
-          {values.step === 4 && (
             <>
               {/* 4. Step  */}
 
@@ -466,7 +336,7 @@ export default function StepperForm({ loadingStatus, setLoadingStatus }) {
               </div>
             </>
           )}
-          {values.step === 5 && (
+          {values.step === 3 && (
             <>
               {/* 5. Step  */}
 

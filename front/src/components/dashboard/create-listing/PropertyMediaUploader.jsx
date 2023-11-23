@@ -35,8 +35,8 @@ const PropertyMediaUploader = ({
       if(selectedFiles(e)){
         const tmpImgArray = [...propertySelectedImgs, ...selectedFiles(e)];
         setPropertySelectedImgs((old) => [...old, ...selectedFiles(e)]);
-        setValues((prev) => ({ ...prev, advertPhoto: tmpImgArray }));
-        dispatch(updateField({ field: "advertPhoto", value: tmpImgArray }));
+        setValues((prev) => ({ ...prev, blogPhoto: tmpImgArray }));
+        dispatch(updateField({ field: "blogPhoto", value: tmpImgArray }));
         const newCheckArr = selectedFiles(e);
         if (newCheckArr && newCheckArr.length) {
           newCheckArr.map((im, k) => {
@@ -50,11 +50,11 @@ const PropertyMediaUploader = ({
     }
   };
   useEffect(() => {
-    if (stepValue === 4 && !propertySelectedImgs.length) {
-      if(crudFrom.formValues.advertPhoto){
-        setPropertySelectedImgs(crudFrom.formValues.advertPhoto)
-      }else if(values?.advertPhoto?.length){
-        setPropertySelectedImgs(values?.advertPhoto)
+    if (stepValue === 2 && !propertySelectedImgs.length) {
+      if(crudFrom.formValues.blogPhoto){
+        setPropertySelectedImgs(crudFrom.formValues.blogPhoto)
+      }else if(values?.blogPhoto?.length){
+        setPropertySelectedImgs(values?.blogPhoto)
       }
 
       if(crudFrom.formValues.photoStatus){
@@ -83,8 +83,8 @@ const PropertyMediaUploader = ({
 
   useEffect(() => {
     if (propertySelectedImgs.length > 0) {
-      setValues((prev) => ({ ...prev, advertPhoto: propertySelectedImgs }));
-      dispatch(updateField({ field: "advertPhoto", value: propertySelectedImgs }));
+      setValues((prev) => ({ ...prev, blogPhoto: propertySelectedImgs }));
+      dispatch(updateField({ field: "blogPhoto", value: propertySelectedImgs }));
     }
 
   }, [propertySelectedImgs]);

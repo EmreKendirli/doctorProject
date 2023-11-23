@@ -144,9 +144,9 @@ const CreateList = ({
   useEffect(() => {
     if (values.advertTypeId) {
       setLoadingStepStatus(true)
-      getProcessTypes();
-      getAdvertShapes();
-      getAdvertShapeInputs();
+      // getProcessTypes();
+      // getAdvertShapes();
+      // getAdvertShapeInputs();
 
     }
   }, [values.advertTypeId]);
@@ -235,143 +235,33 @@ const CreateList = ({
 
   return (
     <>
-      {/* Emlak Tipi */}
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Emlak Tipi*</label>
-          <Field
-            name="advertTypeId"
-            component="select"
-            onBlur={handleBlur}
-            value={values.advertTypeId}
-            onChange={(e) => {
-              handleChange(e)
-              dispatch(updateField({ field: "advertTypeId", value: e.target.value }));
+    
 
-            }}
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-          >
-            <option selected value="">
-              Emlak Tipini Seçiniz{" "}
-            </option>
-            {advertTypes?.map((item, index) => (
-              <option key={index} value={item?._id}>
-                {item?.advertTypeName}
-              </option>
-            ))}
-          </Field>
-
-          {touched.advertTypeId ? (
-            errors.advertTypeId ? (
-              <div className="text-danger mb-3">{errors.advertTypeId}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-      {/* İşlem Tipi */}
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>İşlem Tipi*</label>
-          <Field
-            name="processTypeId"
-            onBlur={handleBlur}
-            onChange={(e) => {
-              handleChange(e)
-              dispatch(updateField({ field: "processTypeId", value: e.target.value }));
-
-            }}
-            value={values.processTypeId}
-            component="select"
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-          >
-            <option selected value="">
-              İşlem tipini seçiniz
-            </option>
-            {processType?.map((item, index) => (
-              <option key={index} value={item._id}>
-                {item.processName}
-              </option>
-            ))}
-          </Field>
-          {touched.processTypeId ? (
-            errors.processTypeId ? (
-              <div className="text-danger mb-3">{errors.processTypeId}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-      {/* Kategorisi */}
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Kategorisi*</label>
-          <Field
-            component="select"
-            onBlur={handleBlur}
-            onChange={(e) => {
-              handleChange(e)
-              dispatch(updateField({ field: "advertShapeId", value: e.target.value }));
-
-            }}
-            value={values.advertShapeId}
-            name="advertShapeId"
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-          >
-            <option selected value="">
-              Kategori seçiniz
-            </option>
-            {advertShapes?.map((item, index) => (
-              <option key={index} value={item._id}>
-                {item.typeName}
-              </option>
-            ))}
-          </Field>
-          {touched.advertShapeId ? (
-            errors.advertShapeId ? (
-              <div className="text-danger mb-3">{errors.advertShapeId}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-      {/* İlan Başlığı */}
+      {/* Blog Başlığı */}
       <div className="col-lg-12">
         <div className="my_profile_setting_input form-group">
-          <label htmlFor="propertyTitle">İlan Başlığı*</label>
+          <label htmlFor="propertyTitle">Blog Başlığı*</label>
           <Field
-            name="adverTitle"
+            name="title"
             onBlur={handleBlur}
             onChange={(e) => {
 
-              setFieldValue('adverTitle', e.target.value)
+              setFieldValue('title', e.target.value)
               setFieldValue('seoTitle', e.target.value)
-              dispatch(updateField({ field: "adverTitle", value: e.target.value }));
+              dispatch(updateField({ field: "title", value: e.target.value }));
               dispatch(updateField({ field: "seoTitle", value: e.target.value }));
               setFieldValue('seoUrl', slugify(e.target.value, { delimiter: '-' }))
               dispatch(updateField({ field: "seoUrl", value:slugify(e.target.value, { delimiter: '-' }) }));
               handleChange(e)
             }}
-            value={values.adverTitle}
+            value={values.title}
             type="text"
             className="form-control"
             id="propertyTitle"
           />
-          {touched.adverTitle ? (
-            errors.adverTitle ? (
-              <div className="text-danger mb-3">{errors.adverTitle}</div>
+          {touched.title ? (
+            errors.title ? (
+              <div className="text-danger mb-3">{errors.title}</div>
             ) : null
           ) : (
             ""
@@ -379,158 +269,10 @@ const CreateList = ({
         </div>
       </div>
 
-      {/* Fiyat */}
-      <div className="col-lg-4 col-xl-4">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="formGroupExamplePrice">Fiyat*</label>
-          <CurrencyInput
-            id="input-example"
-            name="advertPrice"
-            placeholder="İlan Fiyatını Giriniz"
-            defaultValue={1000}
-            decimalsLimit={0}
-            value={values.advertPrice}
-            onValueChange={(value) => {
-              setFieldValue("advertPrice", value)
-              dispatch(updateField({ field: "advertPrice", value: value }));
-            }}
-            className="form-control"
-            decimalSeparator=","
-            groupSeparator="."
-          />
-          {touched.advertPrice ? (
-            errors.advertPrice ? (
-              <div className="text-danger mb-3">{errors.advertPrice}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
+    
 
 
-
-      {/* Gizlilik */}
-      <div className="col-lg-3 col-xl-3">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>İlan Gizliliği</label>
-          <Field
-            component="select"
-            name="isEncrypted"
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={values.isEncrypted}
-            onChange={(e) => {
-              handleChange(e)
-              dispatch(updateField({ field: "isEncrypted", value: e.target.value }));
-
-            }}
-          >
-            <option selected value="">
-              İlan Şifre Durumunu
-            </option>
-            <option value={true}>Şifreli İlan</option>
-            <option value={false}>Şifresiz İlan</option>
-          </Field>
-          {touched.isEncrypted ? (
-            errors.isEncrypted ? (
-              <div className="text-danger mb-3">{errors.isEncrypted}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-      {/* İlan Şİfresi */}
-      <div className="col-lg-3 col-xl-3">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="advertPassword">İlan Şifresi</label>
-          <Field
-            name="advertPassword"
-            onBlur={handleBlur}
-            onChange={(e) => {
-              handleChange(e)
-              dispatch(updateField({ field: "advertPassword", value: e.target.value }));
-
-            }}
-            value={values.advertPassword}
-            type="text"
-            className="form-control"
-            id="advertPassword"
-          />
-          {touched.advertPassword ? (
-            errors.advertPassword ? (
-              <div className="text-danger mb-3">{errors.advertPassword}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-      {/* Sözleşme */}
-      <div className="col-lg-3 col-xl-3">
-        <div className="my_profile_setting_input ui_kit_select_search form-group">
-          <label>Sözleşme Durumu</label>
-          <Field
-            component="select"
-            name="isContract"
-            className="selectpicker form-select"
-            data-live-search="true"
-            data-width="100%"
-            value={values.isContract}
-            onChange={(e) => {
-              handleChange(e)
-              dispatch(updateField({ field: "isContract", value: e.target.value }));
-
-            }}
-          >
-            <option selected value="">
-              İlan Sözleşme Durumunu
-            </option>
-            <option value={true}>Sözleşmeli İlan</option>
-            <option value={false}>Sözleşmesiz İlan</option>
-          </Field>
-          {touched.isContract ? (
-            errors.isContract ? (
-              <div className="text-danger mb-3">{errors.isContract}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
-
-
-      {/* Yayın Bitiş Tarihi */}
-      <div className="col-lg-3 col-xl-3">
-        <div className="my_profile_setting_input form-group">
-          <label htmlFor="contractDate">İlan Sözleşme Tarihi</label>
-          <input
-            name="contractDate"
-            onBlur={handleBlur}
-            onChange={(e) => {
-              handleChange(e)
-              dispatch(updateField({ field: "contractDate", value: e.target.value }));
-
-            }}
-            value={values.contractDate}
-            type="date"
-            className="form-control"
-            id="contractDate"
-            lang="fr-CA"
-          />
-          {touched.contractDate ? (
-            errors.contractDate ? (
-              <div className="text-danger mb-3">{errors.contractDate}</div>
-            ) : null
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
+     
 
 
       {loadingStepStatus ? (
@@ -793,26 +535,26 @@ const CreateList = ({
           }
 
 
-          {/* İlanın Kısa Açıklaması */}
+          {/* Blog Kısa Açıklaması */}
           <div className="col-lg-12">
             <div className="my_profile_setting_textarea">
-              <label htmlFor="propertyDescription">İlanın Kısa Açıklaması*</label>
+              <label htmlFor="propertyDescription">Bloğun Kısa Açıklaması*</label>
               <Field
                 onBlur={handleBlur}
                 onChange={(e) => {
                   handleChange(e)
-                  dispatch(updateField({ field: "shortDescription", value: e.target.value }));
+                  dispatch(updateField({ field: "alt_text", value: e.target.value }));
     
                 }}
-                value={values.shortDescription}
-                name="shortDescription"
+                value={values.alt_text}
+                name="alt_text"
                 className="form-control"
                 id="propertyDescription"
                 rows="7"
               />
-              {touched.shortDescription ? (
-                errors.shortDescription ? (
-                  <div className="text-danger mb-3">{errors.shortDescription}</div>
+              {touched.alt_text ? (
+                errors.alt_text ? (
+                  <div className="text-danger mb-3">{errors.alt_text}</div>
                 ) : null
               ) : (
                 ""
@@ -824,7 +566,7 @@ const CreateList = ({
           {/* İlan Açıklaması */}
           <div className="col-lg-12 mb100" style={{ minHeight: "300px" }}>
             <div className="my_profile_setting_textarea" style={{ height: "100%" }}>
-              <label htmlFor="propertyDescription">İlan Açıklaması*</label>
+              <label htmlFor="propertyDescription">Blog Açıklaması*</label>
               <ReactQuill theme="snow" value={values.description} style={{ height: "100%" }} onChange={(value) => {
                 setFieldValue('description', value)
                   handleChange(value)

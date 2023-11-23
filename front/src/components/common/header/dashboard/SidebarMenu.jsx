@@ -15,13 +15,13 @@ const SidebarMenu = () => {
   const [checkOfficial, setCheckOfficial] = useState(false)
   const [announcementManagement, setAnnouncementManagement] = useState([
     { id: 1, name: "Yeni Blog Ekle", route: "/blog-ekle" },
-    { id: 2, name: "İlanlarım", route: "/ilanlarim" },
+    { id: 2, name: "Bloglarım", route: "/bloglarim" },
     { id: 3, name: "Favori İlanlar", route: "/favori-ilanlarim" },
   ])
   useEffect(() => {
-    if (currentUser && currentUser?.role === 'officeAdmin') {
+    if (currentUser && currentUser?.type === 'doctor') {
       setCheckOfficial(true)
-    } else if (currentUser && currentUser?.role === 'officeUser' && !announcementManagement.find(i => i.id == 4)) {
+    } else if (currentUser && currentUser?.type === 'doctor' && !announcementManagement.find(i => i.id == 4)) {
       setCheckOfficial(true)
     }
   }, [currentUser])

@@ -102,9 +102,7 @@ const updateAdvert = async (data, id) => {
     });
   return res;
 };
-
-
-const addAdvert = async (data) => {
+const updateBlog = async (data, id) => {
   const fd = new FormData();
   Object.entries(data).map(([key, value]) => {
     if (key != 'coverPhoto' && key != 'advertPhoto') {
@@ -121,7 +119,9 @@ const addAdvert = async (data) => {
       }
 
     } else if (key == 'coverPhoto') {
-      fd.append('coverPhoto', value[0])
+      if(typeof value != 'string'){
+        fd.append('coverPhoto', value[0])
+      }
     } else if (key == 'advertPhoto') {
       if (value?.length > 0) {
         value.map((v, ind) => {
@@ -134,8 +134,54 @@ const addAdvert = async (data) => {
   const token = localStorage.getItem("userToken");
 
   const res = await axios({
+    method: "PUT",
+    url: `/blog/${id}`,
+    data: fd,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+  return res;
+};
+
+const addBlog = async (data) => {
+  const fd = new FormData();
+  Object.entries(data).map(([key, value]) => {
+    if (key != 'coverPhoto' && key != 'blogPhoto') {
+      if (!key.includes("_isStatus")) {
+        if (data[`${key}_isStatus`]) {
+          fd.append(key, JSON.stringify([{
+            text: value,
+            isStatus: data[`${key}_isStatus`]
+          }]))
+        } else {
+          fd.append(key, value)
+        }
+
+      }
+
+    } else if (key == 'coverPhoto') {
+      fd.append('coverPhoto', value[0])
+    } else if (key == 'blogPhoto') {
+      if (value?.length > 0) {
+        value.map((v, ind) => {
+          fd.append(`image_${ind + 1}`, v)
+        })
+      }
+    }
+  });
+
+  const token = localStorage.getItem("userToken");
+
+  const res = await axios({
     method: "POST",
-    url: "/advert",
+    url: "/blog",
     data: fd,
     headers: { Authorization: `Bearer ${token}` },
   })
@@ -188,6 +234,24 @@ const getAllAdvertList = async (sorting = '', currentPage = '', search = "") => 
     });
   return res;
 };
+const getAllBlogList = async (sorting = '', currentPage = '', search = "") => {
+  const token = localStorage.getItem("userToken");
+  const res = await axios({
+    method: "GET",
+    url: `/blog?sorting=${sorting}&page=${currentPage}&searchKey=${search}`,
+    data: undefined,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+  return res;
+};
 
 const getAdvertWithNo = async (id) => {
   const token = localStorage.getItem("userToken");
@@ -211,6 +275,21 @@ const deleteAdvert = async (id) => {
   const res = await axios({
     method: "DELETE",
     url: `/advert/${id}`,
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+  return res;
+};
+const deleteBlog = async (id) => {
+  const res = await axios({
+    method: "DELETE",
+    url: `/blog/${id}`,
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -247,6 +326,22 @@ const toggleStatus = async (id) => {
   const res = await axios({
     method: "GET",
     url: `/advert/change-status/${id}`,
+  })
+    .then((res) => res.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+
+  return res;
+};
+const blogToggleStatus = async (id) => {
+  const res = await axios({
+    method: "GET",
+    url: `/blog/toggle-status${id}`,
   })
     .then((res) => res.data)
     .catch((error) => {
@@ -344,6 +439,22 @@ const getAdvertDetails = async (id) => {
     });
   return res;
 };
+const getBlogDetails = async (id) => {
+  const res = await axios({
+    method: "GET",
+    url: `/blog/${id}`,
+  })
+    .then((res) => res.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+  return res;
+};
+
 
 const getSubUserList = async (id) => {
   const res = await axios({
@@ -525,7 +636,12 @@ const getRejectMessage = async (id) => {
 const advertServices = {
   getRejectMessage,
   updateAdvert,
-  addAdvert,
+  addBlog,//
+  getBlogDetails,//
+  updateBlog,//
+  getAllBlogList,//
+  blogToggleStatus,//
+  deleteBlog,//
   deleteAdvert,
   getAdvertTypes,
   getProcessType,

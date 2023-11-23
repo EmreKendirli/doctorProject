@@ -14,6 +14,8 @@ const create = tryCatch(async (req, res) => {
         title: req.body.title,
         content: req.body.content,
         isStatus: req.body.isStatus,
+        short_description: req.body.short_description,
+        coverPhoto: req.body.coverPhoto,
     }
 
     if (req.body.images && req.body.images.length > 0) savedObject.image = req.body.images[0].filename;
@@ -55,6 +57,7 @@ const update = tryCatch(async (req, res) => {
             content: req.body.content,
             image: req.body.images[0].filename,
             isStatus: req.body.isStatus,
+            short_description: req.body.short_description,            
         }
     } else {
         object = {
@@ -64,7 +67,11 @@ const update = tryCatch(async (req, res) => {
             title: req.body.title,
             content: req.body.content,
             isStatus: req.body.isStatus,
+            short_description: req.body.short_description,
         }
+    }
+    if (req.body.coverPhoto) {
+        object.coverPhoto = req.body.coverPhoto
     }
     const update = await Blog.findByIdAndUpdate(id, object,{new:true})
     if (!update) {
@@ -134,12 +141,54 @@ const getListAll = tryCatch(async (req, res) => {
         data:getAll
     })
 })
+const getUserData = tryCatch(async (req, res) => {
+    let {
+        page,
+        paginate,
+        searchKey
+    } = req.query;
 
+    if (!page) page = 1
+    if (!paginate) paginate = 10
+    const skip = (page - 1) * paginate
+
+    if (!searchKey) searchKey = ''
+    const filterObj = {
+        "$or": [{
+            "title": {
+                $regex: searchKey
+            }
+        },
+        {
+            "content": {
+                $regex: searchKey
+            }
+        },
+        {
+            "seoDescription": {
+                $regex: searchKey
+            }
+        },
+        ],
+    }
+    filterObj.userId = req.user._id
+    const getAll = await Blog.find(filterObj).skip(skip).limit(paginate).sort({ createdAt: -1 })
+    if (!getAll) {
+        throw new AppError("Blog  failed to fetch", 404)
+    }
+    const totalRecord = await Blog.find({}).count()
+    res.status(200).json({
+        succeded: true,
+        data: getAll,
+        totalRecord
+    })
+})
 export {
     create,
     remove,
     update,
     getAll,
     getDetail,
-    getListAll
+    getListAll,
+    getUserData
 }

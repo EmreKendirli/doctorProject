@@ -28,7 +28,13 @@ const blogSchema = new Schema({
         type: String,
         require: true
     },
+    short_description: {
+        type: String,
+    },
     image: {
+        type: String,
+    },
+    coverPhoto: {
         type: String,
     },
     isStatus: {

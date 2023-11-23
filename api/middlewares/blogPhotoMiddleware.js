@@ -30,6 +30,8 @@ const resizeImages = tryCatch(async (req, res, next) => {
     }
 
     req.body.images=[]
+    req.body.coverPhoto=""
+
     // Images
     await Promise.all(req.files.map(async (file, i) => {
         const result = file.fieldname.split("-")
@@ -38,6 +40,13 @@ const resizeImages = tryCatch(async (req, res, next) => {
             const baseUrl = process.env.DOMAIN
             const file_name = `/contents/blog/image-${Date.now()}-${random}.png`;
             req.body.images.push({filedname:file.fieldname,filename:baseUrl + file_name})
+            await sharp(file.buffer).toFile(`public${file_name}`)
+        }
+        if (result[0] === "coverPhoto") {
+            const random = await generateRandomString(6)
+            const baseUrl = process.env.DOMAIN
+            const file_name = `/contents/blog/image-${Date.now()}-${random}.png`;
+            req.body.coverPhoto = baseUrl + file_name
             await sharp(file.buffer).toFile(`public${file_name}`)
         }
 

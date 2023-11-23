@@ -10,11 +10,11 @@ import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Form2({ isPopup }) {
-  // const [citiesList, setCitiesList] = useState();
   // const [districtList, setDistrcitList] = useState();
   // const [countryList, setCountryList] = useState();
   // const [neighbourhoodList, setNeighbourhoodList] = useState();
-  // const [selectedCity, setSelectedCity] = useState();
+  const [categoriesList, setCategoriesList] = useState("");
+  // const [selectedCategory, setSelectedCategory] = useState("");
   // const [selectedCountry, setSelectedCountry] = useState();
   // const [selectedDistrict, setSelectedDistrict] = useState();
 
@@ -31,67 +31,22 @@ export default function Form2({ isPopup }) {
     { value: "Doktor Kullanıcı" },
   ];
 
-  // const getCountryList = async () => {
-  //   const res = await generalServices
-  //     .getCountryList()
-  //     .then((res) => setCountryList(res.data))
-  //     .catch((err) => console.log(err));
-  // };
+  const getCategoryList = async () => {
+    const res = await authServices
+      .getDoctorCategoryList()
+      .then((res) => setCategoriesList(res.data))
+      .catch((err) => console.log(err));
+  };
 
-  // useEffect(() => {
-  //   getCountryList();
-  // }, []);
+  useEffect(() => {
+    getCategoryList();
+  }, []);
 
-  // const getCityList = async () => {
-  //   if (selectedCountry) {
-  //     const res = await generalServices
-  //       .getCityList(selectedCountry)
-  //       .then((res) => {
-  //         setCitiesList(res.data);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getCityList();
-  // }, [selectedCountry]);
-
-  // const getDistrictList = async (id) => {
-  //   const res = await generalServices
-  //     .getDistrictList(id)
-  //     .then((res) => {
-  //       setDistrcitList(res.data);
-  //     })
-  //     .catch((err) => console.log(err));
-  //   return res;
-  // };
-
-  // useEffect(() => {
-  //   if(selectedCity) {
-  //     getDistrictList(selectedCity);
-  //   }
-  // }, [selectedCity]);
-
-  // const getNeighbourhoodList = async () => {
-  //   if (selectedDistrict) {
-  //     const res = await generalServices
-  //       .getNeighbourhoodList(selectedDistrict)
-  //       .then((res) => setNeighbourhoodList(res.data))
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if(selectedDistrict){
-  //     getNeighbourhoodList();
-  //   }
-  // }, [selectedDistrict]);
 
   const getValidationSchemaForUserType = (selectedUserType) => {
     const commonSchema = {
-      firstAndLastName: Yup.string().required("Ad ve soyad zorunludur."),
-      userName: Yup.string().required("Kullanıcı adı zorunludur."),
+      firstName: Yup.string().required("İsim zorunludur."),
+      lastName: Yup.string().required("Soy isimı zorunludur."),
       email: Yup.string()
         .email("Lütfen geçerli bir e-posta adresi giriniz.")
         .required("E-posta adresi zorunludur."),
@@ -105,7 +60,7 @@ export default function Form2({ isPopup }) {
       confrimPassword: Yup.string()
         .oneOf([Yup.ref("password"), null], "Şifreler uyuşmamaktadır.")
         .required("Lütfen oluşturmuş olduğunuz şifrenizi tekrar giriniz"),
-      // cityId: Yup.string().required("Şehir seçimi zorunludur."),
+      // categoryId: Yup.string().required("Kategori seçimi zorunludur."),
       // districtId: Yup.string().required("İlçe seçimi zorunludur."),
       // countryId: Yup.string().required("Ülke seçimi zorunludur."),
       // neighboordId: Yup.string().required("Mahalle seçimi zorunludur."),
@@ -125,6 +80,8 @@ export default function Form2({ isPopup }) {
         .email("Lütfen geçerli bir e-posta adresi giriniz.")
         .required("Şirketinizin e-posta adresi zorunludur."),
       address: Yup.string().required("Ofisinizin adresi zorunludur."),
+      categoryId: Yup.string().required("Kategori seçimi zorunludur."),
+
     });
   };
 
@@ -158,14 +115,14 @@ export default function Form2({ isPopup }) {
         .addDoctorUser(values)
         .then((res) => {
           console.log("Kayıttan Gelen response : ", res);
-          if (res.succeded) {
+          if (res.succeded === true) {
             toast.dismiss();
             toast.success("Kayıt İşlemi Başarılı");
             setTimeout(() => {
               router.push("/login");
             }, 1000);
           } else {
-            
+
             toast.dismiss();
             toast.error(res.message);
 
@@ -179,21 +136,21 @@ export default function Form2({ isPopup }) {
   let initialValues =
     selectedUserType === "Bireysel Kullanıcı"
       ? {
-        firstAndLastName: "",
-        userName: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phoneNumber: "",
         password: "",
         confrimPassword: "",
       }
       : {
-        firstAndLastName: "",
-        userName: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phoneNumber: "",
         password: "",
         companyName: "",
-        // companyTitle: "",
+        categoryId: "",
         officeEmail: "",
         taxNo: "",
         taxOffice: "",
@@ -285,17 +242,17 @@ export default function Form2({ isPopup }) {
               </select>
             </div>
 
-            {/* firstAndLastName */}
+            {/* firstName */}
             <div className="mb-2">
               <div className="form-group input-group ">
                 <Field
                   type="text"
-                  name="firstAndLastName"
-                  value={values.firstAndLastName}
+                  name="firstName"
+                  value={values.firstName}
                   onChange={handleChange}
                   className="form-control"
                   required
-                  placeholder="İsim Soyisim"
+                  placeholder="Adı"
                   onBlur={handleBlur}
                 />
                 <div className="input-group-prepend">
@@ -305,10 +262,10 @@ export default function Form2({ isPopup }) {
                 </div>
               </div>
 
-              {touched.firstAndLastName ? (
-                errors.firstAndLastName ? (
+              {touched.firstName ? (
+                errors.firstName ? (
                   <div className="text-danger mb-3">
-                    {errors.firstAndLastName}
+                    {errors.firstName}
                   </div>
                 ) : null
               ) : (
@@ -323,10 +280,10 @@ export default function Form2({ isPopup }) {
                   type="text"
                   className="form-control"
                   required
-                  name="userName"
+                  name="lastName"
                   onChange={handleChange}
-                  value={values.userName}
-                  placeholder="Kullanıcı Adı"
+                  value={values.lastName}
+                  placeholder="SoyAdı"
                   onBlur={handleBlur}
                 />
                 <div className="input-group-prepend">
@@ -336,9 +293,9 @@ export default function Form2({ isPopup }) {
                 </div>
               </div>
 
-              {touched.userName ? (
-                errors.userName ? (
-                  <div className="text-danger mb-3">{errors.userName}</div>
+              {touched.lastName ? (
+                errors.lastName ? (
+                  <div className="text-danger mb-3">{errors.lastName}</div>
                 ) : null
               ) : (
                 ""
@@ -348,6 +305,33 @@ export default function Form2({ isPopup }) {
             {/* Doktor Kullanıcı ise form'a ekstra 4 input eklemek için  */}
             {selectedUserType === "Doktor Kullanıcı" && (
               <>
+                {/* categoryId */}
+                <div className="mb-2">
+                  <div className="form-group input-group">
+                    <select
+                      name="categoryId"
+                      className="form-control"
+                      value={values.categoryId}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    >
+                      <option value="" disabled>
+                        Kategori Seçiniz
+                      </option>
+                      {categoriesList.map((category) => (
+                        <option key={category._id} value={category._id}>
+                          {category.role}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {touched.categoryId && errors.categoryId && (
+                    <div className="text-danger mb-3">{errors.categoryId}</div>
+                  )}
+                </div>
+
+
                 {/* Company Name */}
                 <div className="mb-2">
                   <div className="form-group input-group ">

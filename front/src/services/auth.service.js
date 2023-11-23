@@ -76,12 +76,31 @@ const logout = async () => {
     });
   return res;
 };
+const getDoctorCategoryList = async () => {
+  const res = await axios({
+    method: "GET",
+    url: `/user-role`,
+  })
+    .then((res) => res.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        localStorage.removeItem("current_user");
+        localStorage.removeItem("userToken");
+        location.replace('/')
+      }else{
+        return error;
+      }
+    });
+  return res;
+}
+
 
 const authServices = {
   addIndividualUser,//bireysel kullnıcı
   addDoctorUser,
   login,
-  logout
+  logout,
+  getDoctorCategoryList
 };
 
 export default authServices;

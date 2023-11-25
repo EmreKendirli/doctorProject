@@ -8,6 +8,7 @@ import { getCurrentUser } from "../../utils/auth";
 const Index = () => {
   const router = useRouter();
   const id = router.query.id;
+  console.log( id );
 
   return (
     <Secret
@@ -21,7 +22,7 @@ const Index = () => {
       render={
         <>
           <Seo pageTitle="My Profile" />
-          <MyProfile id={id} />
+          <MyProfile/>
         </>
       }
     />

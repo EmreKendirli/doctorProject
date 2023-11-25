@@ -29,6 +29,7 @@ const Index = ({ id }) => {
       masterServices
         .getOneUserWithId(currentUser?._id)
         .then((data) => {
+          console.log(data.data);
           setUserData(data.data);
         })
         .catch((err) => console.log(err));

@@ -102,10 +102,10 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                         height={220}
                         className="img-whp cover"
                         src={
-                          item?.image ||
+                          item?.coverPhoto ||
                           "/assets/images/logo/logo-short.png"
                         }
-                        alt={item?.title || 'Blog'}
+                        alt='Blog'
                       />
                       <div
                         className=""
@@ -115,7 +115,6 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                           left: 10,
                         }}
                       >
-                        <span className="status_tag badge">{item?.short_description}</span>
                       </div>
                      
                     </div>

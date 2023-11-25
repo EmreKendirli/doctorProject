@@ -5,17 +5,16 @@ import Login from "../../pages/login";
 import { getCurrentUser } from "../../utils/auth";
 const index = () => {
   return (
-    // <Secret
-    //   callback={() => {
-    //     const user = getCurrentUser();
-    //     if (!user) return false;
+    <Secret
+      callback={() => {
+        const user = getCurrentUser();
+        if (!user) return false;
 
-    //     return true;
-    //   }}
-    //   error={"/login"}
-    //   render={<MyProfile />}
-    // />
-    <MyProfile/>
+        return true;
+      }}
+      error={"/login"}
+      render={<MyProfile />}
+    />
   );
 };
 

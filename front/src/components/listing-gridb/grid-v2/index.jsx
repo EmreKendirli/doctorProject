@@ -55,7 +55,7 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-3 col-xl-3">
               <div className="sidebar-listing-wrapper">
-                <SidebarListing />
+                {/* <SidebarListing /> */}
               </div>
               {/* End SidebarListing */}
 

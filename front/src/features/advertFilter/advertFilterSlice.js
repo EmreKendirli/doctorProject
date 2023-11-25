@@ -3,14 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   filterValues: {
     city: "",
-    advertNo: "",
+    doctorName: "",
     district: "",
     neighbourhood: "",
-    minPrice: "",
-    maxPrice: "",
-    advertType: "",
-    advertShape: "",
-    processType: "",
+    
   },
 };
 

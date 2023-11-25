@@ -102,10 +102,10 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                         height={220}
                         className="img-whp cover"
                         src={
-                          item?.image?.value ||
+                          item?.coverPhoto ||
                           "/assets/images/logo/logo-short.png"
                         }
-                        alt={item?.title?.value || 'İlanımız'}
+                        alt='Blog'
                       />
                       <div
                         className=""
@@ -115,7 +115,6 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                           left: 10,
                         }}
                       >
-                        <span className="status_tag badge">{item?.alt_text?.value}</span>
                       </div>
                      
                     </div>
@@ -153,7 +152,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                 <td>
                   <span className="d-flex justify-content-center">
                     <span className="status_tag ">
-                      {item?.alt_text}
+                      {item?.short_description}
                     </span>
                   </span>
                 </td>

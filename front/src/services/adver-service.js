@@ -238,7 +238,7 @@ const getAllBlogList = async (sorting = '', currentPage = '', search = "") => {
   const token = localStorage.getItem("userToken");
   const res = await axios({
     method: "GET",
-    url: `/blog?sorting=${sorting}&page=${currentPage}&searchKey=${search}`,
+    url: `/blog/user-blog?sorting=${sorting}&page=${currentPage}&searchKey=${search}`,
     data: undefined,
     headers: { Authorization: `Bearer ${token}` },
   })

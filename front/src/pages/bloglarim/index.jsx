@@ -9,8 +9,8 @@ const index = () => {
     <Secret
       callback={() => {
         const user = getCurrentUser();
-        if (!user) return false;
-
+        if (!user ) return false;
+//|| user.type === "user" bu kısmı ekle
         return true;
       }}
       error={"/login"}

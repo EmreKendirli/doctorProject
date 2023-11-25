@@ -25,27 +25,26 @@ const upload = multer({
     fileFilter: multerFilter
 })
 const resizeImages = tryCatch(async (req, res, next) => {
-    if (!fs.existsSync('public/contents/blog')) {
-        await mkdirp('public/contents/blog');
+    if (!fs.existsSync('public/contents/course')) {
+        await mkdirp('public/contents/course');
     }
 
-    req.body.images=[]
-    req.body.coverPhoto=""
     // Images
     await Promise.all(req.files.map(async (file, i) => {
         const result = file.fieldname.split("-")
-        if (result.length > 0) {
+        console.log(result);
+
+        if (result[0] === "promotionalImage") {
             const random = await generateRandomString(6)
-            const baseUrl = process.env.DOMAIN
-            const file_name = `/contents/blog/image-${Date.now()}-${random}.png`;
-            req.body.images.push({filedname:file.fieldname,filename:baseUrl + file_name})
+            const file_name = `/contents/course/image-${Date.now()}-${random}.png`;
+            req.body.promotionalImage = file_name
+            console.log(req.body.promotionalImage);
             await sharp(file.buffer).toFile(`public${file_name}`)
         }
-        if (result[0] === "coverPhoto") {
+        if (result[0] === "image") {
             const random = await generateRandomString(6)
-            const baseUrl = process.env.DOMAIN
-            const file_name = `/contents/blog/image-${Date.now()}-${random}.png`;
-            req.body.coverPhoto = baseUrl + file_name
+            const file_name = `/contents/course/image-${Date.now()}-${random}.png`;
+            req.body.image = file_name
             await sharp(file.buffer).toFile(`public${file_name}`)
         }
 

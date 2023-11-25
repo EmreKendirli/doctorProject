@@ -11,5 +11,5 @@ router.route("/").post(Auth.authenticateUserAPIToken,blogPhotoMiddleware.uploadS
 router.route("/:id").get(Blog.getDetail)
 router.route("/:id").delete(Blog.remove)
 router.route("/:id").put(Auth.authenticateUserAPIToken,blogPhotoMiddleware.uploadSettingImages,blogPhotoMiddleware.resizeImages,Blog.update)
-// router.route()
+router.route("user-blog").get(Auth.authenticateUserAPIToken,Blog.getUserData)
 export default router

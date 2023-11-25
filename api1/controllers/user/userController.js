@@ -17,7 +17,7 @@ const doctorRegister = tryCatch(async (req, res) => {
     if (!register) {
         return res.status(404).json({
             succeded: false,
-            // message: i18n.translate("USERS.USER_NOT_CREATED", lang),
+           // message: i18n.translate("USERS.USER_NOT_CREATED", lang),
         });
     }
     res.status(200).json({
@@ -33,7 +33,7 @@ const individualRegister = tryCatch(async (req, res) => {
         email: req.body.email,
         password: req.body.password,
         type: "user",
-        isApproved: true,
+        isApproved:true,
     });
     if (!register) {
         return res.status(404).json({
@@ -56,7 +56,7 @@ const userLogin = tryCatch(async (req, res) => {
     if (user) {
         same = await bcrypt.compare(password, user.password);
     } else {
-        throw new AppError("User Bulunamadı", 404);
+        throw new AppError("Kullanıcı Bulunamdı", 404);
     }
     if (same) {
         const user = await User.findOne(
@@ -99,11 +99,11 @@ const userLogin = tryCatch(async (req, res) => {
             data: {
                 token,
                 user: users,
-                // message: i18n.translate("USERS.USER_SUCCESS_LOGIN", lang),
+               // message: i18n.translate("USERS.USER_SUCCESS_LOGIN", lang),
             },
         });
     } else {
-        throw new AppError("Şifre Hatalı", 401);
+        throw new AppError("Şifre Yanlış", 401);
     }
 });
 const createToken = async (id) => {
@@ -117,46 +117,10 @@ const createToken = async (id) => {
         }
     );
 };
-
-const userFilter = tryCatch(async (req, res) => {
-    let { role, country, city, district, neighbourhood, page, paginate, searchKey} = req.query
-    if (!page) page = 1
-    if (!paginate) paginate = 10
-    const skip = (page - 1) * paginate
-
-    if (!searchKey) searchKey = ''
-    let filterObj = {
-        "$or": [{
-                "firstName": {
-                    $regex: searchKey
-                }
-            },
-            {
-                "lastName": {
-                    $regex: searchKey
-                }
-            }
-        ],
-    }
-    if (role)  filterObj.userRole = role
-    if (country)  filterObj.countryId = country
-    if (city)  filterObj.cityId = city
-    if (district)  filterObj.districtId = district
-    if (neighbourhood)  filterObj.neighbourhoodId = neighbourhood
-
-    const result = await User.find(filterObj).skip(skip).limit(paginate)
-    const totalRecord = await User.find(filterObj).count()
-    res.status(200).json({
-        succeded: true,
-        data:result,
-        totalRecord
-    })
-})
 const user = {
     doctorRegister,
     individualRegister,
-    userLogin,
-    userFilter
+    userLogin
 
 }
 export default user

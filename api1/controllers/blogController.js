@@ -7,7 +7,7 @@ const create = tryCatch(async (req, res) => {
 
 
     const savedObject = {
-        userId: req.user._id,
+        userId:req.user._id,
         seoTitle: req.body.seoTitle,
         seoUrl: req.body.seoUrl,
         seoDescription: req.body.seoDescription,
@@ -26,7 +26,7 @@ const create = tryCatch(async (req, res) => {
     }
     res.status(200).json({
         succeded: true,
-        data: create
+        data:create
     })
 })
 //Paramsdan gelen id'yi Veri tabanından silme işlemini yapıyor
@@ -40,7 +40,7 @@ const remove = tryCatch(async (req, res) => {
     }
     res.status(200).json({
         succeded: true,
-        data: remove
+        data:remove
     })
 })
 //Paramsdan gelen id ile buldugu datayı, body gelen verilerle güncelleme işlemini yapıyor
@@ -49,7 +49,7 @@ const update = tryCatch(async (req, res) => {
     const id = req.params.id
     let object;
     if (req.body.images && req.body.images.length > 0) {
-        object = {
+         object = {
             seoTitle: req.body.seoTitle,
             seoUrl: req.body.seoUrl,
             seoDescription: req.body.seoDescription,
@@ -57,8 +57,7 @@ const update = tryCatch(async (req, res) => {
             content: req.body.content,
             image: req.body.images[0].filename,
             isStatus: req.body.isStatus,
-            short_description: req.body.short_description,
-
+            short_description: req.body.short_description,            
         }
     } else {
         object = {
@@ -68,18 +67,19 @@ const update = tryCatch(async (req, res) => {
             title: req.body.title,
             content: req.body.content,
             isStatus: req.body.isStatus,
+            short_description: req.body.short_description,
         }
     }
     if (req.body.coverPhoto) {
         object.coverPhoto = req.body.coverPhoto
     }
-    const update = await Blog.findByIdAndUpdate(id, object, { new: true })
+    const update = await Blog.findByIdAndUpdate(id, object,{new:true})
     if (!update) {
         throw new AppError("Blog  not update", 404)
     }
     res.status(200).json({
         succeded: true,
-        data: update
+        data:update
     })
 })
 //Verileri filtere ile  listeleme işlemi yapıyor
@@ -98,20 +98,20 @@ const getAll = tryCatch(async (req, res) => {
     if (!searchKey) searchKey = ''
     const filterObj = {
         "$or": [{
-            "title": {
-                $regex: searchKey
-            }
-        },
-        {
-            "content": {
-                $regex: searchKey
-            }
-        },
-        {
-            "seoDescription": {
-                $regex: searchKey
-            }
-        },
+                "title": {
+                    $regex: searchKey
+                }
+            },
+            {
+                "content": {
+                    $regex: searchKey
+                }
+            },
+            {
+                "seoDescription": {
+                    $regex: searchKey
+                }
+            },
         ],
     }
     const getAll = await Blog.find(filterObj).skip(skip).limit(paginate).sort({ createdAt: -1 })
@@ -121,7 +121,7 @@ const getAll = tryCatch(async (req, res) => {
     const totalRecord = await Blog.find({}).count()
     res.status(200).json({
         succeded: true,
-        data: getAll,
+        data:getAll,
         totalRecord
     })
 })
@@ -130,15 +130,15 @@ const getDetail = tryCatch(async (req, res) => {
     const getAll = await Blog.findById(req.params.id);
     res.status(200).json({
         succeded: true,
-        data: getAll
+        data:getAll
     })
 })
 //Tüm verileri listeleme işlemi yapıyor
 const getListAll = tryCatch(async (req, res) => {
-    const getAll = await Blog.find({ isStatus: true });
+    const getAll = await Blog.find({isStatus: true});
     res.status(200).json({
         succeded: true,
-        data: getAll
+        data:getAll
     })
 })
 const getUserData = tryCatch(async (req, res) => {
@@ -182,10 +182,6 @@ const getUserData = tryCatch(async (req, res) => {
         data: getAll,
         totalRecord
     })
-})
-
-const filterKey = tryCatch(async (req, res) => {
-
 })
 export {
     create,

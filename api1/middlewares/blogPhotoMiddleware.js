@@ -31,6 +31,7 @@ const resizeImages = tryCatch(async (req, res, next) => {
 
     req.body.images=[]
     req.body.coverPhoto=""
+
     // Images
     await Promise.all(req.files.map(async (file, i) => {
         const result = file.fieldname.split("-")

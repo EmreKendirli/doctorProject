@@ -38,7 +38,7 @@ const setSubscriberData = async (data) => {
 const getCountryList = async () => {
   const res = await axios({
     method: "GET",
-    url: "/location",
+    url: "/location/country",
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -55,7 +55,7 @@ const getCountryList = async () => {
 const getCityList = async (id) => {
   const res = await axios({
     method: "GET",
-    url: `/location/city`,
+    url: `/location/city/${id}`,
   })
     .then((response) => response.data)
     .catch((error) => {

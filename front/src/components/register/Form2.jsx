@@ -8,6 +8,7 @@ import authServices from "../../services/auth.service";
 import { Field, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
+import Select from 'react-select';
 
 export default function Form2({ isPopup }) {
   const [districtList, setDistrcitList] = useState();
@@ -18,7 +19,8 @@ export default function Form2({ isPopup }) {
   const [selectedCountry, setSelectedCountry] = useState();
   const [selectedDistrict, setSelectedDistrict] = useState();
   const [selectedCity, setSelectedCity] = useState();
-  const [citiesList, setCitiesList] = useState();
+  const [selectedNeighbourhood, setSelectedNeighbourhood] = useState();
+  const [cityList, setCityList] = useState();
 
 
   // Kullanıcı tipini seçmek için
@@ -49,24 +51,27 @@ export default function Form2({ isPopup }) {
     console.log("getCountryList");
     const res = await generalServices
       .getCountryList()
-      .then((res) => setCountryList(res.data) )
+      .then((res) => setCountryList(res.data))
       .catch((err) => console.log(err));
   };
-console.log("countryList",countryList);
+  console.log("countryList", countryList);
 
-  const getCityList = async () => {
-    if (selectedCountry) {
+  const getCityList = async (id) => {
+    console.log(id);
+    if (id) {
       const res = await generalServices
-        .getCityList(selectedCountry)
+        .getCityList(id)
         .then((res) => {
-          setCitiesList(res.data);
+          setCityList(res.data);
         })
         .catch((err) => console.log(err));
     }
+    console.log("cityList", cityList);
   };
 
   useEffect(() => {
-    getCityList();
+    getCityList(selectedCountry);
+    console.log("selectedCountry", selectedCountry);
   }, [selectedCountry]);
 
   const getDistrictList = async (id) => {
@@ -85,10 +90,10 @@ console.log("countryList",countryList);
     }
   }, [selectedCity]);
 
-  const getNeighbourhoodList = async () => {
-    if (selectedDistrict) {
+  const getNeighbourhoodList = async (id) => {
+    if (id) {
       const res = await generalServices
-        .getNeighbourhoodList(selectedDistrict)
+        .getNeighbourhoodList(id)
         .then((res) => setNeighbourhoodList(res.data))
         .catch((err) => console.log(err));
     }
@@ -96,7 +101,7 @@ console.log("countryList",countryList);
 
   useEffect(() => {
     if (selectedDistrict) {
-      getNeighbourhoodList();
+      getNeighbourhoodList(selectedDistrict);
     }
   }, [selectedDistrict]);
 
@@ -119,10 +124,7 @@ console.log("countryList",countryList);
         .oneOf([Yup.ref("password"), null], "Şifreler uyuşmamaktadır.")
         .required("Lütfen oluşturmuş olduğunuz şifrenizi tekrar giriniz"),
       categoryId: Yup.string().required("Kategori seçimi zorunludur."),
-      districtId: Yup.string().required("İlçe seçimi zorunludur."),
-      cityId: Yup.string().required("İl seçimi zorunludur."),
-      countryId: Yup.string().required("Ülke seçimi zorunludur."),
-      neighboordId: Yup.string().required("Mahalle seçimi zorunludur."),
+
     };
 
     if (selectedUserType === "Bireysel Kullanıcı") {
@@ -140,6 +142,10 @@ console.log("countryList",countryList);
         .required("Şirketinizin e-posta adresi zorunludur."),
       address: Yup.string().required("Ofisinizin adresi zorunludur."),
       categoryId: Yup.string().required("Kategori seçimi zorunludur."),
+      // districtId: Yup.object().required("İlçe seçimi zorunludur."),
+      // cityId: Yup.object().required("İl seçimi zorunludur."),
+      // countryId: Yup.object().required("Ülke seçimi zorunludur."),
+      // neighboordId: Yup.object().required("Mahalle seçimi zorunludur."),
 
     });
   };
@@ -170,6 +176,14 @@ console.log("countryList",countryList);
         .catch((err) => toast.error(err));
       return register;
     } else {
+      // console.log(selectedCountry);
+      // if (values) {
+      //   values.countryId = selectedCountry ? selectedCountry.value : "";
+      //   values.cityId = selectedCity ? selectedCity.value : "";
+      //   values.districtId = selectedDistrict ? selectedDistrict.value : "";
+      //   values.neighboordId = selectedNeighbourhood ? selectedNeighbourhood.value : "";
+      // }
+
       const register = await authServices
         .addDoctorUser(values)
         .then((res) => {
@@ -216,10 +230,10 @@ console.log("countryList",countryList);
         taxOffice: "",
         address: "",
         confrimPassword: "",
-        cityId: "",
-        districtId: "",
-        countryId: "",
-        neighboordId: "",
+        // cityId: "",
+        // districtId: "",
+        // countryId: "",
+        // neighboordId: "",
 
       };
   return (
@@ -428,115 +442,10 @@ console.log("countryList",countryList);
                   )}
                 </div>
 
-                <div className="mb-2">
-                  <div className="form-group input-group">
-                    <select
-                      className="form-control"
-                      required
-                      onChange={(e) => {
-                        setSelectedCountry(e.target.value);
-                        setSelectedCity(null); // Reset city on country change
-                        setSelectedDistrict(null); // Reset district on country change
-                        setSelectedNeighbourhood(null); // Reset neighbourhood on country change
-                      }}
-                      value={values.countryId}
-                    >
-                      <option value="">Ülke Seçiniz</option>
-                      {countryList &&
-                        countryList.map((country) => (
-                          <option key={country.value} value={country.value}>
-                            {country.label}
-                          </option>
-                        ))}
-                    </select>
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-user"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="mb-2">
-                  <div className="form-group input-group">
-                    <select
-                      className="form-control"
-                      required
-                      onChange={(e) => {
-                        setSelectedCity(e.target.value);
-                        setSelectedDistrict(null); // Reset district on city change
-                        setSelectedNeighbourhood(null); // Reset neighbourhood on city change
-                      }}
-                      value={values.cityId}
-                    >
-                      <option value="">Şehir Seçiniz</option>
-                      {citiesList &&
-                        citiesList.map((city) => (
-                          <option key={city.value} value={city.value}>
-                            {city.label}
-                          </option>
-                        ))}
-                    </select>
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-user"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                {/* İlçe */}
-                <div className="mb-2">
-                  <div className="form-group input-group">
-                    <select
-                      className="form-control"
-                      required
-                      onChange={(e) => {
-                        setSelectedDistrict(e.target.value);
-                        setSelectedNeighbourhood(null); // Reset neighbourhood on district change
-                      }}
-                      value={values.districtId}
-                    >
-                      <option value="">İlçe Seçiniz</option>
-                      {districtList &&
-                        districtList.map((district) => (
-                          <option key={district.value} value={district.value}>
-                            {district.label}
-                          </option>
-                        ))}
-                    </select>
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-user"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+               
 
-                {/* Mahalle */}
-                <div className="mb-2">
-                  <div className="form-group input-group">
-                    <select
-                      className="form-control"
-                      required
-                      onChange={(e) => setSelectedNeighbourhood(e.target.value)}
-                      value={values.neighboordId}
-                    >
-                      <option value="">Mahalle Seçiniz</option>
-                      {neighbourhoodList &&
-                        neighbourhoodList.map((neighbourhood) => (
-                          <option key={neighbourhood.value} value={neighbourhood.value}>
-                            {neighbourhood.label}
-                          </option>
-                        ))}
-                    </select>
-                    <div className="input-group-prepend">
-                      <div className="input-group-text">
-                        <i className="flaticon-user"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
                 {/* Tax No */}
                 <div className="mb-2">

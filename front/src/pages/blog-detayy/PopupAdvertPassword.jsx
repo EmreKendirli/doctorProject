@@ -20,8 +20,8 @@ const PopupAdvertPassword = ({ status = false, setStatus, id, setPageTitle, setP
     setLoadingStatus(true)
 
     if (id) {
-      filterService.getOneAdvertWithNo(id, values.password).then((res) => {
-        if (res?.data?.succedd) {
+      filterService.getOneBlogWithId(id, ).then((res) => {
+        if (res?.data?.succeded) {
           res?.data?.data?.advertDetail?.seoTitle?.value && setPageTitle(res?.data?.data?.advertDetail?.seoTitle?.value)
           res?.data?.data?.advertDetail?.seoDescription?.value && setPageDescription(res?.data?.data?.advertDetail?.seoDescription?.value)
           setProperty(res?.data?.data);

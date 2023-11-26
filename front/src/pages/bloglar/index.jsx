@@ -31,9 +31,7 @@ const Index = () => {
   //   }
   // }, []);
 
-  return !close ? (
-    <LoadingScreen close={close} />
-  ) : (
+  return (
     <>
       <Seo
         pageTitle={seoTitle || "Bloglar"}
@@ -41,7 +39,8 @@ const Index = () => {
       />
       <GridV2 />
     </>
-  );
+  )
+  
 };
 
 export default dynamic(() => Promise.resolve(Index), { ssr: false });

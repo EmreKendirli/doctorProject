@@ -8,7 +8,7 @@ import Header from "../../components/common/header/DefaultHeader";
 import MobileMenu from "../../components/common/header/MobileMenu";
 import PopupSignInUp from "../../components/common/PopupSignInUp";
 import properties from "../../data/properties";
-import DetailsContent from "../../components/listing-details-v1/DetailsContent";
+import DetailsContent from "../../components/listing-details-v2/DetailsContent";
 import Sidebar from "../../components/listing-details-v1/Sidebar";
 import Image from "next/image";
 import filterService from "../../services/filter.service";
@@ -51,8 +51,9 @@ const ListingDynamicDetailsV1 = () => {
 
   useEffect(() => {
     if (id) {
-      filterService.getOneAdvertWithNo(id).then((res) => {
-        if (res?.data?.succedd) {
+      filterService.getOneBlogWithId(id).then((res) => {
+        console.log(res);
+        if (res?.data?.succeded) {
           res?.data?.data?.advertDetail?.seoTitle?.value && setPageTitle(res?.data?.data?.advertDetail?.seoTitle?.value)
           res?.data?.data?.advertDetail?.seoDescription?.value && setPageDescription(res?.data?.data?.advertDetail?.seoDescription?.value)
           setProperty(res?.data?.data);
@@ -107,7 +108,7 @@ const ListingDynamicDetailsV1 = () => {
                   <div className="single_property_title mt30-767">
                     <div className="d-flex align-items-center">
                       <h2 className="mb-0">
-                        {property?.advertDetail?.adverTitle?.options || "-"} -
+                        {property?.title || "-"} -
                       </h2>
                       <span className="status_tag badge ms-2">{property?.advertDetail?.processName?.options || ""}</span>
                     </div>

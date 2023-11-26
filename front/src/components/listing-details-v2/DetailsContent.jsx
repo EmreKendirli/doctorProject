@@ -1,10 +1,11 @@
 import { useState } from "react";
-import PropertyDescriptions from "../common/listing-details/PropertyDescriptionsBlog";
+import PropertyDescriptionsBlog from "../common/listing-details/PropertyDescriptionsBlog";
 import PropertyDetails from "../common/listing-details/ProportyDetailsBlog";
 import PropertyFeatures from "../common/listing-details/PropertyFeatures";
 import MyMap from "./MyMap";
 
 const DetailsContent = ({ property }) => {
+  console.log(property);
 
   const checkFeatureIncludeChecked = (feature) => {
     if (feature.length) {
@@ -23,15 +24,15 @@ const DetailsContent = ({ property }) => {
 
   return (
     <>
-      {property?.advertDetail?.description?.value && (
+      {property?.description && (
         <div className="listing_single_description">
           {/* End .lsd_list */}
 
           <h4 className="mb30">
-            {property?.advertDetail?.description?.label}
+            {property?.short_description?.label}
           </h4>
 
-          <PropertyDescriptions property={property} />
+          <PropertyDescriptionsBlog property={property} />
         </div>
       )}
       {/* End .listing_single_description */}

@@ -23,12 +23,12 @@ const DetailsContent = ({ property }) => {
 
   return (
     <>
-      {property?.advertDetail?.description?.value && (
+      {property?.description?.value && (
         <div className="listing_single_description">
           {/* End .lsd_list */}
 
           <h4 className="mb30">
-            {property?.advertDetail?.description?.label}
+            {property?.advertDetail?.description}
           </h4>
 
           <PropertyDescriptions property={property} />

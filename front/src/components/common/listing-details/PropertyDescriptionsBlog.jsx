@@ -4,10 +4,11 @@ import ReactHtmlParser from 'react-html-parser';
 const PropertyDescriptionsBlog = ({ property }) => {
   const [click, setClick] = useState(true);
   const handleClick = () => setClick(!click);
+  console.log(property);
   return (
     <>
       <p className={click ? "gpara second_para white_goverlay mt10 mb10" : ""}>
-        {ReactHtmlParser(property?.advertDetail?.description?.value)}
+        {ReactHtmlParser(property?.description)}
       </p>
 
       <p className="overlay_close">

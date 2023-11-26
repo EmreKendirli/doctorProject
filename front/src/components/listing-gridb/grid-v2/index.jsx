@@ -55,7 +55,7 @@ const Index = () => {
           <div className="row">
             <div className="col-lg-3 col-xl-3">
               <div className="sidebar-listing-wrapper">
-                {/* <SidebarListing /> */}
+                <SidebarListing />
               </div>
               {/* End SidebarListing */}
 
@@ -86,7 +86,7 @@ const Index = () => {
             <div className="col-md-12 col-lg-8">
               <div className="grid_list_search_result ">
                 <div className="row align-items-center">
-                  {/* <FilterTopBar setQueryVal={setQueryVal} /> */}
+                  <FilterTopBar setQueryVal={setQueryVal} />
                 </div>
               </div>
               {/* End .row */}

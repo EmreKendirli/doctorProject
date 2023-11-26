@@ -30,29 +30,14 @@ const FeaturedItem = () => {
     }
   };
 
-  // useEffect(() => {
-  //   // Bu, bileşen yüklendiğinde çağrılacak
-  //   console.log('PROPERTY', properties)
-  //   filterService.getFilteredContent(properties.allFilter, properties.allLocation, properties.allQuery)
-  //     .then((res) => {
-  //       if (res.data) {
-  //         setContent(res.data.data);
-  //         setTotalRecord(res.data.totalRecort)
-  //       } else {
-  //         setContent([]);
 
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error('Hata:', error);
-  //       // Hata yönetimi ekleyebilirsiniz
-  //     });
-  // }, [properties]);
   useEffect(() => {
     // Bu, bileşen yüklendiğinde çağrılacak
-    filterService.getFilteredContent()
+    filterService.getBlogContent()
       .then((res) => {
+        console.log(res,"dwd");
         if (res.data) {
+          console.log(res.data);
           setContent(res.data.data);
           setTotalRecord(res.data.totalRecort)
         } else {
@@ -107,7 +92,7 @@ const FeaturedItem = () => {
                   height={220}
                   className="img-whp w-100 h-100 contain"
                   src={
-                    item?.CoverPhoto ||
+                    item?.coverPhoto ||
                     "/assets/images/logo/logo-short.png"
                   }
                   alt={item.title || ''}
@@ -133,15 +118,15 @@ const FeaturedItem = () => {
               </div>
               <div className="details">
                 <div className="tc_content">
-                  <p className="text-thm">{item?._id || ''}</p>
+                  {/* <p className="text-thm">{item?.title || ''}</p> */}
                   <h4>
                     <Link href={`/blog-detayy/${item?._id}`}>
                       {item.title || ''}
                     </Link>
                   </h4>
                   <p className="grid-address">
-                    <span className="flaticon-placeholder"></span>
-                    {createAddresStr(item?.country, item?.city, item?.district, item?.neighbourhood) || "-"}
+                    {/* <span className="flaticon-placeholder"></span> */}
+                    {item?.short_description || 'No description for this'}
                   </p>
 
                   <ul className="prop_details mb0">

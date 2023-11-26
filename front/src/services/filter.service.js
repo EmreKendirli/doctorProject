@@ -36,6 +36,25 @@ const getFilteredContent = async (data, location, query) => {
 };
 
 
+const getBlogContent = async () => {
+
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `/blog/list/all`,
+    });
+
+    return response;
+  } catch (error) {
+    if (error?.response?.status == 401) {
+      logoutFromSystem();
+    } else {
+      console.error(error);
+      throw error;
+    }
+  }
+};
+
 const getOneAdvertWithNo = async (no, password = '', vipNo = '') => {
   let urlStr = `/advert/${no}`;
   if (vipNo) urlStr += `?vip=${vipNo}`
@@ -55,10 +74,28 @@ const getOneAdvertWithNo = async (no, password = '', vipNo = '') => {
     });
   return mall;
 };
+const getOneBlogWithId = async (id) => {
+  const config = {
+    method: "GET",
+    url:  `/blog/${id}`,
+  }
+  const mall = await axiosJSON(config)
+    .then((response) => response)
+    .catch((error) => {
+      if (error?.response?.status == 401) {
+        logoutFromSystem()
+      } else {
+        return error;
+      }
+    });
+  return mall;
+};
 
 const filterService = {
   getFilteredContent,
   getOneAdvertWithNo,
+  getBlogContent,
+  getOneBlogWithId
 };
 
 export default filterService;

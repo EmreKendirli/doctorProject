@@ -7,7 +7,7 @@ const PropertyDescriptions = ({ property }) => {
   return (
     <>
       <p className={click ? "gpara second_para white_goverlay mt10 mb10" : ""}>
-        {ReactHtmlParser(property?.advertDetail?.description?.value)}
+        {ReactHtmlParser(property?.description)}
       </p>
 
       <p className="overlay_close">

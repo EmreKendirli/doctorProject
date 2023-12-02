@@ -176,7 +176,7 @@ const getUserData = tryCatch(async (req, res) => {
     if (!getAll) {
         throw new AppError("Blog  failed to fetch", 404)
     }
-    const totalRecord = await Blog.find({}).count()
+    const totalRecord = await Blog.find(filterObj).count()
     res.status(200).json({
         succeded: true,
         data: getAll,
@@ -184,8 +184,49 @@ const getUserData = tryCatch(async (req, res) => {
     })
 })
 
-const filterKey = tryCatch(async (req, res) => {
+const blogFilter = tryCatch(async (req, res) => {
+    let {
+        page,
+        paginate,
+    } = req.query;
+        
+    let {searchKey,user} = req.body
 
+    if (!page) page = 1
+    if (!paginate) paginate = 10
+    const skip = (page - 1) * paginate
+
+    if (!searchKey) searchKey = ''
+    const filterObj = {
+        "$or": [{
+            "title": {
+                $regex: searchKey
+            }
+        },
+        {
+            "content": {
+                $regex: searchKey
+            }
+        },
+        {
+            "seoDescription": {
+                $regex: searchKey
+            }
+        },
+        ],
+    }
+    if(user) filterObj.userId = user
+    
+    const getAll = await Blog.find(filterObj).skip(skip).limit(paginate).sort({ createdAt: -1 })
+    if (!getAll) {
+        throw new AppError("Blog  failed to fetch", 404)
+    }
+    const totalRecord = await Blog.find(filterObj).count()
+    res.status(200).json({
+        succeded: true,
+        data: getAll,
+        totalRecord
+    })
 })
 export {
     create,
@@ -194,5 +235,6 @@ export {
     getAll,
     getDetail,
     getListAll,
-    getUserData
+    getUserData,
+    blogFilter
 }

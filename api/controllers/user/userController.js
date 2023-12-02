@@ -129,7 +129,6 @@ const createToken = async (id) => {
         }
     );
 };
-
 const userFilter = tryCatch(async (req, res) => {
     let { page, paginate } = req.query
     let { role, country, city, district, neighbourhood, searchKey } = req.body

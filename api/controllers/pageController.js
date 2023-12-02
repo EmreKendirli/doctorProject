@@ -1,7 +1,6 @@
 import tryCatch from "../utils/tryCatch.js";
 import Country from "../models/location/countryModel.js"
-import UserRole from "../models/user/userRoleModel.js"
-
+import User from "../models/user/userModel.js"
 
 const getDoctorFilterKey = tryCatch(async (req, res) => {
  
@@ -69,8 +68,44 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
     data: obj,
   });
 });
+const getBlogFilterKey = tryCatch(async (req, res) => {
+ 
+  const user = await User.find({isApproved:true,type:"doctor"})
+  let userData = [];
 
+ 
+  if (user) {
+    for (const i of user) {
+      userData.push({
+        label: i.firstName +" "+i.lastName,
+        value: i._id,
+      });
+    }
+  }
+  let obj = {
+    searchKey: {
+      type: "string",
+      label: "Arama",
+      value: "searchKey",
+    },
+    user: {
+      type: "combobox",
+      label: "Doktor Seç",
+      value: "user",
+      options: userData,
+    }
+
+  };
+
+    
+
+  res.status(200).json({
+    succeded: true,
+    data: obj,
+  });
+});
 
 export {
-  getDoctorFilterKey
+  getDoctorFilterKey,
+  getBlogFilterKey
 };

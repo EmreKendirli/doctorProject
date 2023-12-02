@@ -29,7 +29,7 @@ const FilteringItem = () => {
     return false
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
 
   const handleGetFilterSideBar = (val, location) => {
     AdvertService.getFilterSideBarBlog(val).then((res) => {
@@ -315,7 +315,7 @@ const FilteringItem = () => {
           }
 
           switch (filterField.type) {
-            case "number" || "text":
+            case "text" || "number":
               return (
                 <li key={key}>
                   <div className="form-group mb-4">

@@ -7,20 +7,22 @@ import Image from "next/image";
 import imageLoader from "../../utils/imageLoader";
 
 const Sidebar = ({ property, advertType, sendMsgStatus }) => {
+  console.log(property);
   return (
     <>
-      <div className="sidebar_listing_list">
+      {property &&
+       <div className="sidebar_listing_list">
         <div className="sidebar_advanced_search_widget">
           <div className="sl_creator">
             <h4 className="mb25">Tarafından</h4>
-            <ListingCreator property={property?.data} advertType={advertType} sendMsgStatus={sendMsgStatus} />
+            <ListingCreator property={property} advertType={advertType} sendMsgStatus={sendMsgStatus} />
           </div>
           {/* End .sl_creator */}
         </div>
-      </div>
+      </div>}
       {/* End .sidebar_listing_list */}
 
-      {property?.isVitrinData && property?.isVitrinData?.length > 0 && (
+      {property?.isStatus && property?.isVitrinData?.length > 0 && (
         <div className="terms_condition_widget">
           <h4 className="title">Popüler ilanlar</h4>
           <div className="sidebar_feature_property_slider">

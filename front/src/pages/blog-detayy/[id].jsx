@@ -9,7 +9,7 @@ import MobileMenu from "../../components/common/header/MobileMenu";
 import PopupSignInUp from "../../components/common/PopupSignInUp";
 import properties from "../../data/properties";
 import DetailsContent from "../../components/listing-details-v2/DetailsContent";
-import Sidebar from "../../components/listing-details-v1/Sidebar";
+import Sidebar from "../../components/listing-details-v2/Sidebar";
 import Image from "next/image";
 import filterService from "../../services/filter.service";
 import imageLoader from "../../utils/imageLoader";
@@ -238,7 +238,7 @@ const ListingDynamicDetailsV1 = () => {
             {/* End details content .col-lg-8 */}
 
             <div className="col-lg-4 col-xl-4">
-              {Object.keys(sideBar).length && <Sidebar property={sideBar} sendMsgStatus={sendMsgStatus} />}
+              {Object.keys(sideBar).length && <Sidebar property={property} sendMsgStatus={sendMsgStatus} />}
             </div>
             {/* End sidebar content .col-lg-4 */}
           </div>

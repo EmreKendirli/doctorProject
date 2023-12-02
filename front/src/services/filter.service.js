@@ -3,25 +3,25 @@ import axiosJSON from "./axiosJson";
 import Swal from "sweetalert2";
 import { logoutFromSystem } from "../utils/auth";
 
-const getFilteredContent = async (data, location, query) => {
-  let Query = "";
-  if (query && Object.keys(query).length) {
-    Object.entries(query)
-      .map(([k, v]) => {
-        console.log('AdvertFİlter', k, v)
-        if (Query) {
-          Query += `&${k}=${v}`
-        } else {
-          Query += `?${k}=${v}`
-        }
-      })
-  }
+const getFilteredContent = async (data) => {
+  // let Query = "";
+  // if (query && Object.keys(query).length) {
+  //   Object.entries(query)
+  //     .map(([k, v]) => {
+  //       console.log('AdvertFİlter', k, v)
+  //       if (Query) {
+  //         Query += `&${k}=${v}`
+  //       } else {
+  //         Query += `?${k}=${v}`
+  //       }
+  //     })
+  // }
 
   try {
     const response = await axios({
       method: "POST",
-      url: `/blog/filter${Query}`,
-      data: { ...data, ...location },
+      url: `/blog/filter`,
+      data: { ...data },
     });
     return response;
   } catch (error) {

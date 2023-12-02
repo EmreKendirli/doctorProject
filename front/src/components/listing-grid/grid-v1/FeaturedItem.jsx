@@ -126,7 +126,7 @@ const FeaturedItem = () => {
                   </h4>
                   <p className="grid-address">
                     <span className="flaticon-placeholder"></span>
-                    {createAddresStr(item?.countryId.label, item?.cityId.label, item?.districtId.label, item?.neighbourhoodId.label) || "-"}
+                    {createAddresStr(item?.countryId?.label, item?.cityId?.label, item?.districtId?.label, item?.neighbourhoodId?.label) || "-"}
                   </p>
 
                   <ul className="prop_details mb0">

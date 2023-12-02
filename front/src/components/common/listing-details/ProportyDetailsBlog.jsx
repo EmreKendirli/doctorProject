@@ -86,7 +86,7 @@ const PropertyDetailsBlog = ({ property }) => {
           {property?.advertDetail?.advertShapeName &&
             <li>
               <p>
-                {property?.advertDetail?.advertShapeName?.label || "-"} :
+                {property?.advertDetail?.advertShapeName?.label || "-"} : 
                 <span>
                   {property?.advertDetail?.advertShapeName?.options || "-"}
                 </span>

@@ -5,7 +5,7 @@ import PropertyFeatures from "../common/listing-details/PropertyFeatures";
 import MyMap from "./MyMap";
 
 const DetailsContent = ({ property }) => {
-  console.log(property);
+  console.log(property); 
 
   const checkFeatureIncludeChecked = (feature) => {
     if (feature.length) {
@@ -24,7 +24,7 @@ const DetailsContent = ({ property }) => {
 
   return (
     <>
-      {property?.description && (
+      {property?.content && (
         <div className="listing_single_description">
           {/* End .lsd_list */}
 

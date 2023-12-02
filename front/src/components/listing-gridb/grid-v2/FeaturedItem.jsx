@@ -12,7 +12,7 @@ import { getCurrentUser, getPresentationStatus } from "../../../utils/auth";
 const FeaturedItem = () => {
   const [content, setContent] = useState([]);
   const [totalRecord, setTotalRecord] = useState(0)
-  // const properties = useSelector((state) => state.properties);
+  const properties = useSelector((state) => state.properties);
   const { statusType, featured, isGridOrList } = useSelector(
     (state) => state.filter
   );
@@ -33,7 +33,7 @@ const FeaturedItem = () => {
 
   useEffect(() => {
     // Bu, bileşen yüklendiğinde çağrılacak
-    filterService.getBlogContent()
+    filterService.getFilteredContent(properties.allFilter, properties.allLocation, properties.allQuery)
       .then((res) => {
         console.log(res,"dwd");
         if (res.data) {
@@ -49,7 +49,7 @@ const FeaturedItem = () => {
         console.error('Hata:', error);
         // Hata yönetimi ekleyebilirsiniz
       });
-  }, []);
+  }, [properties]);
 
   // add length of filter items
   useEffect(() => {

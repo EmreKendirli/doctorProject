@@ -7,6 +7,7 @@ const initialState = {
     role: "",
     district: "",
     neighbourhood: "",
+    user:"",
     
   },
 };

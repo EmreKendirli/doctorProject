@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Seo from "../../components/common/seo";
-import ListingDetailsV1 from "../../components/listing-details-v1";
+import ListingDetailsV1 from "../../components/listing-details-v2";
 
 const Index = () => {
   return (

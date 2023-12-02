@@ -68,7 +68,7 @@ const getFilterSideBar = async (val, location) => {
 
 const getFilterSideBarBlog = async (val, location) => {
   const mall = await axios({
-    method: "GET",
+    method: "POST",
     url: `/page/blog-key`,
     data: val,
   })

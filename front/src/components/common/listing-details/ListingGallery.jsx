@@ -50,11 +50,9 @@ const ListingGallery = () => {
                       </li>
                     </ul>
                   </div>
-                  {/* End activity and social sharing */}
                 </div>
               </div>
             </div>
-            {/* End .row */}
 
             <div className="row">
               <div className="col-sm-7 col-lg-8">
@@ -84,7 +82,6 @@ const ListingGallery = () => {
                   </div>
                 </div>
               </div>
-              {/* End .col-sm-7 .col-lg-8 */}
 
               <div className="col-sm-5 col-lg-4">
                 <div className="row">

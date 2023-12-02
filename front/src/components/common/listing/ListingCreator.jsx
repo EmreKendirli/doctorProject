@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getCurrentUser, getPresentationStatus } from "../../../utils/auth";
 
 const Creaator = ({ property, advertType, sendMsgStatus }) => {
+  console.log(property);
   const state = useSelector((state) => state);
   const [phoneNumber, setPhoneNumber] = useState('')
   const [emailAddress, setEmailAddress] = useState('')
@@ -56,8 +57,8 @@ const Creaator = ({ property, advertType, sendMsgStatus }) => {
                 width={90}
                 height={90}
                 className="me-3"
-                src={currentUser?.advisorProfilePhoto || '/assets/images/logo/logo-short.png'}
-                alt={currentUser?.firstAndLastName || ''}
+                src={property?.image || '/assets/images/logo/logo-short.png'}
+                alt={property?.firstName +" "+property.lastName || ''}
               /> :
               <Image
                 loader={imageLoader}
@@ -65,20 +66,20 @@ const Creaator = ({ property, advertType, sendMsgStatus }) => {
                 height={90}
                 className="me-3"
                 src={
-                  property?.advertDetail?.ownerCoverPhoto?.options ||
+                  property?.image ||
                   "/assets/images/logo/logo-short.png"
                 }
-                alt={property?.advertDetail?.ownerName.options || "-"}
+                alt={property?.image || "-"}
               />
             }
             <div className="media-body">
               {presentMode ?
                 <>
                   <h5 className="mt-0 mb0">
-                    {currentUser?.firstAndLastName || "-"}
+                    {property?.firstName +" "+property.lastName|| "-"}
                   </h5>
                   <p className="mb0">
-                    {currentUser?.phoneNumber || "-"}
+                    {property?.phoneNumber || "-"}
                   </p>
                   <p className="mb0">
                     {currentUser?.email || "-"}
@@ -102,7 +103,7 @@ const Creaator = ({ property, advertType, sendMsgStatus }) => {
           {sendMsgStatus && !presentMode && 
             <div className="row d-flex justify-content-center media-footer w-100">
               <Link
-                href={`/ilana-yaz/${property?.advertDetail?._id?.value}`}
+                href={`/ilana-yaz/${property?._id}`}
                 className="d-block mx-auto text-center"
               >
                 Mesaj Gönder

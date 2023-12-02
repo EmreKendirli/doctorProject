@@ -5,7 +5,7 @@ import { logoutFromSystem } from "../utils/auth";
 const getFilterSideBar = async (val, location) => {
   const mall = await axios({
     method: "POST",
-    url: `/page/filter-sidebar`,
+    url: `/page/doctor-key`,
     data: val,
   })
     .then((response) => response)
@@ -66,8 +66,27 @@ const getFilterSideBar = async (val, location) => {
 
 };
 
+const getFilterSideBarBlog = async (val, location) => {
+  const mall = await axios({
+    method: "GET",
+    url: `/page/blog-key`,
+    data: val,
+  })
+    .then((response) => response)
+    .catch((error) => {
+      if (error?.response?.status == 401) {
+        logoutFromSystem()
+      } else {
+        return error;
+      }
+    });
+  return mall;
+
+
+};
 
 
 export default {
   getFilterSideBar,
+  getFilterSideBarBlog
 };

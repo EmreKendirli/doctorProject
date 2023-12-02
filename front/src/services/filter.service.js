@@ -6,12 +6,12 @@ import { logoutFromSystem } from "../utils/auth";
 const getFilteredContent = async (data, location, query) => {
   let Query = "";
   if (query && Object.keys(query).length) {
-   Object.entries(query)
+    Object.entries(query)
       .map(([k, v]) => {
         console.log('AdvertFİlter', k, v)
-        if(Query){
+        if (Query) {
           Query += `&${k}=${v}`
-        }else {
+        } else {
           Query += `?${k}=${v}`
         }
       })
@@ -20,18 +20,17 @@ const getFilteredContent = async (data, location, query) => {
   try {
     const response = await axios({
       method: "POST",
-      url: `/advert/advertfilter${Query}`,
+      url: `/blog/filter${Query}`,
       data: { ...data, ...location },
     });
-
     return response;
   } catch (error) {
-    if (error?.response?.status == 401) {
-      logoutFromSystem();
-    } else {
-      console.error(error);
-      throw error;
-    }
+    // if (error?.response?.status == 401) {
+    //   logoutFromSystem();
+    // } else {
+    console.error(error);
+    throw error;
+    // }
   }
 };
 
@@ -77,7 +76,7 @@ const getOneAdvertWithNo = async (no, password = '', vipNo = '') => {
 const getOneBlogWithId = async (id) => {
   const config = {
     method: "GET",
-    url:  `/blog/${id}`,
+    url: `/blog/${id}`,
   }
   const mall = await axiosJSON(config)
     .then((response) => response)

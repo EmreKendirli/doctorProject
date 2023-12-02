@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   filterValues: {
+    searchKey: "",
     city: "",
-    doctorName: "",
+    role: "",
     district: "",
     neighbourhood: "",
     

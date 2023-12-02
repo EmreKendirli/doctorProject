@@ -35,9 +35,11 @@ const FeaturedItem = () => {
     console.log('PROPERTY', properties)
     filterService.getFilteredContent(properties.allFilter, properties.allLocation, properties.allQuery)
       .then((res) => {
+        console.log(res.data);
         if (res.data) {
-          setContent(res.data.data);
-          setTotalRecord(res.data.totalRecort)
+          console.log(res.data.data);
+          setContent(res.data?.data);
+          setTotalRecord(res.data?.totalRecort)
         } else {
           setContent([]);
 
@@ -74,7 +76,7 @@ const FeaturedItem = () => {
       {content.length > 0 ? (
         content.map((item) => (
           <Link
-            href={`/ilan-detay/${item.advertNo}`}
+            href={`/doktor-detay/${item._id}`}
             className={`${isGridOrList ? "col-12 feature-list" : "col-md-4 col-lg-4"
               } `}
             key={item.advertNo}
@@ -107,10 +109,10 @@ const FeaturedItem = () => {
                   </ul>
 
                   <Link
-                    href={`/ilan-detay/${item.advertNo}`}
+                    href={`/doktor-detay/${item._id}`}
                     className="fp_price"
                   >
-                    {currencyFormatter.format(item?.advertPrice, { thousand: '.', precision: 0 }) || "-"} TL
+                    {currencyFormatter.format(item?.advertPrice, { thousand: '.', precision: 0 }) || "-"} 
                   </Link>
                 </div>
               </div>
@@ -118,13 +120,13 @@ const FeaturedItem = () => {
                 <div className="tc_content">
                   <p className="text-thm">{item?.advertNo || ''}</p>
                   <h4>
-                    <Link href={`/ilan-detay/${item?.advertNo}`}>
-                      {item.advertTitle || ''}
+                    <Link href={`/doktor-detay/${item?._id}`}>
+                      {item.companyName  || ''}
                     </Link>
                   </h4>
                   <p className="grid-address">
                     <span className="flaticon-placeholder"></span>
-                    {createAddresStr(item?.country, item?.city, item?.district, item?.neighbourhood) || "-"}
+                    {createAddresStr(item?.countryId.label, item?.cityId.label, item?.districtId.label, item?.neighbourhoodId.label) || "-"}
                   </p>
 
                   <ul className="prop_details mb0">
@@ -148,18 +150,18 @@ const FeaturedItem = () => {
                             loader={imageLoader}
                             width={40}
                             height={40}
-                            src={currentUser?.advisorProfilePhoto || '/assets/images/logo/logo-short.png'}
-                            alt={currentUser?.firstAndLastName || ''}
+                            src={item?.ownerId?.image || '/assets/images/logo/logo-short.png'}
+                            alt={item?.ownerId?.firstName +" "+item?.ownerId?.lastName || ''}
                           /> :
                           <Image
                             loader={imageLoader}
                             width={40}
                             height={40}
                             src={
-                              item?.ownerPhoto ||
+                              item?.ownerId?.image  ||
                               "/assets/images/logo/logo-short.png"
                             }
-                            alt={item?.ownerName || ''}
+                            alt={item?.ownerId?.firstName +" "+item?.ownerId?.lastName || ''}
                           />
                         }
                       </Link>

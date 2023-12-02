@@ -6,7 +6,7 @@ import Header from "../../common/header/DefaultHeader";
 import MobileMenu from "../../common/header/MobileMenu";
 import FilterTopBar from "../../common/listing/FilterTopBar";
 import ShowFilter from "../../common/listing/ShowFilter";
-import SidebarListing from "../../common/listing/SidebarListing";
+import SidebarListing from "../../common/listing/SidebarListing2";
 import PopupSignInUp from "../../common/PopupSignInUp";
 import BreadCrumb2 from "./BreadCrumb2";
 import FeaturedItem from "./FeaturedItem";

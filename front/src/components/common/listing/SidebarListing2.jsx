@@ -1,4 +1,4 @@
-import FilteringItem from "./FilteringItem";
+import FilteringItem from "./FilteringItem2";
 
 const SidebarListing2 = () => {
   return (

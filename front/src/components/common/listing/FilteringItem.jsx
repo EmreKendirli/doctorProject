@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  addLength,
+  addLength, 
   setAllFilter,
-  setAllLocation,
+  setAllLocation, 
   setAllQuery
 } from "../../../features/properties/propertiesSlice";
 
@@ -13,7 +13,7 @@ import Select from "react-select";
 import { components } from 'react-select';
 import AdvertService from "../../../services/advert.service";
 import CurrencyInput from 'react-currency-input-field';
-
+ 
 const FilteringItem = () => {
   const [filterSideBar, setFilterSideBar] = useState();
 
@@ -33,13 +33,14 @@ const FilteringItem = () => {
 
   const handleGetFilterSideBar = (val, location) => {
     AdvertService.getFilterSideBar(val).then((res) => {
-      if (res?.data?.succedd) setFilterSideBar(res?.data?.data);
+      console.log('res', res);
+      if (res?.data?.succeded) setFilterSideBar(res?.data?.data);
       else setFilterSideBar({});
-    });
+    }); 
   };
 
   function clearAdvanced() {
-    setAllOptions({});
+    setAllOptions({});  
     setLocation({});
     dispatch(setAllFilter({}));
     dispatch(setAllLocation({}));
@@ -188,9 +189,10 @@ const FilteringItem = () => {
     <ul className="sasw_list mb0">
       {/* New Advert Filter Title's Start*/}
 
-      {filterSideBar && filterSideBar?.filterFields ? (
-        Object.keys(filterSideBar.filterFields).map((key) => {
-          const filterField = filterSideBar.filterFields[key];
+      {filterSideBar && filterSideBar ? (
+        Object.keys(filterSideBar).map((key) => {
+          console.log(filterSideBar[key]);
+          const filterField = filterSideBar[key];
           if (
             key == "country" ||
             key == "city" ||
@@ -313,7 +315,7 @@ const FilteringItem = () => {
           }
 
           switch (filterField.type) {
-            case "number" || "text":
+            case "text" || "number":
               return (
                 <li key={key}>
                   <div className="form-group mb-4">
@@ -365,7 +367,38 @@ const FilteringItem = () => {
                   </div>
                 </li>
               );
-
+            case "combobox":
+              return (
+                <li key={key}>
+                  <div className="search_option_two">
+                    <div className="candidate_revew_select">
+                      <Select
+                        isMulti={checkKey(key)}
+                        onChange={(selectedOption) => {
+                          if (selectedOption) {
+                            setAllOptions((state) => ({ ...state, [key]: selectedOption.value }));
+                          } else {
+                            setAllOptions((state) => ({ ...state, [key]: '' }));
+                          }
+                        }}
+                        // value={allOptions[key] || ""}
+                        value={getFieldValue(allOptions[key], filterField?.options)}
+                        placeholder={allOptions[key] || filterField.label}
+                        name={key}
+                        isClearable={true}
+                        options={
+                          filterField?.options
+                            ? filterField.options.map((option) => ({
+                              value: option.value,
+                              label: option.label,
+                            }))
+                            : []
+                        }
+                      />
+                    </div>
+                  </div>
+                </li>
+              );
             case "dropdown":
               return (
                 <li key={key}>

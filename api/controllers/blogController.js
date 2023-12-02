@@ -218,6 +218,8 @@ const blogFilter = tryCatch(async (req, res) => {
     if(user) filterObj.userId = user
     
     const getAll = await Blog.find(filterObj).skip(skip).limit(paginate).sort({ createdAt: -1 })
+    .populate({ path: 'userId', select: 'firstName lastName image_url'})
+
     if (!getAll) {
         throw new AppError("Blog  failed to fetch", 404)
     }

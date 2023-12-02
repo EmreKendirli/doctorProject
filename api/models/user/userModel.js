@@ -36,6 +36,10 @@ const userSchema = new Schema({
     address: {
         type: String,
     },
+    image_url: {
+        type: String,
+        default:""
+    },
     userRole: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user_role",

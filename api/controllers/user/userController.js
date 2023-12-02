@@ -175,7 +175,7 @@ const userFilter = tryCatch(async (req, res) => {
     if (neighbourhood) filterObj.neighbourhoodId = neighbourhood
 
     const result = await Office.find(filterObj).skip(skip).limit(paginate)
-    .populate({ path: 'ownerId', select: 'firstName lastName phoneNumber email userRole', populate :{path:"userRole" , select:"role"}})
+    .populate({ path: 'ownerId', select: 'firstName lastName phoneNumber email userRole image_url', populate :{path:"userRole" , select:"role"}})
     .populate({ path: 'countryId', select: 'name' })
     .populate({ path: 'cityId', select: 'name' })
     .populate({ path: 'districtId', select: 'name' })

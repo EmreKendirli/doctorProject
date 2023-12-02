@@ -38,7 +38,7 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
   }
   let obj = {
     searchKey: {
-      type: "string",
+      type: "text",
       label: "Arama",
       value: "searchKey",
     },
@@ -96,7 +96,7 @@ const getBlogFilterKey = tryCatch(async (req, res) => {
   }
   let obj = {
     searchKey: {
-      type: "string",
+      type: "text",
       label: "Arama",
       value: "searchKey",
     },

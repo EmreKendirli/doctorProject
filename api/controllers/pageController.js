@@ -27,7 +27,11 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
     }
   }
   let obj = {
-
+    searchKey: {
+      type: "string",
+      label: "Arama",
+      value: "searchKey",
+    },
     role: {
       type: "combobox",
       label: "Kategori",

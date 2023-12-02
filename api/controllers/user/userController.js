@@ -119,7 +119,8 @@ const createToken = async (id) => {
 };
 
 const userFilter = tryCatch(async (req, res) => {
-    let { role, country, city, district, neighbourhood, page, paginate, searchKey} = req.query
+    let { page, paginate} = req.query
+    let {role, country, city, district, neighbourhood, searchKey } = req.body
     if (!page) page = 1
     if (!paginate) paginate = 10
     const skip = (page - 1) * paginate

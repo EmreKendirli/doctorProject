@@ -1,14 +1,25 @@
 import tryCatch from "../utils/tryCatch.js";
 import Country from "../models/location/countryModel.js"
 import User from "../models/user/userModel.js"
-
+import UserRole from "../models/user/userRoleModel.js"
+import City from "../models/location/cityModel.js"
 const getDoctorFilterKey = tryCatch(async (req, res) => {
  
   const country = await Country.find({}, "-createdAt -updatedAt");
+  const city = await City.find({}, "-createdAt -updatedAt");
   const userRole = await UserRole.find({})
   let countryData = [];
+  let cityData = [];
   let roleData = [];
 
+  if (city) {
+    for (const i of city) {
+      cityData.push({
+        label: i.name,
+        value: i._id,
+      });
+    }
+  }
   if (country) {
     for (const i of country) {
       countryData.push({
@@ -37,16 +48,17 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
       value: "role",
       options: roleData,
     },
-    country: {
-      type: "combobox",
-      label: "Ülke",
-      value: "country",
-      options: countryData,
-    },
+    // country: {
+    //   type: "combobox",
+    //   label: "Ülke",
+    //   value: "country",
+    //   options: countryData,
+    // },
     city: {
       type: "string",
       label: "İl",
       value: "city",
+      options:cityData
     },
     district: {
       type: "string",

@@ -137,7 +137,7 @@ const userFilter = tryCatch(async (req, res) => {
     const skip = (page - 1) * paginate
 
     if (!searchKey) searchKey = ''
-    
+
     let filterObj = {
         "$or": [{
             "companyName": {
@@ -149,13 +149,13 @@ const userFilter = tryCatch(async (req, res) => {
                 $regex: searchKey
             }
         },
-        // {
-        //     "ownerId": {
-        //       $elemMatch: {
-        //         "firstName": { $regex: searchKey } // 'posts' alanındaki 'author' alanında arama
-        //       }
-        //     }
-        //   }
+            // {
+            //     "ownerId": {
+            //       $elemMatch: {
+            //         "firstName": { $regex: searchKey } // 'posts' alanındaki 'author' alanında arama
+            //       }
+            //     }
+            //   }
         ],
     }
     if (role) {
@@ -175,11 +175,11 @@ const userFilter = tryCatch(async (req, res) => {
     if (neighbourhood) filterObj.neighbourhoodId = neighbourhood
 
     const result = await Office.find(filterObj).skip(skip).limit(paginate)
-    .populate({ path: 'ownerId', select: 'firstName lastName phoneNumber email userRole image_url', populate :{path:"userRole" , select:"role"}})
-    .populate({ path: 'countryId', select: 'name' })
-    .populate({ path: 'cityId', select: 'name' })
-    .populate({ path: 'districtId', select: 'name' })
-    .populate({ path: 'neighbourhoodId', select: 'name' })
+        .populate({ path: 'ownerId', select: 'firstName lastName phoneNumber email userRole image_url', populate: { path: "userRole", select: "role" } })
+        .populate({ path: 'countryId', select: 'name' })
+        .populate({ path: 'cityId', select: 'name' })
+        .populate({ path: 'districtId', select: 'name' })
+        .populate({ path: 'neighbourhoodId', select: 'name' })
     const totalRecord = await Office.find(filterObj).count()
     res.status(200).json({
         succeded: true,
@@ -187,6 +187,28 @@ const userFilter = tryCatch(async (req, res) => {
         totalRecord
     })
 })
+/*const userDetail = tryCatch(async (req, res) => {
+    const user = req.user
+
+    let detail ={}
+    detail.firstName = user.firstName || ""
+    detail.lastName = user.lastName || ""
+    detail.email = user.email || ""
+   // detail.password = user.password || ""
+    detail.phoneNumber = user.phoneNumber || ""
+    detail.address = user.address || ""
+    detail.image_url = user.image_url || ""
+    detail.phoneNumber = user.phoneNumber || ""
+
+    if (user.type === "doctor") {
+        const office = await Office.findOne({ownerId:user._id})
+        detail.companyName = user.companyName || ""
+        detail.companyTitle = user.companyTitle || ""
+        detail.taxNo = user.taxNo || ""
+    }
+})*/
+
+
 const user = {
     doctorRegister,
     individualRegister,

@@ -8,7 +8,7 @@ import UserRoleRoute from "./routes/userRoleRoute.js"
 import UserRoute from "./routes/userRoute.js"
 import errorHandler from "./utils/errorHandler.js"
 import LocationRoute from "./routes/locationRoute.js"
-
+import OfficeRoute from "./routes/officeRoute.js"
 
 
 const routersFunction = (app) => {
@@ -20,6 +20,7 @@ const routersFunction = (app) => {
     app.use("/api/v1/user-role",UserRoleRoute)
     app.use("/api/v1/user",UserRoute)
     app.use("/api/v1/location",LocationRoute)
+    app.use("/api/v1/office",OfficeRoute)
 
     app.use("/api/v1/page",pageRoute)
     app.use(errorHandler)

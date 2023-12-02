@@ -3,6 +3,8 @@ import Country from "../models/location/countryModel.js"
 import User from "../models/user/userModel.js"
 import UserRole from "../models/user/userRoleModel.js"
 import City from "../models/location/cityModel.js"
+import District from "../models/location/districtModel.js"
+import Neighbourhood from "../models/location/neighbourhoodModel.js"
 const getDoctorFilterKey = tryCatch(async (req, res) => {
  
   const country = await Country.find({}, "-createdAt -updatedAt");
@@ -10,6 +12,8 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
   const userRole = await UserRole.find({})
   let countryData = [];
   let cityData = [];
+  let districtData = [];
+  let neighbourhoodData = [];
   let roleData = [];
 
   if (city) {
@@ -20,14 +24,44 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
       });
     }
   }
-  if (country) {
-    for (const i of country) {
-      countryData.push({
-        label: i.name,
-        value: i._id,
-      });
+  // if (country) {
+  //   for (const i of country) {
+  //     countryData.push({
+  //       label: i.name,
+  //       value: i._id,
+  //     });
+  //   }
+  // }
+  if (req.body.city) {
+    let cities = req.body.city
+    for (const city of cities) {
+        const district = await District.find({ cityId: city })
+        if (district.length > 0) {
+            for (const i of district) {
+                districtData.push({
+                    "value": i._id,
+                    "label": i.districtName
+                })
+            }
+        }
     }
-  }
+
+}
+if (req.body.district) {
+    let districts = req.body.district
+    for (const district of districts) {
+        const neighbourhood = await Neighbourhood.find({ districtId: district })
+        if (neighbourhood.length > 0) {
+            for (const i of neighbourhood) {
+                neighbourhoodData.push({
+                    "value": i._id,
+                    "label": i.neighbourhoodName,
+                })
+            }
+        }
+    }
+
+}
   if (userRole) {
     for (const i of userRole) {
       roleData.push({
@@ -55,20 +89,22 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
     //   options: countryData,
     // },
     city: {
-      type: "string",
+      type: "combobox",
       label: "İl",
       value: "city",
       options:cityData
     },
     district: {
-      type: "string",
+      type: "combobox",
       label: "İlçe",
       value: "district",
+      options:districtData
     },
     neighbourhood: {
-      type: "string",
+      type: "combobox",
       label: "Mahalle",
       value: "neighbourhood",
+      options:neighbourhoodData
     },
 
   };
@@ -100,6 +136,7 @@ const getBlogFilterKey = tryCatch(async (req, res) => {
       label: "Arama",
       value: "searchKey",
     },
+    
     user: {
       type: "combobox",
       label: "Doktor Seç",

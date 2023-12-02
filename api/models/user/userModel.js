@@ -40,22 +40,6 @@ const userSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "user_role",
     },
-    countryId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Country",
-    },
-    cityId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "City",
-    },
-    districtId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "District",
-    },
-    neighbourhoodId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "neighbourhood",
-    },
     type:{
         type:String,
         enum:["doctor","user"]

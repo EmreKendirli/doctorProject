@@ -39,7 +39,7 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
             for (const i of district) {
                 districtData.push({
                     "value": i._id,
-                    "label": i.districtName
+                    "label": i.name
                 })
             }
     }
@@ -52,7 +52,7 @@ if (req.body.district) {
             for (const i of neighbourhood) {
                 neighbourhoodData.push({
                     "value": i._id,
-                    "label": i.neighbourhoodName,
+                    "label": i.name,
                 })
             }
     }

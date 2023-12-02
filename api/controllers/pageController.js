@@ -33,8 +33,9 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
   //   }
   // }
   if (req.body.city) {
-    let cities = req.body.city
-        const district = await District.find({ cityId: cities })
+    let cities = req.body.city.split(",")
+    for (const city of cities) {
+        const district = await District.find({ cityId: city })
         if (district.length > 0) {
             for (const i of district) {
                 districtData.push({
@@ -42,12 +43,14 @@ const getDoctorFilterKey = tryCatch(async (req, res) => {
                     "label": i.name
                 })
             }
+        }
     }
 
 }
 if (req.body.district) {
-    let districts = req.body.district
-        const neighbourhood = await Neighbourhood.find({ districtId: districts })
+    let districts = req.body.district.split(",")
+    for (const district of districts) {
+        const neighbourhood = await Neighbourhood.find({ districtId: district })
         if (neighbourhood.length > 0) {
             for (const i of neighbourhood) {
                 neighbourhoodData.push({
@@ -55,6 +58,7 @@ if (req.body.district) {
                     "label": i.name,
                 })
             }
+        }
     }
 
 }

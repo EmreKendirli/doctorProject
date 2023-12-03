@@ -18,7 +18,7 @@ const Hero = ({ content, processTypes, advertTypes, cityList, officeList }) => {
   }, [content])
 
   return (
-    <section className="home-one home1-overlay home1_bgi1" style={{ backgroundImage: `url(${imgURL})` }}>
+    <section className="home-one home1-overlay home1_bgi1" style={{backgroundImage: 'url("/assets/images/background/homepage.jpg")'}}>
       <div className="container">
         <div className="row posr">
           <div className="col-lg-12">

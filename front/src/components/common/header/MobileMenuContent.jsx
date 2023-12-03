@@ -79,12 +79,22 @@ const MobileMenuContent = () => {
 
           <MenuItem>
             <Link
-              href="/portfoylerimiz"
+              href="/doktorlar"
               className={
-                route.pathname === "/portfoylerimiz" ? "ui-active" : undefined
+                route.pathname === "/doktorlar" ? "ui-active" : undefined
               }
             >
-              Detaylı Arama
+              Doktor/Blog
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link
+              href="/bloglar"
+              className={
+                route.pathname === "/bloglar" ? "ui-active" : undefined
+              }
+            >
+              Bloglar
             </Link>
           </MenuItem>
 

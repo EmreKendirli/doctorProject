@@ -16,7 +16,7 @@ const SidebarMenu = () => {
   const [announcementManagement, setAnnouncementManagement] = useState([
     { id: 1, name: "Yeni Blog Ekle", route: "/blog-ekle" },
     { id: 2, name: "Bloglarım", route: "/bloglarim" },
-    { id: 3, name: "Favori İlanlar", route: "/favori-ilanlarim" },
+    // { id: 3, name: "Favori İlanlar", route: "/favori-ilanlarim" },
   ])
   useEffect(() => {
     if (currentUser && currentUser?.type === 'doctor') {
@@ -89,6 +89,7 @@ const SidebarMenu = () => {
           </Link>
         </li>
         <ul>
+        {checkOfficial &&
           <li
             className={`treeview ${isParentPageActive(announcementManagement, route.pathname)
               ? "active"
@@ -110,15 +111,15 @@ const SidebarMenu = () => {
                   </Link>
                 </li>
               ))}
-              {checkOfficial &&
+              {/* {checkOfficial &&
                 <li>
                   <Link href="/vip-linkler">
                     <i className="fa fa-circle"></i> VIP Linkler
                   </Link>
                 </li>
-              }
+              } */}
             </ul>
-          </li>
+          </li>}
           {/* end properties */}
         </ul>
 

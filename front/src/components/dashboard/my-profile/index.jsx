@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import masterServices from "../../../services/user.service";
 import { getCurrentUser } from "../../../utils/auth";
 
-const Index = ({ id }) => {
+const Index = () => {
   const currentUser = getCurrentUser();
   const [userData, setUserData] = useState();
 
@@ -76,7 +76,7 @@ const Index = ({ id }) => {
                           {
                             title: "Kurumsal Bilgiler",
                             isOfficeAdmin:
-                              userData?.role?.value == "officeAdmin",
+                              userData?.type?.value == "şlölölş",
                             component: (
                               <div className="d-flex justify-content-center">
                                 <div className="col-xl-10">

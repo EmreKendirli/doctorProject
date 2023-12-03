@@ -45,12 +45,22 @@ const HeaderMenuContent = ({ float = "" }) => {
       </li>
       <li className="last">
         <Link
-          href="/portfoylerimiz"
+          href="/doktorlar"
           className={
             route.pathname === "/portfoylerimiz" ? "ui-active" : undefined
           }
         >
-          Detaylı Arama
+          Doktor/Blog
+        </Link>
+      </li>
+      <li className="last">
+        <Link
+          href="/bloglar"
+          className={
+            route.pathname === "/bloglar" ? "ui-active" : undefined
+          }
+        >
+          Bloglar
         </Link>
       </li>
       <li className="last">

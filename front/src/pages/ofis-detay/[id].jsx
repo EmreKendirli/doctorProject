@@ -151,7 +151,7 @@ const AgentDetailsDynamic = () => {
                           <li>
                             <a href="#">
                               E-Posta:{" "}
-                              {officeDataDetail?.email}
+                              {officeDataDetail?.officeEmail}
                             </a>
                           </li>
                         </ul>

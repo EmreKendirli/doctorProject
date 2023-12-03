@@ -18,25 +18,15 @@ const Index = ({ id }) => {
   const [userData, setUserData] = useState();
 
   useEffect(() => {
-    if (id) {
+    
       masterServices
-        .getOneUserWithId(id)
+        .getOneUserWithId()
         .then((data) => {
           setUserData(data.data);
         })
         .catch((err) => console.log(err));
-    } else {
-      masterServices
-        .getOneUserWithId(currentUser?._id)
-        .then((data) => {
-          console.log(data.data);
-          setUserData(data.data);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [id]);
+  }, []);
 
-  console.log({ userData });
 
   return (
     userData && (

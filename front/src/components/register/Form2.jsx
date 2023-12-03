@@ -44,66 +44,7 @@ export default function Form2({ isPopup }) {
 
   useEffect(() => {
     getCategoryList();
-    getCountryList();
   }, []);
-
-  const getCountryList = async () => {
-    console.log("getCountryList");
-    const res = await generalServices
-      .getCountryList()
-      .then((res) => setCountryList(res.data))
-      .catch((err) => console.log(err));
-  };
-  console.log("countryList", countryList);
-
-  const getCityList = async (id) => {
-    console.log(id);
-    if (id) {
-      const res = await generalServices
-        .getCityList(id)
-        .then((res) => {
-          setCityList(res.data);
-        })
-        .catch((err) => console.log(err));
-    }
-    console.log("cityList", cityList);
-  };
-
-  useEffect(() => {
-    getCityList(selectedCountry);
-    console.log("selectedCountry", selectedCountry);
-  }, [selectedCountry]);
-
-  const getDistrictList = async (id) => {
-    const res = await generalServices
-      .getDistrictList(id)
-      .then((res) => {
-        setDistrcitList(res.data);
-      })
-      .catch((err) => console.log(err));
-    return res;
-  };
-
-  useEffect(() => {
-    if (selectedCity) {
-      getDistrictList(selectedCity);
-    }
-  }, [selectedCity]);
-
-  const getNeighbourhoodList = async (id) => {
-    if (id) {
-      const res = await generalServices
-        .getNeighbourhoodList(id)
-        .then((res) => setNeighbourhoodList(res.data))
-        .catch((err) => console.log(err));
-    }
-  };
-
-  useEffect(() => {
-    if (selectedDistrict) {
-      getNeighbourhoodList(selectedDistrict);
-    }
-  }, [selectedDistrict]);
 
 
   const getValidationSchemaForUserType = (selectedUserType) => {
@@ -134,18 +75,15 @@ export default function Form2({ isPopup }) {
     return Yup.object({
       ...commonSchema,
       companyName: Yup.string().required("Ofis Adı zorunludur."),
-      // companyTitle: Yup.string().required("Ofis Ünvanı zorunludur."),
+      companyTitle: Yup.string().required("Ofis Ünvanı zorunludur."),
       taxNo: Yup.number().required("Vergi numarası zorunludur."),
       taxOffice: Yup.string().required("Vergi Dairesi zorunludur"),
       officeEmail: Yup.string()
         .email("Lütfen geçerli bir e-posta adresi giriniz.")
         .required("Şirketinizin e-posta adresi zorunludur."),
-      address: Yup.string().required("Ofisinizin adresi zorunludur."),
+      // address: Yup.string().required("Ofisinizin adresi zorunludur."),
       categoryId: Yup.string().required("Kategori seçimi zorunludur."),
-      // districtId: Yup.object().required("İlçe seçimi zorunludur."),
-      // cityId: Yup.object().required("İl seçimi zorunludur."),
-      // countryId: Yup.object().required("Ülke seçimi zorunludur."),
-      // neighboordId: Yup.object().required("Mahalle seçimi zorunludur."),
+
 
     });
   };
@@ -176,13 +114,7 @@ export default function Form2({ isPopup }) {
         .catch((err) => toast.error(err));
       return register;
     } else {
-      // console.log(selectedCountry);
-      // if (values) {
-      //   values.countryId = selectedCountry ? selectedCountry.value : "";
-      //   values.cityId = selectedCity ? selectedCity.value : "";
-      //   values.districtId = selectedDistrict ? selectedDistrict.value : "";
-      //   values.neighboordId = selectedNeighbourhood ? selectedNeighbourhood.value : "";
-      // }
+
 
       const register = await authServices
         .addDoctorUser(values)
@@ -224,17 +156,13 @@ export default function Form2({ isPopup }) {
         phoneNumber: "",
         password: "",
         companyName: "",
+        companyTitle: "",
         categoryId: "",
         officeEmail: "",
         taxNo: "",
         taxOffice: "",
-        address: "",
+        // address: "",
         confrimPassword: "",
-        // cityId: "",
-        // districtId: "",
-        // countryId: "",
-        // neighboordId: "",
-
       };
   return (
     <>
@@ -442,10 +370,36 @@ export default function Form2({ isPopup }) {
                   )}
                 </div>
 
+                {/* Company Title */}
+                <div className="mb-2">
+                  <div className="form-group input-group ">
+                    <Field
+                      name="companyTitle"
+                      type="text"
+                      className="form-control"
+                      required
+                      placeholder="Ofis Title"
+                      value={values.companyTitle}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <div className="input-group-prepend">
+                      <div className="input-group-text">
+                        <i className="flaticon-user"></i>
+                      </div>
+                    </div>
+                  </div>
 
-
-               
-
+                  {touched.companyTitle ? (
+                    errors.companyTitle ? (
+                      <div className="text-danger mb-3">
+                        {errors.companyTitle}
+                      </div>
+                    ) : null
+                  ) : (
+                    ""
+                  )}
+                </div>
 
                 {/* Tax No */}
                 <div className="mb-2">
@@ -537,7 +491,7 @@ export default function Form2({ isPopup }) {
                 </div>
 
                 {/* Office Address */}
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <div className="form-group input-group ">
                     <Field
                       type="text"
@@ -563,7 +517,7 @@ export default function Form2({ isPopup }) {
                   ) : (
                     ""
                   )}
-                </div>
+                </div> */}
               </>
             )}
 

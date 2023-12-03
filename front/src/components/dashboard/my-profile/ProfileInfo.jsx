@@ -4,12 +4,18 @@ import Select from "react-select";
 
 const ProfileInfoSchema = Yup.object().shape({
   phoneNumber: Yup.string().required("Telefon numarasını yazmadın"),
-  firstAndLastName: Yup.string().required("Telefon numarasını yazmadın"),
+  firstName: Yup.string().required("Lütfen İsim Giriniz"),
+  lastName: Yup.string().required("Lütfen Soyisim Giriniz"),
+  companyName: Yup.string(),
+  companyTitle: Yup.string(),
+  taxNo: Yup.number(),
+  taxOffice: Yup.string(),
   countryId: Yup.string(),
   cityId: Yup.string(),
   districtId: Yup.string(),
   neighbourhoodId: Yup.string(),
-  userProfilePhoto: Yup.mixed(),
+  image_url: Yup.mixed(),
+  coverPhoto: Yup.mixed(),
 });
 import { toast } from "react-toastify";
 
@@ -21,6 +27,7 @@ import { useDispatch } from "react-redux";
 
 const ProfileInfo = ({ userData }) => {
   const [pp, setPp] = useState();
+  const [officePhoto, setOfficePhoto] = useState();
   const dispatch = useDispatch()
   const [country, setCountry] = useState(userData?.countryId?.value);
   const [city, setCity] = useState(userData?.cityId?.value);
@@ -44,7 +51,7 @@ const ProfileInfo = ({ userData }) => {
 
 
   useEffect(() => {
-    if(userData?.advisorProfilePhoto?.value){
+    if (userData?.advisorProfilePhoto?.value) {
 
     }
   }, [userData])
@@ -89,12 +96,18 @@ const ProfileInfo = ({ userData }) => {
       validationSchema={ProfileInfoSchema}
       initialValues={{
         phoneNumber: userData?.phoneNumber?.value || "",
-        firstAndLastName: userData?.firstAndLastName?.value || "",
+        lastName: userData?.lastName?.value || "",
+        firstName: userData?.firstName?.value || "",
         countryId: userData?.countryId?.value || "",
         cityId: userData?.cityId?.value || "",
         districtId: userData?.districtId?.value || "",
         neighbourhoodId: userData?.neighbourhoodId?.value || "",
-        userProfilePhoto: userData?.advisorProfilePhoto?.value || "",
+        image_url: userData?.image_url?.value || "",
+        coverPhoto: userData?.coverPhoto?.value || "",
+        companyName: userData?.companyName?.value || "",
+        companyTitle: userData?.companyTitle?.value || "",
+        taxNo: userData?.taxNo?.value || "",
+        taxOffice: userData?.taxOffice?.value || "",
       }}
       enableReinitialize={true}
       onSubmit={(values, { setSubmitting }) => {
@@ -108,8 +121,9 @@ const ProfileInfo = ({ userData }) => {
         console.log(data);
 
         masterServices
-          .updateOneUserWithId(userData?._id?.value, data)
+          .updateOneUserWithId(data)
           .then((res) => {
+            console.log(res);
             if (res?.succedd) {
               toast("Güncelleme başarıyla gerçekleşti");
             } else {
@@ -145,12 +159,12 @@ const ProfileInfo = ({ userData }) => {
           }}
         >
           <div className="row">
-            <div className="col-lg-12">
+            <div className="col-lg-6">
               <div className="wrap-custom-file">
                 <input
                   type="file"
-                  id="userProfilePhoto"
-                  name="userProfilePhoto"
+                  id="image_url"
+                  name="image_url"
                   onChange={(event) => {
                     const reader = new FileReader();
                     reader.readAsDataURL(event.currentTarget.files[0]);
@@ -158,7 +172,7 @@ const ProfileInfo = ({ userData }) => {
                       setPp(reader.result);
                     };
                     setFieldValue(
-                      "userProfilePhoto",
+                      "image_url",
                       event.currentTarget.files[0]
                     );
                   }}
@@ -166,20 +180,60 @@ const ProfileInfo = ({ userData }) => {
                 />
                 <label
                   style={
-                    values.userProfilePhoto
+                    values.image_url
                       ? {
-                          backgroundImage: `url(${pp})`,
-                        }
+                        backgroundImage: `url(${pp})`,
+                      }
                       : undefined
                   }
-                  htmlFor="userProfilePhoto"
+                  htmlFor="image_url"
                 >
                   <span>
-                    <i className="flaticon-download"></i> Resim Yükle
+                    <i className="flaticon-download"></i>Profil Resmi Yükle
                   </span>
                 </label>
               </div>
             </div>
+            {userData?.type?.value === "doctor" && (
+              <>
+                <div className="col-lg-6">
+                  <div className="wrap-custom-file">
+                    <input
+                      type="file"
+                      id="coverPhoto"
+                      name="coverPhoto"
+                      onChange={(event) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(event.currentTarget.files[0]);
+                        reader.onload = () => {
+                          setOfficePhoto(reader.result);
+                          
+                        };
+                        setFieldValue(
+                          "coverPhoto",
+                          event.currentTarget.files[0]
+                        );
+                      }}
+                      onBlur={handleBlur}
+                    />
+                    <label
+                      style={
+                        values.coverPhoto
+                          ? {
+                            backgroundImage: `url(${officePhoto})`,
+                          }
+                          : undefined
+                      }
+                      htmlFor="coverPhoto"
+                    >
+                      <span>
+                        <i className="flaticon-download"></i> Ofis Resim Yükle
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </>
+            )}
             {/* End .col */}
 
             <div className="col-lg-6 col-xl-6">
@@ -202,25 +256,116 @@ const ProfileInfo = ({ userData }) => {
 
             <div className="col-lg-6 col-xl-6">
               <div className="my_profile_setting_input form-group">
-                <label htmlFor="firstAndLastName">İsim Soyisim</label>
+                <label htmlFor="firstName">İsim</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="firstAndLastName"
-                  name="firstAndLastName"
+                  id="firstName"
+                  name="firstName"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.firstAndLastName}
+                  value={values.firstName}
                 />
-                {errors.firstAndLastName && touched.firstAndLastName && (
-                  <span className="text-danger">{errors.firstAndLastName}</span>
+                {errors.firstName && touched.firstName && (
+                  <span className="text-danger">{errors.firstName}</span>
+                )}
+              </div>
+            </div>
+            <div className="col-lg-6 col-xl-6">
+              <div className="my_profile_setting_input form-group">
+                <label htmlFor="lastName">Soyisim</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastName"
+                  name="lastName"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.lastName}
+                />
+                {errors.lastName && touched.lastName && (
+                  <span className="text-danger">{errors.lastName}</span>
                 )}
               </div>
             </div>
             {/* End .col */}
 
-            {userData?.role?.value === "officeUser" && (
+            {userData?.type?.value === "doctor" && (
               <>
+                <div className="col-lg-6 col-xl-6">
+                  <div className="my_profile_setting_input form-group">
+                    <label htmlFor="companyName">Ofis İsmi</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="companyName"
+                      name="companyName"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.companyName}
+                    />
+                    {errors.companyName && touched.companyName && (
+                      <span className="text-danger">{errors.companyName}</span>
+                    )}
+                  </div>
+                </div>
+                {/* End .col */}
+
+                <div className="col-lg-6 col-xl-6">
+                  <div className="my_profile_setting_input form-group">
+                    <label htmlFor="companyTitle">Ofis Title</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="companyTitle"
+                      name="companyTitle"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.companyTitle}
+                    />
+                    {errors.companyTitle && touched.companyTitle && (
+                      <span className="text-danger">{errors.firstName}</span>
+                    )}
+                  </div>
+                </div>
+                {/* End .col */}
+
+                <div className="col-lg-6 col-xl-6">
+                  <div className="my_profile_setting_input form-group">
+                    <label htmlFor="taxOffice">TaxOffice</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="taxOffice"
+                      name="taxOffice"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.taxOffice}
+                    />
+                    {errors.taxOffice && touched.taxOffice && (
+                      <span className="text-danger">{errors.taxOffice}</span>
+                    )}
+                  </div>
+                </div>
+                {/* End .col */}
+
+                <div className="col-lg-6 col-xl-6">
+                  <div className="my_profile_setting_input form-group">
+                    <label htmlFor="taxNo">taxNo</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="taxNo"
+                      name="taxNo"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.taxNo}
+                    />
+                    {errors.taxNo && touched.taxNo && (
+                      <span className="text-danger">{errors.taxNo}</span>
+                    )}
+                  </div>
+                </div>
                 <div className="col-lg-6 col-xl-6">
                   <div className="my_profile_setting_input form-group">
                     <label htmlFor="countryId">Ülke ID si</label>

@@ -24,19 +24,20 @@ const DetailsContent = ({ property }) => {
 
   return (
     <>
-      {property?.content && (
+    {property?.content && (
         <div className="listing_single_description">
           {/* End .lsd_list */}
 
           <h4 className="mb30">
-            {property?.short_description?.label}
+            {property?.short_description}
           </h4>
 
           <PropertyDescriptionsBlog property={property} />
         </div>
       )}
+      
       {/* End .listing_single_description */}
-
+{/* 
       <div className="additional_details">
         <div className="row">
           <div className="col-lg-12">
@@ -46,7 +47,7 @@ const DetailsContent = ({ property }) => {
           </div>
           <PropertyDetails property={property} />
         </div>
-      </div>
+      </div> */}
       {/* End .additional_details */}
 
 
@@ -54,7 +55,7 @@ const DetailsContent = ({ property }) => {
       {/* End .feature_area */}
       <div className="shop_single_tab_content style2 mt30">
         <ul className="nav nav-tabs" id="myTab" role="tablist">
-          {property?.features && <li className="nav-item">
+          {/* {property?.features && <li className="nav-item">
             <a
               className="nav-link active"
               data-bs-toggle="tab"
@@ -63,8 +64,8 @@ const DetailsContent = ({ property }) => {
             >
               İlan Özellikleri
             </a>
-          </li>}
-          {!property?.advertDetail?.isMapActive?.value &&
+          </li>} */}
+          {/* {!property?.advertDetail?.isMapActive?.value &&
             <>
               <li className="nav-item">
                 <a
@@ -87,7 +88,7 @@ const DetailsContent = ({ property }) => {
                 </a>
               </li>
             </>
-          }
+          } */}
         </ul>
       </div>
       <div className="tab-content" id="myTabContent2">

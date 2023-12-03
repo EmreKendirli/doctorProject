@@ -7,6 +7,7 @@ import DescriptionsText from "./DescriptionsText";
 import Listings from "./Listings";
 
 const TabDetailsContent = ({ officeDataDetail }) => {
+  console.log(officeDataDetail);
   return (
     <>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -87,7 +88,7 @@ const TabDetailsContent = ({ officeDataDetail }) => {
           role="tabpanel"
         >
           <div className="row  mt30">
-            <Team />
+            <Team officeDataDetail={officeDataDetail}/>
           </div>
         </div>
         {/* End aget team content*/}

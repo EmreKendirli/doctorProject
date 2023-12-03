@@ -217,10 +217,10 @@ const advertContactWithAgent = async (data) => {
   return mall;
 };
 
-const getOneUserWithId = async (id) => {
+const getOneUserWithId = async () => {
   const mall = await axios({
     method: "GET",
-    url: `/user/bring-user/${id}`,
+    url: `/user/detail`,
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -233,10 +233,10 @@ const getOneUserWithId = async (id) => {
   return mall;
 };
 
-const updateOneUserWithId = async (id, data) => {
+const updateOneUserWithId = async (data) => {
   const mall = await axios({
     method: "PUT",
-    url: `/user/userupdate/${id}`,
+    url: `/user/update`,
     data: data,
   })
     .then((response) => response.data)

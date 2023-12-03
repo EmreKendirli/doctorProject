@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import imageLoader from "../../../utils/imageLoader";
 
 const Team = ({ officeDataDetail }) => {
+  console.log(officeDataDetail);
   const router = useRouter();
   const id = router.query.id;
   const { name, category, city, listen } =
@@ -17,32 +18,33 @@ const Team = ({ officeDataDetail }) => {
   const [officeDataTeam, setOfficeDataTeam] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (id !== undefined) {
-      officeData.officeDetailTeam(id).then((data) => {
-        setOfficeDataTeam(data.data);
-        setIsLoading(false);
-      });
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id !== undefined) {
+  //     officeData.officeDetailTeam(id).then((data) => {
+  //       setOfficeDataTeam(data.data);
+  //       setIsLoading(false);
+  //     });
+  //   }
+  // }, [id]);
 
-  if (isLoading) {
-    return <div>Yükleniyor...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>Yükleniyor...</div>;
+  // }
 
   return (
     <>
-      {officeDataTeam?.advisor?.length > 0 && officeDataTeam.advisor.map((item) => (
-        <div className="col-lg-12" key={item._id}>
+      {officeDataDetail && 
+    
+        <div className="col-lg-12" >
           <div className="feat_property list style2 agent">
             <div className="thumb">
-              <Link href={`/ofis-detay/${item._id}`}>
+              <Link href={`/ofis-detay/${officeDataDetail?._id}`}>
                 <Image
                   loader={imageLoader}
                   width={286}
                   height={220}
                   className="img-whp"
-                  src={item.advisorProfilePhoto}
+                  src={officeDataDetail?.image_url}
                   alt="bh1.jpg"
                 />
               </Link>
@@ -50,7 +52,7 @@ const Team = ({ officeDataDetail }) => {
                 <ul className="tag mb0">
                   <li className="list-inline-item dn"></li>
                   <li className="list-inline-item">
-                    <a href="#">{item.totalNumberOfAds} İlan</a>
+                    <a href="#">{officeDataDetail?.totalNumberOfAds} </a>
                   </li>
                 </ul>
               </div>
@@ -60,16 +62,16 @@ const Team = ({ officeDataDetail }) => {
             <div className="details">
               <div className="tc_content">
                 <h4>
-                  <Link href={`#`}>{item.firstAndLastName}</Link>
+                  <Link href={`#`}>{officeDataDetail?.firstName+ " "+ officeDataDetail?.lastName}</Link>
                 </h4>
-                <p className="text-thm">{item.advisorTypeId.advisorType}</p>
+                <p className="text-thm">{officeDataDetail?.advisorTypeId?.advisorType}</p>
                 <ul className="prop_details mb0">
                   <li>
-                    <a href="#">Telefon: {item.phoneNumber}</a>
+                    <a href="#">Telefon: {officeDataDetail?.phoneNumber}</a>
                   </li>
                   <li>{/* <a href="#">Fax: {item.fax}</a> */}</li>
                   <li>
-                    <a href="#">E-Posta: {item.email}</a>
+                    <a href="#">E-Posta: {officeDataDetail?.email}</a>
                   </li>
                 </ul>
               </div>
@@ -78,22 +80,22 @@ const Team = ({ officeDataDetail }) => {
               <div className="fp_footer">
                 <ul class="fp_meta float-left mb0">
                   <li class="list-inline-item">
-                    <a href={item.facebook}>
+                    <a href={officeDataDetail?.facebook}>
                       <i class="fa fa-facebook"></i>
                     </a>
                   </li>
                   <li class="list-inline-item">
-                    <a href={item.twitter}>
+                    <a href={officeDataDetail?.twitter}>
                       <i class="fa fa-twitter"></i>
                     </a>
                   </li>
                   <li class="list-inline-item">
-                    <a href={item.instagram}>
+                    <a href={officeDataDetail?.instagram}>
                       <i class="fa fa-instagram"></i>
                     </a>
                   </li>
                   <li class="list-inline-item">
-                    <a href={item.linkedln}>
+                    <a href={officeDataDetail?.linkedln}>
                       <i class="fa fa-linkedln"></i>
                     </a>
                   </li>
@@ -103,7 +105,7 @@ const Team = ({ officeDataDetail }) => {
             </div>
           </div>
         </div>
-      ))}
+      }
     </>
   );
 };

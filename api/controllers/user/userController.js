@@ -423,13 +423,41 @@ const userUpdate = tryCatch(async (req, res) => {
     }
 
 })
+const userPasswordUpdate = tryCatch(async(req,res)=>{
+    const id = req.user._id
+    const user = await User.findById(id);
+    let same = false
+    same = await bcrypt.compare(req.body.currentpassword, user.password);
+    if (same) {
+        const newPassword = await hashpassword(req.body.password)
+        const update = await User.findByIdAndUpdate(id, {
+            password: newPassword
+        })
 
+        res.status(200).json({
+            succedd: true,
+            message: 'Şifreniz başarılı bir şekilde değiştirildi.'
+        })
+    } else {
+
+        res.status(422).json({
+            succedd: false,
+            message: 'Mevcut şifrenizi kontrol ediniz'
+        })
+    }
+})
+async function hashpassword(password) {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt)
+    return hashedPassword
+}
 const user = {
     doctorRegister,
     individualRegister,
     userLogin,
     userFilter,
     userDetail,
-    userUpdate
+    userUpdate,
+    userPasswordUpdate
 }
 export default user

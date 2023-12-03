@@ -36,7 +36,7 @@ const officeResponse = async (page, paginate) => {
 const officeDetail = async (id) => {
   const res = await axios({
     method: "GET",
-    url: `/user/officedetail-list/${id}`,
+    url: `/office/detail/${id}`,
   })
     .then((response) => response.data)
     .catch((error) => {

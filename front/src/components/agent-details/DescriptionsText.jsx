@@ -1,8 +1,8 @@
 import React from "react";
 
 const DescriptionsText = ({ officeDataDetail }) => {
-  const descriptionHTML = officeDataDetail?.officeDetail?.aboutUs?.value;
-
+  const descriptionHTML = officeDataDetail?.description;
+console.log(officeDataDetail);
   const renderHTML = (htmlString) => {
     return { __html: htmlString };
   };

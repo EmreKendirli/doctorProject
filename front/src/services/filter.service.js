@@ -33,8 +33,37 @@ const getFilteredContent = async (data) => {
     // }
   }
 };
+const getFilteredContentDoctor = async (data, location, query) => {
+  let Query = "";
+  if (query && Object.keys(query).length) {
+   Object.entries(query)
+      .map(([k, v]) => {
+        console.log('AdvertFİlter', k, v)
+        if(Query){
+          Query += `&${k}=${v}`
+        }else {
+          Query += `?${k}=${v}`
+        }
+      })
+  }
 
+  try {
+    const response = await axios({
+      method: "POST",
+      url: `/user/user-filter${Query}`,
+      data: { ...data, ...location },
+    });
 
+    return response;
+  } catch (error) {
+    if (error?.response?.status == 401) {
+      logoutFromSystem();
+    } else {
+      console.error(error);
+      throw error;
+    }
+  }
+};
 const getBlogContent = async () => {
 
   try {
@@ -94,7 +123,8 @@ const filterService = {
   getFilteredContent,
   getOneAdvertWithNo,
   getBlogContent,
-  getOneBlogWithId
+  getOneBlogWithId,
+  getFilteredContentDoctor
 };
 
 export default filterService;

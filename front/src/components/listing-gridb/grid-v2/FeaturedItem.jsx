@@ -150,24 +150,24 @@ const FeaturedItem = () => {
                             loader={imageLoader}
                             width={40}
                             height={40}
-                            src={currentUser?.advisorProfilePhoto || '/assets/images/logo/logo-short.png'}
-                            alt={currentUser?.firstAndLastName || ''}
+                            src={item?.userId?.image_url || '/assets/images/logo/logo-short.png'}
+                            alt={item?.userId?.firstName +" "+ item?.userId?.lastName || ''}
                           /> :
                           <Image
                             loader={imageLoader}
                             width={40}
                             height={40}
                             src={
-                              item?.ownerPhoto ||
+                              item?.userId?.image_url ||
                               "/assets/images/logo/logo-short.png"
                             }
-                            alt={item?.ownerName || ''}
+                            alt={item?.userId?.firstName +" "+ item?.userId?.lastName || ''}
                           />
                         }
                       </Link>
                     </li>
                     <li className="list-inline-item">
-                      <Link href="#">{presentMode ? currentUser?.firstName +""+ currentUser?.lastName : item?.ownerName}</Link>
+                      <Link href="#">{presentMode ?  item?.userId?.firstName +" "+  item?.userId?.lastName : item?.userId?.firstName +" "+  item?.userId?.lastName}</Link>
                     </li>
                   </ul>
                 </div>

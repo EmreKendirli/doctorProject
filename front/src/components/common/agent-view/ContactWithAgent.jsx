@@ -177,7 +177,7 @@ const ContactWithAgent = () => {
               href="/mesajlarim"
               className={route.pathname === "/mesajlarim" ? "ui-active" : undefined}
             >
-              Mesajlarım
+              Mesaj
             </Link>
       
     </div>

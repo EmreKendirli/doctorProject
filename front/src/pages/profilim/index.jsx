@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import MyProfile from "./[id]";
+import MyProfile from "../../components/dashboard/my-profile";
 import Secret from "../../components/Secret";
 import Login from "../../pages/login";
 import { getCurrentUser } from "../../utils/auth";
@@ -16,6 +16,6 @@ const index = () => {
       render={<MyProfile />}
     />
   );
-};
+}; 
 
 export default dynamic(() => Promise.resolve(index), { ssr: false });

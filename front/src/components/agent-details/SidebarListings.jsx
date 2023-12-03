@@ -13,7 +13,7 @@ const SidebarListings = ({ officeDataDetail }) => {
         </div>
       </div>
       {/* End filter and search area */}
-      {officeDataDetail?.isVitrinData.length !== 0 ? (
+      {officeDataDetail?.isVitrinData?.length == 0 ? (
         <div className="terms_condition_widget style_two-pro">
           <h4 className="title">Öne Çıkan İlanlar</h4>
           <FeatureProperties officeDataDetail={officeDataDetail} />

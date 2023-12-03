@@ -18,16 +18,17 @@ const AgentDetailsDynamic = () => {
   const [isMobile, setIsMobile] = useState(false);
   const ref = useRef(null);
   const router = useRouter();
-  const [officeDataDetail, setOfficeDataDetail] = useState();
+  const [officeDataDetail, setOfficeDataDetail] = useState("");
   const id = router.query.id;
   const [pageTitle, setPageTitle] = useState('')
   const [agent, setAgent] = useState([])
-
+ 
   useEffect(() => {
     if (id !== undefined) {
       officeData.officeDetail(id).then((data) => {
+        console.log(data);
         if (data?.data?.officeDetail?.companyTitle?.value) setPageTitle(data?.data?.officeDetail?.companyTitle?.value)
-        setOfficeDataDetail(data.data);
+        setOfficeDataDetail(data?.data);
         data?.data?.officeDetail?.socialList &&  setAgent(data?.data?.officeDetail?.socialList)
       });
     }
@@ -113,10 +114,10 @@ const AgentDetailsDynamic = () => {
                         height={220}
                         className="img-whp w-100 h-100 cover"
                         src={
-                          officeDataDetail.officeDetail.officeCoverPhoto.value
+                          officeDataDetail?.coverPhoto
                         }
                         alt={
-                          officeDataDetail.officeDetail.officeCoverPhoto.value
+                          officeDataDetail?.coverPhoto
                         }
                       />
                       <div className="thmb_cntnt">
@@ -124,7 +125,7 @@ const AgentDetailsDynamic = () => {
                           <li className="list-inline-item dn"></li>
                           <li className="list-inline-item">
                             <a href="#">
-                              {officeDataDetail.adverts.length} İlan
+                              {officeDataDetail?.adverts?.length} 
                             </a>
                           </li>
                         </ul>
@@ -135,22 +136,22 @@ const AgentDetailsDynamic = () => {
                     <div className="details">
                       <div className="tc_content">
                         <h4>
-                          {officeDataDetail.officeDetail.companyName.value}
+                          {officeDataDetail?.companyName}
                         </h4>
                         <p className="text-thm">
-                          {officeDataDetail.officeDetail.companyTitle.value}
+                          {officeDataDetail?.companyTitle}
                         </p>
                         <ul className="prop_details mb0">
                           <li>
                             <a href="#">
                               Ofis Telefonu:{" "}
-                              {officeDataDetail.officeDetail.officeNumber.value}
+                              {officeDataDetail?.phoneNumber}
                             </a>
                           </li>
                           <li>
                             <a href="#">
                               E-Posta:{" "}
-                              {officeDataDetail.officeDetail.officeEmail.value}
+                              {officeDataDetail?.email}
                             </a>
                           </li>
                         </ul>

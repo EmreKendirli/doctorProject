@@ -108,9 +108,9 @@ const ListingDynamicDetailsV1 = () => {
                   <div className="single_property_title mt30-767">
                     <div className="d-flex align-items-center">
                       <h2 className="mb-0">
-                        {property?.title || "-"} -
+                        {property?.title || "-"} 
                       </h2>
-                      <span className="status_tag badge ms-2">{property?.advertDetail?.processName?.options || ""}</span>
+                      <span className="status_tag badge ms-2">{property?.short_description || ""}</span>
                     </div>
                     <p>{property?.advertDetail?.address?.options || "-"}</p>
                   </div>
@@ -119,7 +119,7 @@ const ListingDynamicDetailsV1 = () => {
                   <div className="single_property_social_share position-static transform-none">
                     <div className="price float-start fn-400 2">
                       <h2>
-                        {currencyFormatter.format(property?.advertDetail?.advertPrice.options, { thousand: '.', precision: 0 }) || "-"} TL
+                        {/* {currencyFormatter.format(property?.advertDetail?.advertPrice.options, { thousand: '.', precision: 0 }) || "-"} TL */}
                       </h2>
                     </div>
 
@@ -153,14 +153,14 @@ const ListingDynamicDetailsV1 = () => {
               <div className="row">
                 <div className="col-sm-7 col-lg-8">
                   <div className="row">
-                    <div className="col-lg-12">
+                    <div className="col-lg-9">
                       <div className="spls_style_two mb30-520">
                         <Item
                           original={
-                            property?.adPhotosUrl?.length ?  property?.adPhotosUrl[0].url : "-"
+                            property?.image ?  property?.image : "-"
                           }
                           thumbnail={
-                            property?.adPhotosUrl?.length ?  property?.adPhotosUrl[0].url : "-"
+                            property?.image ?  property?.image : "-"
                           }
                           width={752}
                           height={450}
@@ -174,7 +174,7 @@ const ListingDynamicDetailsV1 = () => {
                                 height={450}
                                 className="img-fluid w100 cover lds-1"
                                 src={
-                                  property?.adPhotosUrl?.length ?  property?.adPhotosUrl[0].url : "-"
+                                  property?.image ?  property?.image : "-"
                                 }
                                 alt="1.jpg"
                               />

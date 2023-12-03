@@ -33,7 +33,7 @@ const FeaturedItem = () => {
   useEffect(() => {
     // Bu, bileşen yüklendiğinde çağrılacak
     console.log('PROPERTY', properties)
-    filterService.getFilteredContent(properties.allFilter, properties.allLocation, properties.allQuery)
+    filterService.getFilteredContentDoctor(properties.allFilter, properties.allLocation, properties.allQuery)
       .then((res) => {
         console.log(res.data);
         if (res.data) {
@@ -76,10 +76,10 @@ const FeaturedItem = () => {
       {content.length > 0 ? (
         content.map((item) => (
           <Link
-            href={`/doktor-detay/${item._id}`}
+            href={`/ofis-detay/${item?._id}`}
             className={`${isGridOrList ? "col-12 feature-list" : "col-md-4 col-lg-4"
               } `}
-            key={item.advertNo}
+            key={item._id}
           >
             <div
               className={`feat_property home7 style4 ${isGridOrList ? "d-flex align-items-center" : undefined
@@ -109,10 +109,10 @@ const FeaturedItem = () => {
                   </ul>
 
                   <Link
-                    href={`/doktor-detay/${item._id}`}
+                    href={`/ofis-detay/${item?._id}`}
                     className="fp_price"
                   >
-                    {currencyFormatter.format(item?.advertPrice, { thousand: '.', precision: 0 }) || "-"} 
+                    {/* {currencyFormatter.format(item?.advertPrice, { thousand: '.', precision: 0 }) || "-"}  */}
                   </Link>
                 </div>
               </div>
@@ -120,13 +120,13 @@ const FeaturedItem = () => {
                 <div className="tc_content">
                   <p className="text-thm">{item?.advertNo || ''}</p>
                   <h4>
-                    <Link href={`/doktor-detay/${item?._id}`}>
-                      {item.companyName  || ''}
+                    <Link href={`/ofis-detay/${item?._id}`}>
+                      {item?.companyName  || ''}
                     </Link>
                   </h4>
                   <p className="grid-address">
                     <span className="flaticon-placeholder"></span>
-                    {createAddresStr(item?.countryId?.label, item?.cityId?.label, item?.districtId?.label, item?.neighbourhoodId?.label) || "-"}
+                    {createAddresStr(item?.countryId?.name, item?.cityId?.name, item?.districtId?.name, item?.neighbourhoodId?.name) || "-"}
                   </p>
 
                   <ul className="prop_details mb0">
@@ -150,7 +150,7 @@ const FeaturedItem = () => {
                             loader={imageLoader}
                             width={40}
                             height={40}
-                            src={item?.ownerId?.image || '/assets/images/logo/logo-short.png'}
+                            src={item?.ownerId?.image_url || '/assets/images/logo/logo-short.png'}
                             alt={item?.ownerId?.firstName +" "+item?.ownerId?.lastName || ''}
                           /> :
                           <Image
@@ -158,7 +158,7 @@ const FeaturedItem = () => {
                             width={40}
                             height={40}
                             src={
-                              item?.ownerId?.image  ||
+                              item?.ownerId?.image_url  ||
                               "/assets/images/logo/logo-short.png"
                             }
                             alt={item?.ownerId?.firstName +" "+item?.ownerId?.lastName || ''}
@@ -167,7 +167,7 @@ const FeaturedItem = () => {
                       </Link>
                     </li>
                     <li className="list-inline-item">
-                      <Link href="#">{presentMode ? currentUser?.firstAndLastName : item?.ownerName}</Link>
+                      <Link href="#">{presentMode ? currentUser?.firstAndLastName : item?.ownerId?.firstName +" "+item?.ownerId?.lastName }</Link>
                     </li>
                   </ul>
                 </div>

@@ -11,7 +11,7 @@ import TabDetailsContent from "./TabDetailsContent";
 import imageLoader from "../../utils/imageLoader";
 import SidebarMenu from "../common/header/dashboard/SidebarMenu";
 import { useEffect, useRef, useState } from "react";
-
+import SideBar from "../listing-details-v2/Sidebar"
 const Index = () => {
   const [isMobile, setIsMobile] = useState(false)
   const ref = useRef(null);
@@ -174,7 +174,8 @@ const Index = () => {
             {/* End .col-md-12 col-lg-8 content left side */}
 
             <div className="col-lg-4 col-xl-4">
-              <SidebarListings />
+              <SideBar/>
+              {/* <SidebarListings /> */}
             </div>
             {/* End .col-lg-4 col-xl-4 content left side */}
           </div>

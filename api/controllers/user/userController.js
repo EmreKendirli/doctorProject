@@ -5,6 +5,13 @@ import jwt from "jsonwebtoken"
 
 import bcrypt from "bcrypt"
 import Office from "../../models/officeModel.js";
+import Country from "../../models/location/countryModel.js"
+import City from "../../models/location/cityModel.js"
+import District from "../../models/location/districtModel.js"
+import Neighbourhood from "../../models/location/neighbourhoodModel.js"
+
+
+
 const doctorRegister = tryCatch(async (req, res) => {
     const register = await User.create({
         firstName: req.body.firstName,
@@ -187,33 +194,189 @@ const userFilter = tryCatch(async (req, res) => {
         totalRecord
     })
 })
-/*const userDetail = tryCatch(async (req, res) => {
+const userDetail = tryCatch(async (req, res) => {
     const user = req.user
 
-    let detail ={}
-    detail.firstName = user.firstName || ""
-    detail.lastName = user.lastName || ""
-    detail.email = user.email || ""
-   // detail.password = user.password || ""
-    detail.phoneNumber = user.phoneNumber || ""
-    detail.address = user.address || ""
-    detail.image_url = user.image_url || ""
-    detail.phoneNumber = user.phoneNumber || ""
+    let detail = {
+        firstName: {
+            type: "string",
+            label: "Adınız",
+            value: user?.firstName || ""
+        },
+        lastName: {
+            type: "string",
+            label: "Soyadınız",
+            value: user?.lastName || ""
+        },
+        email: {
+            type: "string",
+            label: "E-mail",
+            value: user?.email || ""
+        },
+        phoneNumber: {
+            type: "string",
+            label: "Telefon Numarası",
+            value: user?.phoneNumber || ""
+        },
+        image_url: {
+            type: "string",
+            label: "Kullanıcı Fotografı",
+            value: user?.image_url || ""
+        },
+        type: {
+            type: "string",
+            label: "Kullanıcı Rolü",
+            value: user?.type || ""
+        }
+    }
+
 
     if (user.type === "doctor") {
-        const office = await Office.findOne({ownerId:user._id})
-        detail.companyName = user.companyName || ""
-        detail.companyTitle = user.companyTitle || ""
-        detail.taxNo = user.taxNo || ""
+        const office = await Office.findOne({ ownerId: user._id }).populate(["countryId", "cityId", "districtId", "neighbourhoodId"])
+        const country = await Country.find({})
+        const city = office?.countryId?._id ? await City.find({ countryId: office?.countryId?._id }) : []
+        const district = office?.cityId?._id ? await District.find({ cityId: office?.cityId?._id }) : []
+        const neighbourhood = office?.districtId?._id ? await Neighbourhood.find({ districtId: office?.districtId?._id }) : []
+        let countryData = []
+        let cityData = []
+        let districtData = []
+        let neighbourhoodData = []
+        if (country.length > 0) {
+            for (const i of country) {
+                countryData.push({
+                    type: "string",
+                    label: i.name,
+                    value: i._id,
+                });
+            }
+        }
+        if (city.length > 0) {
+            for (const i of city) {
+                cityData.push({
+                    type: "string",
+                    label: i.name,
+                    value: i._id,
+                });
+            }
+        }
+        if (district.length > 0) {
+            for (const i of district) {
+                districtData.push({
+                    type: "string",
+                    label: i.name,
+                    value: i._id,
+                });
+            }
+        }
+        if (neighbourhood.length > 0) {
+            for (const i of neighbourhood) {
+                neighbourhoodData.push({
+                    type: "string",
+                    label: i.name,
+                    value: i._id,
+                });
+            }
+        }
+        detail.companyName = {
+            type: "string",
+            label: "Firma Adı",
+            value: office?.companyName || ""
+        }
+        detail.companyTitle = {
+            type: "string",
+            label: "Firma Ünvanı",
+            value: office?.companyTitle || ""
+        }
+        detail.taxNo = {
+            type: "number",
+            label: "Vergi No",
+            value: office?.taxNo || 0
+        }
+        detail.taxOffice = {
+            type: "string",
+            label: "Vergi Dairesi",
+            value: office?.taxOffice || ""
+        }
+        detail.logo_url = {
+            type: "string",
+            label: "Logo",
+            value: office?.logo_url || ""
+        }
+        detail.coverPhoto = {
+            type: "string",
+            label: "Kapak Fotografı",
+            value: office?.coverPhoto || ""
+        }
+        detail.description = {
+            type: "string",
+            label: "Açıklama",
+            value: office?.description || ""
+        }
+        detail.address = {
+            type: "string",
+            label: "Adres",
+            value: office?.address || ""
+        }
+        detail.aboutUs = {
+            type: "string",
+            label: "Hakkımda",
+            value: office?.aboutUs || ""
+        }
+        detail.description = {
+            type: "string",
+            label: "Açıklama",
+            value: office?.description || ""
+        }
+        detail.countryId = {
+            type: "string",
+            label: office?.countryId?.name || "",
+            value: office?.countryId?._id || "",
+            options:countryData
+        }
+        detail.cityId = {
+            type: "string",
+            label: office?.cityId?.name || "",
+            value: office?.cityId?._id || "",
+            options:cityData
+        }
+        detail.districtId = {
+            type: "string",
+            label: office?.districtId?.name || "",
+            value: office?.districtId?._id || "",
+            options:districtData
+        }
+        detail.neighbourhoodId = {
+            type: "string",
+            label: office?.neighbourhoodId?.name || "",
+            value: office?.neighbourhoodId?._id || "",
+            options:neighbourhoodData
+        }
+        detail.latitude = {
+            type: "number",
+            label: "latitude",
+            value: office?.latitude || 0
+        }
+        detail.longitude = {
+            type: "number",
+            label: "longitude",
+            value: office?.longitude || 0
+        }
+
     }
-})*/
+
+    res.status(200).json({
+        succeded:true,
+        data:detail
+    })
+})
 
 
 const user = {
     doctorRegister,
     individualRegister,
     userLogin,
-    userFilter
+    userFilter,
+    userDetail
 
 }
 export default user

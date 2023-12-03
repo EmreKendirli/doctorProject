@@ -33,9 +33,6 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
-    address: {
-        type: String,
-    },
     image_url: {
         type: String,
         default:""

@@ -24,9 +24,11 @@ const OfficeSchema = new Schema({
   },
   logo_url: {
     type: String,
+    default:""
   },
   coverPhoto: {
     type: String,
+    default:""
   },
   description: {
     type: String,

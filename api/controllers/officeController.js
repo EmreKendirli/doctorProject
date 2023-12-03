@@ -2,6 +2,7 @@ import Office from "../models/officeModel.js";
 import tryCatch from "../utils/tryCatch.js"
 import AppError from "../utils/appError.js"
 import User from "../models/user/userModel.js";
+import fs from 'fs'
 const officeDetail = tryCatch (async (req,res)=>{
     const id = req.params.id
     const data = await Office.findOne({_id:id})
@@ -41,8 +42,50 @@ const officeDetail = tryCatch (async (req,res)=>{
         data:detail
     })
 })
+const officeUpdate = tryCatch (async(req,res)=>{
+    const id = req.params.id
+    const result = await Office.findOne({_id:id})
+    if (req.body?.logo_url && result.logo_url) {
+        photoDelete(result.logo_url)
+    }
+    if (req.body?.coverPhoto && result.coverPhoto) {
+        photoDelete(result.coverPhoto)
+    }
+    function photoDelete(filePath) {
+        console.log(filePath);
+        let path = filePath.split("http://localhost:8800")
+        console.log(path);
+        path = `public${path[1]}`
+        fs.access(path, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.error('Fotoğraf bulunamadı:', err);
+                return;
+            }
+        
+            // Fotoğrafı sil
+            fs.unlink(path, (unlinkErr) => {
+                if (unlinkErr) {
+                    console.error('Fotoğrafı silme hatası:', unlinkErr);
+                } else {
+                    console.log('Fotoğraf başarıyla silindi.');
+                }
+            });
+        });
+    
+    }
+
+    const updateData = await Office.findByIdAndUpdate(id,req.body,{new:true})
+    if (!updateData) {
+        throw new AppError("Güncellemede Hata Oluştu",404)
+    }
+    res.status(200).json({
+        succeded:true,
+        message:"Ofis Güncelleme Başarılı Şekilde Oldu"
+    })
+})
 
 const office ={
-    officeDetail
+    officeDetail,
+    officeUpdate
 }
 export default office

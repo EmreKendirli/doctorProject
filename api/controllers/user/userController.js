@@ -389,7 +389,7 @@ const userUpdate = tryCatch(async (req, res) => {
         if (req.body?.coverPhoto && result.coverPhoto) {
             photoDelete(result.coverPhoto)
         }
-        const updateData = await Office.findByIdAndUpdate(id, req.body, { new: true })
+        const updateData = await Office.findByIdAndUpdate(result._id, req.body, { new: true })
         if (!updateData) {
             throw new AppError("Güncellemede Hata Oluştu", 404)
         }

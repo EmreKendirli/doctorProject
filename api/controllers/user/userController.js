@@ -10,7 +10,7 @@ import City from "../../models/location/cityModel.js"
 import District from "../../models/location/districtModel.js"
 import Neighbourhood from "../../models/location/neighbourhoodModel.js"
 import lodash from "lodash"
-
+import fs from "fs"
 
 const doctorRegister = tryCatch(async (req, res) => {
     const register = await User.create({

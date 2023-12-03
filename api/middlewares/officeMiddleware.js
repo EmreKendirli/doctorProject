@@ -28,9 +28,13 @@ const resizeImages = tryCatch(async (req, res, next) => {
     if (!fs.existsSync('public/contents/office')) {
         await mkdirp('public/contents/office');
     }
+    if (!fs.existsSync('public/contents/user')) {
+        await mkdirp('public/contents/user');
+    }
 
     req.body.logo_url=""
     req.body.coverPhoto=""
+    req.body.image_url = ""
     // Images
     await Promise.all(req.files.map(async (file, i) => {
         const result = file.fieldname.split("-")
@@ -46,6 +50,13 @@ const resizeImages = tryCatch(async (req, res, next) => {
             const baseUrl = process.env.DOMAIN
             const file_name = `/contents/office/image-${Date.now()}-${random}.png`;
             req.body.coverPhoto = baseUrl + file_name
+            await sharp(file.buffer).toFile(`public${file_name}`)
+        }
+        if (result[0] === "image_url") {
+            const random = await generateRandomString(6)
+            const baseUrl = process.env.DOMAIN
+            const file_name = `/contents/user/image-${Date.now()}-${random}.png`;
+            req.body.image_url = baseUrl + file_name
             await sharp(file.buffer).toFile(`public${file_name}`)
         }
 

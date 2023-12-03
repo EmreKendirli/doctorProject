@@ -9,7 +9,7 @@ import Country from "../../models/location/countryModel.js"
 import City from "../../models/location/cityModel.js"
 import District from "../../models/location/districtModel.js"
 import Neighbourhood from "../../models/location/neighbourhoodModel.js"
-
+import lodash from "lodash"
 
 
 const doctorRegister = tryCatch(async (req, res) => {
@@ -331,25 +331,25 @@ const userDetail = tryCatch(async (req, res) => {
             type: "string",
             label: office?.countryId?.name || "",
             value: office?.countryId?._id || "",
-            options:countryData
+            options: countryData
         }
         detail.cityId = {
             type: "string",
             label: office?.cityId?.name || "",
             value: office?.cityId?._id || "",
-            options:cityData
+            options: cityData
         }
         detail.districtId = {
             type: "string",
             label: office?.districtId?.name || "",
             value: office?.districtId?._id || "",
-            options:districtData
+            options: districtData
         }
         detail.neighbourhoodId = {
             type: "string",
             label: office?.neighbourhoodId?.name || "",
             value: office?.neighbourhoodId?._id || "",
-            options:neighbourhoodData
+            options: neighbourhoodData
         }
         detail.latitude = {
             type: "number",
@@ -365,18 +365,71 @@ const userDetail = tryCatch(async (req, res) => {
     }
 
     res.status(200).json({
-        succeded:true,
-        data:detail
+        succeded: true,
+        data: detail
     })
 })
+const userUpdate = tryCatch(async (req, res) => {
+    const bodyWithoutEmptyValues = lodash.pickBy(req.body, lodash.identity);
+    req.body = bodyWithoutEmptyValues
 
+    const id = req.user._id
+
+    const user = await User.findOne({ _id: id })
+    if (req.body.image_url && user.image_url) {
+        photoDelete(user.image_url)
+    }
+
+    const userupdate = await User.findByIdAndUpdate(id, req.body)
+    if (user.type === "doctor") {
+        const result = await Office.findOne({ ownerId: id })
+        if (req.body?.logo_url && result.logo_url) {
+            photoDelete(result.logo_url)
+        }
+        if (req.body?.coverPhoto && result.coverPhoto) {
+            photoDelete(result.coverPhoto)
+        }
+        const updateData = await Office.findByIdAndUpdate(id, req.body, { new: true })
+        if (!updateData) {
+            throw new AppError("Güncellemede Hata Oluştu", 404)
+        }
+    }
+
+    res.status(200).json({
+        succeded: true,
+        message: "Ofis Güncelleme Başarılı Şekilde Oldu"
+    })
+    function photoDelete(filePath) {
+        console.log(filePath);
+        let path = filePath.split("http://localhost:8800")
+        console.log(path);
+        path = `public${path[1]}`
+        fs.access(path, fs.constants.F_OK, (err) => {
+            if (err) {
+                console.error('Fotoğraf bulunamadı:', err);
+                return;
+            }
+
+            // Fotoğrafı sil
+            fs.unlink(path, (unlinkErr) => {
+                if (unlinkErr) {
+                    console.error('Fotoğrafı silme hatası:', unlinkErr);
+                } else {
+                    console.log('Fotoğraf başarıyla silindi.');
+                }
+            });
+        });
+
+    }
+
+})
 
 const user = {
     doctorRegister,
     individualRegister,
     userLogin,
     userFilter,
-    userDetail
-
+    userDetail,
+    userUpdate
 }
 export default user

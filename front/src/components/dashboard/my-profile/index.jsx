@@ -22,7 +22,8 @@ const Index = () => {
       masterServices
         .getOneUserWithId()
         .then((data) => {
-          setUserData(data.data);
+          setUserData(data?.data);
+          console.log(data?.data);
         })
         .catch((err) => console.log(err));
   }, []);
@@ -98,8 +99,8 @@ const Index = () => {
                           },
                           {
                             title: "Şifre değiştir",
-                            isOfficeAdmin:
-                              getCurrentUser()?._id === userData?._id?.value,
+                            isOfficeAdmin:true
+                              ,
 
                             component: (
                               <div className="d-flex justify-content-center">

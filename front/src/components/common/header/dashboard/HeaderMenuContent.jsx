@@ -88,7 +88,7 @@ const HeaderMenuContent = ({ float = "" }) => {
               href="#"
               data-bs-toggle="dropdown"
             >
-              {!currentUser?.advisorProfilePhoto ? (
+              {!currentUser?.image_url ? (
                 <Image
                   loader={imageLoader}
                   width={45}
@@ -104,11 +104,11 @@ const HeaderMenuContent = ({ float = "" }) => {
                   height={45}
                   className="rounded-circle"
                   alt="e1.png"
-                  src={currentUser?.advisorProfilePhoto}
+                  src={currentUser?.image_url}
                 />
               )}
               <span className="dn-1199 ms-1">
-                {currentUser?.firstAndLastName}
+                {currentUser?.firstName + " " + currentUser?.lastName}
               </span>
             </a>
             <div className="dropdown-menu">

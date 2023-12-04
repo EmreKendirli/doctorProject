@@ -252,8 +252,8 @@ const updateOneUserWithId = async (data) => {
 
 const restartPassword = async (data) => {
   const mall = await axios({
-    method: "post",
-    url: `/user/restart-password`,
+    method: "PUT",
+    url: `/user/update-password`,
     data: data,
   })
     .then((response) => response.data)

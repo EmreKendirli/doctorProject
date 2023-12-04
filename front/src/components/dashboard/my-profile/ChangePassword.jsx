@@ -5,10 +5,10 @@ import { toast } from "react-toastify";
 import masterServices from "../../../services/user.service";
 const ChangePasswordSchema = Yup.object().shape({
   currentpassword: Yup.string().required("Geçerli şifreyi yazmalısınız."),
-  newpassword: Yup.string().required("Yeni şifre'yi yazmalısınız"),
-  retypenewpassword: Yup.string()
+  password: Yup.string().required("Yeni şifre'yi yazmalısınız"),
+  confirm_password: Yup.string()
     .required("Yeni şifre tekrarını yazmalısınız.")
-    .oneOf([Yup.ref("newpassword")], "Yeni şifreler eşleşmiyor."),
+    .oneOf([Yup.ref("password")], "Yeni şifreler eşleşmiyor."),
 });
 
 const ChangePassword = ({ userData }) => {
@@ -17,19 +17,20 @@ const ChangePassword = ({ userData }) => {
       validationSchema={ChangePasswordSchema}
       initialValues={{
         currentpassword: "",
-        newpassword: "",
-        retypenewpassword: "",
+        password: "",
+        confirm_password: "",
       }}
       onSubmit={(values, { setSubmitting }) => {
         console.log(values);
 
         masterServices.restartPassword(values).then((res) => {
-          if (res?.succeded) {
+          console.log(res);
+          if (res?.succedd === true) {
             toast(res?.message);
           } else {
             toast(res?.response?.data?.message);
           }
-        });
+        })
 
         setSubmitting(false);
       }}
@@ -59,7 +60,7 @@ const ChangePassword = ({ userData }) => {
               <div className="my_profile_setting_input form-group">
                 <label htmlFor="currentpassword">Geçerli Şifre</label>
                 <input
-                  type="text"
+                  type="password"
                   className="form-control"
                   id="currentpassword"
                   name="currentpassword"
@@ -72,15 +73,15 @@ const ChangePassword = ({ userData }) => {
 
             <div className="col-lg-6 col-xl-6">
               <div className="my_profile_setting_input form-group">
-                <label htmlFor="newpassword">Yeni Şifre</label>
+                <label htmlFor="password">Yeni Şifre</label>
                 <input
-                  type="text"
+                  type="password"
                   className="form-control"
-                  id="newpassword"
-                  name="newpassword"
+                  id="password"
+                  name="password"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.newpassword}
+                  value={values.password}
                 />
               </div>
             </div>
@@ -88,15 +89,15 @@ const ChangePassword = ({ userData }) => {
 
             <div className="col-lg-6 col-xl-6">
               <div className="my_profile_setting_input form-group">
-                <label htmlFor="retypenewpassword">Yeni Şifre Tekrarı</label>
+                <label htmlFor="confirm_password">Yeni Şifre Tekrarı</label>
                 <input
-                  type="text"
+                  type="password"
                   className="form-control"
-                  id="retypenewpassword"
-                  name="retypenewpassword"
+                  id="confirm_password"
+                  name="confirm_password"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.retypenewpassword}
+                  value={values.confirm_password}
                 />
               </div>
             </div>

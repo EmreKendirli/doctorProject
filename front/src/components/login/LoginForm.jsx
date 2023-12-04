@@ -40,21 +40,17 @@ const LoginForm = ({ isPopup }) => {
       const res = await authServices.login(values);
       await toast.dismiss(); // Dismiss the loading toast
 
-      if (res.data && res.data.token) {
-        localStorage.setItem("userToken", res.data.token);
-        console.log('giriş yapan kullancıı', res.data.user);
-        setCurrentUser(res.data.user);
+      if (res?.data && res?.data?.token) {
+        localStorage.setItem("userToken", res?.data?.token);
+        console.log('giriş yapan kullancıı', res?.data?.user);
+        setCurrentUser(res?.data?.user);
         toast.success("Giriş Başarılı");
         await router.push("/dashboard");
       } else {
-        if (res.data && res.data.error === "Passwords are not matched") {
-          toast.error("Şifreniz hatalıdır");
-        } else if (res.data && res.data.error === "There is no such user") {
-          toast.error("Böyle bir kullanıcı yoktur");
-        } else {
-          toast.error("E-posta veya şifreniz yanlıştır");
-        }
-      }
+        
+          toast.error(res?.data?.message);
+        } 
+      
     } catch (err) {
       console.log(err);
       toast.error("Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
@@ -203,9 +199,9 @@ const LoginForm = ({ isPopup }) => {
                 Beni Hatırla
               </label> */}
 
-              <Link className="btn-fpswd float-end" href="/forgot-password">
+              {/* <Link className="btn-fpswd float-end" href="/forgot-password">
                 Şifremi Unuttum?
-              </Link>
+              </Link> */}
             </div>
             {/* End .form-group */}
             {loadingStatus ? (

@@ -61,10 +61,9 @@ export default function Form2({ isPopup }) {
       password: Yup.string()
         .min(6, "En az 6 karakter gerekli.")
         .required("Şifre zorunludur."),
-      confrimPassword: Yup.string()
+      confirmPassword: Yup.string()
         .oneOf([Yup.ref("password"), null], "Şifreler uyuşmamaktadır.")
         .required("Lütfen oluşturmuş olduğunuz şifrenizi tekrar giriniz"),
-      categoryId: Yup.string().required("Kategori seçimi zorunludur."),
 
     };
 
@@ -146,7 +145,7 @@ export default function Form2({ isPopup }) {
         email: "",
         phoneNumber: "",
         password: "",
-        confrimPassword: "",
+        confirmPassword: "",
 
       }
       : {
@@ -162,7 +161,7 @@ export default function Form2({ isPopup }) {
         taxNo: "",
         taxOffice: "",
         // address: "",
-        confrimPassword: "",
+        confirmPassword: "",
       };
   return (
     <>
@@ -613,12 +612,12 @@ export default function Form2({ isPopup }) {
               <div className="form-group input-group  ">
                 <Field
                   type="password"
-                  name="confrimPassword"
+                  name="confirmPassword"
                   className="form-control"
                   required
                   placeholder="Şifre Tekrarı"
                   onBlur={handleBlur}
-                  value={values.confrimPassword}
+                  value={values.confirmPassword}
                   onChange={handleChange}
                 />
                 <div className="input-group-prepend">
@@ -627,10 +626,10 @@ export default function Form2({ isPopup }) {
                   </div>
                 </div>
               </div>
-              {touched.confrimPassword ? (
-                errors.confrimPassword ? (
+              {touched.confirmPassword ? (
+                errors.confirmPassword ? (
                   <div className="text-danger mb-3">
-                    {errors.confrimPassword}
+                    {errors.confirmPassword}
                   </div>
                 ) : (
                   <div className="text-success mb-3">

@@ -25,9 +25,9 @@ const MyAccount = ({ currentUser }) => {
 
   const [checkOfficial, setCheckOfficial] = useState(false)
   useEffect(() => {
-    if (currentUser && currentUser?.role === 'officeAdmin') {
+    if (currentUser && currentUser?.type === 'doctor') {
       setCheckOfficial(true)
-    } else if (currentUser && currentUser?.role === 'officeUser') {
+    } else if (currentUser && currentUser?.type === 'doctor') {
       setCheckOfficial(true)
     }
   }, [currentUser])
@@ -44,7 +44,7 @@ const MyAccount = ({ currentUser }) => {
 
 
   useEffect(() => {
-    currentUser && currentUser?.role === 'officeAdmin' && !profileMenuItems.find(i => i.id === 5) && setProfileMenuItems((prev) => [...prev, { id: 5, name: " Ofis Mesajları", ruterPath: "/form-mesajlari" }])
+    currentUser && currentUser?.type === 'doctor' && !profileMenuItems.find(i => i.id === 5) && setProfileMenuItems((prev) => [...prev, { id: 5, name: " Ofis Mesajları", ruterPath: "/form-mesajlari" }])
   }, [currentUser])
 
   const route = useRouter();
@@ -52,7 +52,7 @@ const MyAccount = ({ currentUser }) => {
   return (
     <>
       <div className="user_set_header">
-        {!currentUser?.advisorProfilePhoto ? (
+        {!currentUser?.image_url ? (
           <Image
             loader={imageLoader}
             width={40}
@@ -68,11 +68,11 @@ const MyAccount = ({ currentUser }) => {
             height={40}
             className="float-start"
             alt="e1.png"
-            src={currentUser?.advisorProfilePhoto}
+            src={currentUser?.image_url}
           />
         )}
         <p>
-          {currentUser?.firstAndLastName} <br />
+          {currentUser?.firstName +" "+currentUser.lastName} <br />
           <span className="address">{currentUser?.email}</span>
           <br />
           {checkOfficial && 

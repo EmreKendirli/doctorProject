@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Select from "react-select";
+import { useRouter } from "next/router";
 
 const ProfileInfoSchema = Yup.object().shape({
   phoneNumber: Yup.string().required("Telefon numarasını yazmadın"),
@@ -26,6 +27,7 @@ import masterServices from "../../../services/user.service";
 import { useDispatch } from "react-redux";
 
 const ProfileInfo = ({ userData }) => {
+  const router = useRouter();
   const [pp, setPp] = useState();
   const [officePhoto, setOfficePhoto] = useState();
   const dispatch = useDispatch()
@@ -124,10 +126,14 @@ const ProfileInfo = ({ userData }) => {
           .updateOneUserWithId(data)
           .then((res) => {
             console.log(res);
-            if (res?.succedd) {
+            if (res?.succeded) {
               toast("Güncelleme başarıyla gerçekleşti");
+              // setTimeout(() => {
+              //   router.push("/");
+              // }, 700);
             } else {
               toast(res?.response?.data?.message);
+              
             }
           })
           .catch((err) => {

@@ -2,7 +2,7 @@ import BreadCrumb from "../common/BreadCrumb";
 
 const BreadCrumbBanner = ({bgimage = "", bgimagealttext = ""}) => {
   return (
-    <section className="inner_page_breadcrumb" style={{backgroundImage:`url(${bgimage})`}}>
+    <section  className="inner_page_breadcrumb" style={{backgroundImage:`url(${bgimage})`, height:"90%"}}>
       <div className="container">
         <div className="row">
           <div className="col-xl-6">

@@ -14,6 +14,9 @@ const OfficeSchema = new Schema({
     type: String,
     trim: true,
   },
+  officeEmail: {
+    type: String,
+  },
   taxNo: {
     type: Number,
     trim: true,

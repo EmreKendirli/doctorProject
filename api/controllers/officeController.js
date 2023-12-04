@@ -23,6 +23,7 @@ const officeDetail = tryCatch (async (req,res)=>{
 
     detail.companyName = data?.companyName || ""
     detail.companyTitle = data?.companyTitle || ""
+    detail.officeEmail = data?.officeEmail || ""
     detail.taxNo = data?.taxNo || ""
     detail.taxOffice = data?.taxOffice || ""
     detail.logo_url = data?.logo_url || ""

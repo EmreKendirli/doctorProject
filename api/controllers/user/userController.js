@@ -38,6 +38,7 @@ const doctorRegister = tryCatch(async (req, res) => {
         cityId: req.body.cityId,
         districtId: req.body.districtId,
         neighbourhoodId: req.body.neighbourhoodId,
+        officeEmail:req.body.officeEmail
     })
     res.status(200).json({
         succeded: true,
@@ -286,6 +287,11 @@ const userDetail = tryCatch(async (req, res) => {
             type: "string",
             label: "Firma Ünvanı",
             value: office?.companyTitle || ""
+        }
+        detail.officeEmail = {
+            type: "string",
+            label: "Ofis Email",
+            value: office?.officeEmail || ""
         }
         detail.taxNo = {
             type: "number",

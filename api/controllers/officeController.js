@@ -10,7 +10,7 @@ const officeDetail = tryCatch (async (req,res)=>{
     .populate({ path: 'cityId', select: 'name' })
     .populate({ path: 'districtId', select: 'name' })
     .populate({ path: 'neighbourhoodId', select: 'name' })
-    const user = await User.findOne({_id:data?.ownerId})
+    const user = await User.findOne({_id:data?.ownerId}).populate("userRole")
     let detail = {}
     detail.firstName = user?.firstName || ""
     detail.lastName = user?.lastName || ""
@@ -20,6 +20,7 @@ const officeDetail = tryCatch (async (req,res)=>{
     detail.address = user?.address || ""
     detail.image_url = user?.image_url || ""
     detail.phoneNumber = user?.phoneNumber || ""
+    detail.userRole = user?.userRole?.role || ""
 
     detail.companyName = data?.companyName || ""
     detail.companyTitle = data?.companyTitle || ""

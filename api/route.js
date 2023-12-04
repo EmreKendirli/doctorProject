@@ -9,7 +9,7 @@ import UserRoute from "./routes/userRoute.js"
 import errorHandler from "./utils/errorHandler.js"
 import LocationRoute from "./routes/locationRoute.js"
 import OfficeRoute from "./routes/officeRoute.js"
-
+import AppointmentRoute from "./routes/appointmentRoute.js"
 
 const routersFunction = (app) => {
     app.use("/api/v1/content",contentRoute)
@@ -21,8 +21,8 @@ const routersFunction = (app) => {
     app.use("/api/v1/user",UserRoute)
     app.use("/api/v1/location",LocationRoute)
     app.use("/api/v1/office",OfficeRoute)
-
     app.use("/api/v1/page",pageRoute)
+    app.use("/api/v1/appointment",AppointmentRoute)
     app.use(errorHandler)
 }
 export default routersFunction;

@@ -36,12 +36,18 @@ const sendMessage = tryCatch(async (req,res)=>{
         sender:senderId,
         text: req.body.text
     })
-    let obj = saveMessage
+    let obj = {}
+    obj.conversationId = saveMessage.conversationId
+    obj.sender = saveMessage.sender
+    obj.text = saveMessage.text
+    obj.IsSeen = saveMessage.IsSeen
+    obj._id = saveMessage._id
+    obj.createdAt = saveMessage.createdAt
    
     const conversation = await Conversations.findOne({_id:conversationId})
     const receiverId = conversation.members.filter((id) => id !==String(senderId) );
+    obj.receiverId = receiverId[0]
 
-    obj.receiverId = receiverId
     socket.emit("chatUser", {
       conversationId: saveMessage.conversationId,
       senderId: saveMessage.sender,

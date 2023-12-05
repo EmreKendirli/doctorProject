@@ -25,7 +25,7 @@ const TabDetailsContent = ({ officeDataDetail }) => {
         </li>
         {/* End Description tab */}
 
-        {/* <li className="nav-item">
+        <li className="nav-item">
           <a
             className="nav-link"
             data-bs-toggle="tab"
@@ -34,9 +34,9 @@ const TabDetailsContent = ({ officeDataDetail }) => {
             aria-controls="listing"
             aria-selected="false"
           >
-            İlanlar
+            Randevu
           </a>
-        </li> */}
+        </li>
         {/* End Listing tab */}
 
         <li className="nav-item">
@@ -73,13 +73,13 @@ const TabDetailsContent = ({ officeDataDetail }) => {
         </div>
         {/* End Description details content*/}
 
-        {/* <div
+        <div
           className="tab-pane fade row pl15 pl0-1199 pr15 pr0-1199"
           id="listing"
           role="tabpanel"
         >
           <Listings officeDataDetail={officeDataDetail} />
-        </div> */}
+        </div>
         {/* End Listing details content*/}
 
         <div

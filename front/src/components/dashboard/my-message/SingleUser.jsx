@@ -5,6 +5,7 @@ import Logo from "../../../../public/assets/images/logo/logo.jpg";
 
 
 const SingleUser = ({ user, getUserMessages }) => {
+  console.log(user);
   const [users, setUsers] = useState([])
   useEffect(() => {
     setUsers(user)
@@ -22,11 +23,10 @@ const SingleUser = ({ user, getUserMessages }) => {
                 width={50}
                 height={50}
                 className="img-fluid"
-                src={user?.advisorProfilePhoto !== '' ? user?.advisorProfilePhoto : Logo}
+                src={user?.image_url !== '' ? user?.image_url : Logo}
                 alt="s1.jpg"
               />
               <div className="meta">
-                <h5 className="name">{user?.advert_info?.adverTitle || "İlan İsmi Bulunamadı"}</h5>
                 <p className="preview">{user?.userName || "Kullanıcı Adına Ulaşılamadı"}</p>
               </div>
               <div className={user?.lastMessage}>

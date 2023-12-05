@@ -21,10 +21,8 @@ const ChangePassword = ({ userData }) => {
         confirm_password: "",
       }}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
 
         masterServices.restartPassword(values).then((res) => {
-          console.log(res);
           if (res?.succedd === true) {
             toast(res?.message);
           } else {

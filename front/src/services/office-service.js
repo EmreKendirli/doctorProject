@@ -89,10 +89,10 @@ const sendOfficeContactForm = async (
     });
   return response;
 };
-const officeAdvertResponse = async (id, page, paginate) => {
+const officeAdvertResponse = async (id) => {
   const res = await axios({
     method: "GET",
-    url: `/user/officeadvert-list/${id}?page=${page}&paginate=${paginate}`,
+    url: `/appointment/doctor-hours-list/${id}`,
   }).then((response) => response.data)
     .catch((error) => {
       if (error?.response?.status == 401) {

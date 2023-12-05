@@ -12,19 +12,19 @@ const sendMessage = tryCatch(async (req,res)=>{
     if (req.body.conversationId) {
         conversationId = req.body.conversationId
     } else {
-        const recevierId = req.body.recevierId
+        const receiverId = req.body.receiverId
         let conversation = await Conversations.findOne({
             $and: [{
                     members: String(senderId)
                 },
                 {
-                    members: String(recevierId)
+                    members: String(receiverId)
                 }
             ]
         })
         if (!conversation) {
             const newConversation = await Conversations.create({
-                members: [String(senderId), String(recevierId)]
+                members: [String(senderId), String(receiverId)]
             })
             conversationId = newConversation._id
         }else{

@@ -15,16 +15,16 @@ const sendMessage = tryCatch(async (req,res)=>{
         const recevierId = req.body.recevierId
         let conversation = await Conversations.findOne({
             $and: [{
-                    members: senderId
+                    members: String(senderId)
                 },
                 {
-                    members: recevierId
+                    members: String(recevierId)
                 }
             ]
         })
         if (!conversation) {
             const newConversation = await Conversations.create({
-                members: [senderId, recevierId]
+                members: [String(senderId), String(recevierId)]
             })
             conversationId = newConversation._id
         }else{

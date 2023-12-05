@@ -41,10 +41,9 @@ const resetPasswordDataValidate = [checkSchema({
         const msg = [];
         for (let i = 0; i < errors.errors.length; i++) {
             msg.push(errors.errors[i].msg)
-           
         }
         res.status(422).json({
-            succedd:false,
+            succeded:false,
             msg
         })
     }

@@ -37,9 +37,30 @@ const bringPatientActiveAppointments = tryCatch(async (req,res)=>{
         data
     })
 })
+const doctorAppointmentHours = tryCatch (async (req,res)=>{
+    const id = req.params.id
+
+    const currentDate  = new Date();
+    let filter = {
+        doctorId:id,
+        dateTime: { $gt: currentDate }
+    }
+    const data = await Appointment.find(filter)
+    let dateTimeData = []
+    if (data.length>0) {
+        for(const i of data){
+            dateTimeData.push(i.dateTime)
+        }
+    }
+    res.status(200).json({
+        succeded:true,
+        data:dateTimeData
+    })
+})
 const Appointments = {
     create,
     bringDoctorActiveAppointments,
-    bringPatientActiveAppointments
+    bringPatientActiveAppointments,
+    doctorAppointmentHours
 }
 export default Appointments

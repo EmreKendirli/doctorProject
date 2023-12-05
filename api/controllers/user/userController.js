@@ -441,13 +441,13 @@ const userPasswordUpdate = tryCatch(async(req,res)=>{
         })
 
         res.status(200).json({
-            succedd: true,
+            succeded: true,
             message: 'Şifreniz başarılı bir şekilde değiştirildi.'
         })
     } else {
 
         res.status(422).json({
-            succedd: false,
+            succeded: false,
             message: 'Mevcut şifrenizi kontrol ediniz'
         })
     }

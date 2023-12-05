@@ -8,4 +8,6 @@ router.route("/").post(Auth.authenticatePatientAPIToken,FormData.uploadSettingIm
 router.route("/doctor-list").get(Auth.authenticateUserManageAPIToken,Appointment.bringDoctorActiveAppointments)
 router.route("/patient-list").get(Auth.authenticatePatientAPIToken,Appointment.bringDoctorActiveAppointments)
 
+router.route("/doctor-hours-list/:id").get(Appointment.doctorAppointmentHours)
+
 export default router

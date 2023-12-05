@@ -10,8 +10,9 @@ import errorHandler from "./utils/errorHandler.js"
 import LocationRoute from "./routes/locationRoute.js"
 import OfficeRoute from "./routes/officeRoute.js"
 import AppointmentRoute from "./routes/appointmentRoute.js"
-
+import chatRoute from './routes/chatRoute.js'
 const routersFunction = (app) => {
+    
     app.use("/api/v1/content",contentRoute)
     app.use("/api/v1/blog",blogRoute)
     app.use("/api/v1/faqroute",faqRoute)
@@ -23,6 +24,8 @@ const routersFunction = (app) => {
     app.use("/api/v1/office",OfficeRoute)
     app.use("/api/v1/page",pageRoute)
     app.use("/api/v1/appointment",AppointmentRoute)
+    app.use("/api/v1/chat",chatRoute)
+
     app.use(errorHandler)
 }
 export default routersFunction;

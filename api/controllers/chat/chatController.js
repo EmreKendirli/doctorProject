@@ -36,8 +36,12 @@ const sendMessage = tryCatch(async (req,res)=>{
         sender:senderId,
         text: req.body.text
     })
+    let obj = saveMessage
+   
     const conversation = await Conversations.findOne({_id:conversationId})
     const receiverId = conversation.members.filter((id) => id !==String(senderId) );
+
+    obj.receiverId = receiverId
     socket.emit("chatUser", {
       conversationId: saveMessage.conversationId,
       senderId: saveMessage.sender,
@@ -48,7 +52,7 @@ const sendMessage = tryCatch(async (req,res)=>{
     });
     res.status(200).json({
         succeded:true,
-        data:saveMessage,
+        data:obj,
         message:"Mesaj Başarılı bir şekilde gönderildi"
     })
 

@@ -39,7 +39,7 @@ const MyAccount = ({ currentUser }) => {
     { id: 1, name: " İlanlarım", ruterPath: "/ilanlarim" },
     { id: 2, name: " Profilim", ruterPath: "/profilim" },
     { id: 3, name: " Favorilerim", ruterPath: "/favori-ilanlarim" },
-    { id: 4, name: " Mesajlarım", ruterPath: "/ilan-mesajlari" },
+    { id: 4, name: " Mesajlarım", ruterPath: "/mesajlarim" },
   ])
 
 

@@ -5,7 +5,6 @@ import Logo from "../../../../public/assets/images/logo/logo.jpg";
 
 
 const SingleUser = ({ user, getUserMessages }) => {
-  console.log(user);
   const [users, setUsers] = useState([])
   useEffect(() => {
     setUsers(user)

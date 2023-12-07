@@ -123,7 +123,13 @@ const userLogin = tryCatch(async (req, res) => {
             },
         });
     } else {
-        throw new AppError("Şifre Hatalı", 401);
+        res.status(200).json({
+            succeded: true,
+            data: {
+               message: "Şifreniz yanlış",
+                // message: i18n.translate("USERS.USER_SUCCESS_LOGIN", lang),
+            },
+        });
     }
 });
 const createToken = async (id) => {

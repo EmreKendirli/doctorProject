@@ -16,6 +16,23 @@ const officeAllData = async () => {
     });
   return res;
 };
+const appointmentOffice = async (data) => {
+  const res = await axios({
+    method: "POST",
+    url: `/appointment`,
+    data
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error)
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+  return res;
+}
 
 const officeResponse = async (page, paginate) => {
   const res = await axios({
@@ -134,7 +151,8 @@ const officeData = {
   officeDetailTeam,
   sendOfficeContactForm,
   officeAdvertResponse,
-  filterOfficeData
+  filterOfficeData,
+  appointmentOffice
 };
 
 export default officeData;

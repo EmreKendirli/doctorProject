@@ -174,8 +174,8 @@ const ContactWithAgent = ({id}) => {
       <div></div>
       <div></div>
       <Link
-              href={`/ilana-yaz/${id}`}
-              className={route.pathname === `/ilana-yaz/${id}` ? "ui-active" : undefined}
+              href={`/doktora-yaz/${id}`}
+              className={route.pathname === `/doktora-yaz/${id}` ? "ui-active" : undefined}
             >
               Mesajx
             </Link>

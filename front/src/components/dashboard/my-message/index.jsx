@@ -10,7 +10,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 
 const Index = ({ id }) => {
-  console.log("id", id);
 
   //id && post işlemi yapmak gerek // advertId ile post yapcaz galiba
   const [search, setSearch] = useState("");
@@ -25,14 +24,12 @@ const Index = ({ id }) => {
 
   const getConversationList = () => {
     chatMessageServices.getUsers(search).then((res) => {
-      console.log(res);
       if(res?.data){
         setUser(res?.data)
       }
 
     })
   } 
-  console.log("messages", messages);
   // useEffect(() => {
 
   //   if(id){
@@ -96,11 +93,9 @@ const Index = ({ id }) => {
 
   const addNewMessageToSelUser = (data) => { 
     let msgs = []
-    console.log("data", data);
 
     console.log(senderId,data?.message?.senderId,conversationId,data?.message?.conversationId);
     if (data?.message?.senderId === senderId && data?.message?.conversationId === conversationId &&  (msgs?.length > 0 ? (msgs[0]?._id !== data?.message?._id) : (true))) {
-      console.log("efaefaef");
       let newMessage = {
         _id: data?.message?._id || "",
         text: data?.message?.text || "",
@@ -133,12 +128,10 @@ const Index = ({ id }) => {
 
     socket?.on('connect', () => {
 
-      console.log('socket connected');
     });
 
     socket?.on("chat", (data) => {
 
-      console.log("data", data);
       if (data && data?.message) {
         setIncomingMsg(data)
       }

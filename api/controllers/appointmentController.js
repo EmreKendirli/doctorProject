@@ -62,10 +62,18 @@ const doctorAppointmentHours = tryCatch (async (req,res)=>{
         data:formattedDates
     })
 })
+const deleteAppointment = tryCatch(async (req,res)=>{
+    const id = req.params.id
+    const remove = await Appointment.findByIdAndDelete(id)
+    res.status(200).json({
+        succeded:true,
+    })
+})
 const Appointments = {
     create,
     bringDoctorActiveAppointments,
     bringPatientActiveAppointments,
-    doctorAppointmentHours
+    doctorAppointmentHours,
+    deleteAppointment
 }
 export default Appointments

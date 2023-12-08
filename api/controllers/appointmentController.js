@@ -52,9 +52,14 @@ const doctorAppointmentHours = tryCatch (async (req,res)=>{
             dateTimeData.push(i.dateTime)
         }
     }
+    const formattedDates = dateTimeData.map(originalDate => {
+        const dateObject = new Date(originalDate);
+        const formattedDate = dateObject.toISOString().slice(0, 16);
+        return formattedDate;
+      });
     res.status(200).json({
         succeded:true,
-        data:dateTimeData
+        data:formattedDates
     })
 })
 const Appointments = {

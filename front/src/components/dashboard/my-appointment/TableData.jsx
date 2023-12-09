@@ -18,7 +18,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
   const [popupStatus, setPopupStatus] = useState(false)
   const [messageStatus, setRejectMessageStatus] = useState(false)
   // const [modal, setModal] = useState(false)
-  const [advertId, setAdvertId] = useState("")
+  const [theadContent, setTheadContent] = useState([]);
   const [message, setMessage] = useState([])
 
   const currentUser = getCurrentUser();
@@ -41,10 +41,11 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
       })
       .catch((err) => console.log(err));
   };
-  const getAllBlogs = async () => {
+
+  const getDoctorAppointmentList = async () => {
     setLoadingStatus(true)
     const res = advertServices
-      .getAllBlogList(sorting, page, searchKey)
+      .getDoctorAppointmentList()
       .then((res) => {
         console.log(res);
         setLoadingStatus(false)
@@ -81,24 +82,41 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
 
 
   useEffect(() => {
-    getAllBlogs()
-    getAppointmentList()
+    tableList()
+    if (currentUser?.type === "user") {
+      getAppointmentList()
+    }
+    else {
+      getDoctorAppointmentList()
+    }
   }, [sorting, searchKey, page])
 
-  let theadConent = [
-    "Blog Başlığı",
-    "Kısa Açıklama",
-    "Yayın Durumu",
-    "Eklenme Tarihi",
-    "İşlemler",
-  ];
+  const tableList = () => {
+    let content = [];
+    if (currentUser.type === "user") {
+      content = [
+        "Doktor İsmi",
+        "Doktor Email",
+        "Randevu Tarihi",
+        "İşlemler"
+      ];
+    } else {
+      content = [
+        "Hasta İsmi",
+        "Hasta Email",
+        "Randevu Tarihi",
+        "İşlemler"
+      ];
+    }
+    setTheadContent(content)
+  }
 
   return (
     <>
       <table className="table">
         <thead className="thead-light">
           <tr>
-            {theadConent.map((value, i) => (
+            {theadContent?.map((value, i) => (
               <th scope="col" key={i}>
                 <span className={i > 0 ? "d-flex justify-content-center" : ""} style={{ fontSize: 15 }}>{value}</span>
               </th>
@@ -111,94 +129,48 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
             myProperties?.length > 0 &&
             myProperties?.map((item, i) => (
               <tr key={i}>
-                <td scope="row">
+                <td>
                   <div className="feat_property list favorite_page style2">
-                    <div className="thumb">
-                      <Image
-                        loader={imageLoader}
-                        width={150}
-                        height={220}
-                        className="img-whp cover"
-                        src={
-                          item?.coverPhoto ||
-                          "/assets/images/logo/logo-short.png"
-                        }
-                        alt='Blog'
-                      />
-                      <div
-                        className=""
-                        style={{
-                          position: "absolute",
-                          bottom: -5,
-                          left: 10,
-                        }}
-                      >
-                      </div>
-                     
-                    </div>
-                    {/* <div className="details">
-                      <div className="tc_content pt-1">
-
-                        <p>
-                          İlan No : {item?.advertDetail?.advertNo?.value}
-                        </p>
-                        {item?.advertDetail?.isEncrypted?.value &&
-                          <p>
-                            İlan Şifresi: {item?.advertDetail?.advertPassword?.value}
-                          </p>
-                        }
-                        <p>
-                          İlan Fiyatı : {currencyFormatter.format(item?.advertDetail?.advertPrice?.value, { thousand: '.', precision: 0 }) || "-"} TL
-                        </p>
-                        <p>
-                          İlan Tipi : {item?.advertDetail?.advertTypeName?.options}
-                        </p>
-                        <p>
-                          İlan Ekleyen : {item?.advertDetail?.ownerName?.value}
-                        </p>
-                        <p>
-                          İlan Adresi : {createAddresStr("", item?.advertDetail?.city?.options, item?.advertDetail?.district?.options, item?.advertDetail?.neighbourhood?.options)}
-                        </p>
-
-                      </div>
-                    </div> */}
+                    <span className="d-flex justify-content-center">
+                      <span className="status_tag ">
+                        {currentUser.type === "user" ? (item?.doctorId?.firstName + " " + item?.doctorId?.lastName) : (item?.patientId?.firstName + " " + item?.patientId?.lastName)}
+                      </span>
+                    </span>
                   </div>
                 </td>
 
                 {/* End td */}
 
                 <td>
+
                   <span className="d-flex justify-content-center">
                     <span className="status_tag ">
-                      {item?.short_description}
+                      {currentUser.type === "user" ? (item?.doctorId?.email) : (item?.patientId?.email)}
                     </span>
                   </span>
+
                 </td>
                 {/* End td */}
 
-               
+
                 {/* End td */}
 
-                <td>
-                  <span className="d-flex justify-content-center">
-                    <span className="status_tag badge">
-                      {item?.isStatus ? "Yayında" : "Yayında Değil"}
-                    </span>
-                  </span>
-                </td>
+
 
                 <td>
-                  <span className="h5 d-flex justify-content-center">
-                    {new Date(
-                      item?.createdAt
-                    ).toLocaleDateString("tr-TR")}
-                  </span>
+                  <ul className="view_edit_delete_list mb0 d-flex flex-row justify-content-center">
+
+                    <span className="h5 d-flex justify-content-center">
+                    {new Date(item?.dateTime).toLocaleString("tr-TR", { dateStyle: "full", timeStyle: "short" })}
+
+                    </span>
+                  </ul>
                 </td>
                 {/* End td */}
 
                 <td>
                   <ul className="view_edit_delete_list mb0 d-flex flex-row justify-content-center">
-                 
+
                     {item?.advertDetail?.rejectedAdvertStatus?.value &&
 
                       <li
@@ -223,7 +195,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                         </a>
                       </li>
                     }
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -283,9 +255,9 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                           </svg>
                         }
                       </a>
-                    </li>
+                    </li> */}
 
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -296,50 +268,52 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M10.9436 1.25H13.0564C14.8942 1.24998 16.3498 1.24997 17.489 1.40314C18.6614 1.56076 19.6104 1.89288 20.3588 2.64124C20.6516 2.93414 20.6516 3.40901 20.3588 3.7019C20.0659 3.9948 19.591 3.9948 19.2981 3.7019C18.8749 3.27869 18.2952 3.02502 17.2892 2.88976C16.2615 2.75159 14.9068 2.75 13 2.75H11C9.09318 2.75 7.73851 2.75159 6.71085 2.88976C5.70476 3.02502 5.12511 3.27869 4.7019 3.7019C4.27869 4.12511 4.02502 4.70476 3.88976 5.71085C3.75159 6.73851 3.75 8.09318 3.75 10V14C3.75 15.9068 3.75159 17.2615 3.88976 18.2892C4.02502 19.2952 4.27869 19.8749 4.7019 20.2981C5.12511 20.7213 5.70476 20.975 6.71085 21.1102C7.73851 21.2484 9.09318 21.25 11 21.25H13C14.9068 21.25 16.2615 21.2484 17.2892 21.1102C18.2952 20.975 18.8749 20.7213 19.2981 20.2981C19.994 19.6022 20.2048 18.5208 20.2414 15.9892C20.2474 15.575 20.588 15.2441 21.0022 15.2501C21.4163 15.2561 21.7472 15.5967 21.7412 16.0108C21.7061 18.4383 21.549 20.1685 20.3588 21.3588C19.6104 22.1071 18.6614 22.4392 17.489 22.5969C16.3498 22.75 14.8942 22.75 13.0564 22.75H10.9436C9.10583 22.75 7.65019 22.75 6.51098 22.5969C5.33856 22.4392 4.38961 22.1071 3.64124 21.3588C2.89288 20.6104 2.56076 19.6614 2.40314 18.489C2.24997 17.3498 2.24998 15.8942 2.25 14.0564V9.94358C2.24998 8.10582 2.24997 6.65019 2.40314 5.51098C2.56076 4.33856 2.89288 3.38961 3.64124 2.64124C4.38961 1.89288 5.33856 1.56076 6.51098 1.40314C7.65019 1.24997 9.10582 1.24998 10.9436 1.25ZM18.1131 7.04556C19.1739 5.98481 20.8937 5.98481 21.9544 7.04556C23.0152 8.1063 23.0152 9.82611 21.9544 10.8869L17.1991 15.6422C16.9404 15.901 16.7654 16.076 16.5693 16.2289C16.3387 16.4088 16.0892 16.563 15.8252 16.6889C15.6007 16.7958 15.3659 16.8741 15.0187 16.9897L12.9351 17.6843C12.4751 17.8376 11.9679 17.7179 11.625 17.375C11.2821 17.0321 11.1624 16.5249 11.3157 16.0649L11.9963 14.0232C12.001 14.0091 12.0056 13.9951 12.0102 13.9813C12.1259 13.6342 12.2042 13.3993 12.3111 13.1748C12.437 12.9108 12.5912 12.6613 12.7711 12.4307C12.924 12.2346 13.099 12.0596 13.3578 11.8009C13.3681 11.7906 13.3785 11.7802 13.3891 11.7696L18.1131 7.04556ZM20.8938 8.10622C20.4188 7.63126 19.6488 7.63126 19.1738 8.10622L18.992 8.288C19.0019 8.32149 19.0132 8.3571 19.0262 8.39452C19.1202 8.66565 19.2988 9.02427 19.6372 9.36276C19.9757 9.70125 20.3343 9.87975 20.6055 9.97382C20.6429 9.9868 20.6785 9.99812 20.712 10.008L20.8938 9.8262C21.3687 9.35124 21.3687 8.58118 20.8938 8.10622ZM19.5664 11.1536C19.2485 10.9866 18.9053 10.7521 18.5766 10.4234C18.2479 10.0947 18.0134 9.75146 17.8464 9.43357L14.4497 12.8303C14.1487 13.1314 14.043 13.2388 13.9538 13.3532C13.841 13.4979 13.7442 13.6545 13.6652 13.8202C13.6028 13.9511 13.5539 14.0936 13.4193 14.4976L13.019 15.6985L13.3015 15.981L14.5024 15.5807C14.9064 15.4461 15.0489 15.3972 15.1798 15.3348C15.3455 15.2558 15.5021 15.159 15.6468 15.0462C15.7612 14.957 15.8686 14.8513 16.1697 14.5503L19.5664 11.1536ZM7.25 9C7.25 8.58579 7.58579 8.25 8 8.25H14.5C14.9142 8.25 15.25 8.58579 15.25 9C15.25 9.41421 14.9142 9.75 14.5 9.75H8C7.58579 9.75 7.25 9.41421 7.25 9ZM7.25 13C7.25 12.5858 7.58579 12.25 8 12.25H10.5C10.9142 12.25 11.25 12.5858 11.25 13C11.25 13.4142 10.9142 13.75 10.5 13.75H8C7.58579 13.75 7.25 13.4142 7.25 13ZM7.25 17C7.25 16.5858 7.58579 16.25 8 16.25H9.5C9.91421 16.25 10.25 16.5858 10.25 17C10.25 17.4142 9.91421 17.75 9.5 17.75H8C7.58579 17.75 7.25 17.4142 7.25 17Z" fill="#1C274C" />
                         </svg>
                       </a>
-                    </li>
-                    {/* End li */}
-
-                  
+                    </li> */}
                     {/* End li */}
 
 
-                    <li
-                      className="list-inline-item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Sil"
-                      onClick={() => {
-                        Swal.fire({
-                          title: "Blog kaydını silmek istediğinize emin misiniz?",
-                          text: "Bu işlemi geri alamazsınız!",
-                          showCancelButton: true,
-                          confirmButtonColor: "#3085d6",
-                          cancelButtonColor: "#d33",
-                          confirmButtonText: "Sil",
-                          cancelButtonText: "İptal",
-                        }).then(async (result) => {
-                          if (result.isConfirmed) {
-                            await advertServices.deleteBlog(item?._id);
-                            getAllBlogs();
-                            Swal.fire({
-                              title: "Başarılı!",
-                              text: "Silme işlemi başarılı.",
-                              icon: "success",
-                              confirmButtonText: "Kapat",
-                            });
-                          }
-                        });
-                      }}
-                    >
-                      <a href="#">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff5a5f" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M10.3094 2.25002H13.6908C13.9072 2.24988 14.0957 2.24976 14.2737 2.27819C14.977 2.39049 15.5856 2.82915 15.9146 3.46084C15.9978 3.62073 16.0573 3.79961 16.1256 4.00494L16.2373 4.33984C16.2562 4.39653 16.2616 4.41258 16.2661 4.42522C16.4413 4.90933 16.8953 5.23659 17.4099 5.24964C17.4235 5.24998 17.44 5.25004 17.5001 5.25004H20.5001C20.9143 5.25004 21.2501 5.58582 21.2501 6.00004C21.2501 6.41425 20.9143 6.75004 20.5001 6.75004H3.5C3.08579 6.75004 2.75 6.41425 2.75 6.00004C2.75 5.58582 3.08579 5.25004 3.5 5.25004H6.50008C6.56013 5.25004 6.5767 5.24998 6.59023 5.24964C7.10488 5.23659 7.55891 4.90936 7.73402 4.42524C7.73863 4.41251 7.74392 4.39681 7.76291 4.33984L7.87452 4.00496C7.94281 3.79964 8.00233 3.62073 8.08559 3.46084C8.41453 2.82915 9.02313 2.39049 9.72643 2.27819C9.90445 2.24976 10.093 2.24988 10.3094 2.25002ZM9.00815 5.25004C9.05966 5.14902 9.10531 5.04404 9.14458 4.93548C9.1565 4.90251 9.1682 4.86742 9.18322 4.82234L9.28302 4.52292C9.37419 4.24941 9.39519 4.19363 9.41601 4.15364C9.52566 3.94307 9.72853 3.79686 9.96296 3.75942C10.0075 3.75231 10.067 3.75004 10.3553 3.75004H13.6448C13.9331 3.75004 13.9927 3.75231 14.0372 3.75942C14.2716 3.79686 14.4745 3.94307 14.5842 4.15364C14.605 4.19363 14.626 4.2494 14.7171 4.52292L14.8169 4.82216L14.8556 4.9355C14.8949 5.04405 14.9405 5.14902 14.992 5.25004H9.00815Z" fill="#ff5a5f" />
-                          <path d="M5.91509 8.45015C5.88754 8.03685 5.53016 7.72415 5.11686 7.7517C4.70357 7.77925 4.39086 8.13663 4.41841 8.54993L4.88186 15.5017C4.96736 16.7844 5.03642 17.8205 5.19839 18.6336C5.36679 19.4789 5.65321 20.185 6.2448 20.7385C6.8364 21.2919 7.55995 21.5308 8.4146 21.6425C9.23662 21.7501 10.275 21.7501 11.5606 21.75H12.4395C13.7251 21.7501 14.7635 21.7501 15.5856 21.6425C16.4402 21.5308 17.1638 21.2919 17.7554 20.7385C18.347 20.185 18.6334 19.4789 18.8018 18.6336C18.9638 17.8206 19.0328 16.7844 19.1183 15.5017L19.5818 8.54993C19.6093 8.13663 19.2966 7.77925 18.8833 7.7517C18.47 7.72415 18.1126 8.03685 18.0851 8.45015L17.6251 15.3493C17.5353 16.6971 17.4713 17.6349 17.3307 18.3406C17.1943 19.025 17.004 19.3873 16.7306 19.6431C16.4572 19.8989 16.083 20.0647 15.391 20.1552C14.6776 20.2485 13.7376 20.25 12.3868 20.25H11.6134C10.2626 20.25 9.32255 20.2485 8.60915 20.1552C7.91715 20.0647 7.54299 19.8989 7.26958 19.6431C6.99617 19.3873 6.80583 19.025 6.66948 18.3406C6.52892 17.6349 6.46489 16.6971 6.37503 15.3493L5.91509 8.45015Z" fill="#ff5a5f" />
-                          <path d="M9.42546 10.2538C9.83762 10.2125 10.2052 10.5133 10.2464 10.9254L10.7464 15.9254C10.7876 16.3376 10.4869 16.7051 10.0747 16.7463C9.66256 16.7875 9.29503 16.4868 9.25381 16.0747L8.75381 11.0747C8.7126 10.6625 9.01331 10.295 9.42546 10.2538Z" fill="#ff5a5f" />
-                          <path d="M14.5747 10.2538C14.9869 10.295 15.2876 10.6625 15.2464 11.0747L14.7464 16.0747C14.7052 16.4868 14.3376 16.7875 13.9255 16.7463C13.5133 16.7051 13.2126 16.3376 13.2538 15.9254L13.7538 10.9254C13.795 10.5133 14.1626 10.2125 14.5747 10.2538Z" fill="#ff5a5f" />
-                        </svg>
-                      </a>
-                    </li>
+                    {/* End li */}
+
+
+                   
+                      <li
+                        className="list-inline-item"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Sil"
+                        onClick={() => {
+                          Swal.fire({
+                            title: "Randevu kaydını silmek istediğinize emin misiniz?",
+                            text: "Bu işlemi geri alamazsınız!",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Sil",
+                            cancelButtonText: "İptal",
+                          }).then(async (result) => {
+                            if (result.isConfirmed) {
+                              await advertServices.deleteAppointment(item?._id);
+                              currentUser.type === "user" ? getAppointmentList() : getDoctorAppointmentList()
+                              getAllBlogs();
+                              Swal.fire({
+                                title: "Başarılı!",
+                                text: "Silme işlemi başarılı.",
+                                icon: "success",
+                                confirmButtonText: "Kapat",
+                              });
+                            }
+                          });
+                        }}
+                      >
+                        <a href="#">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff5a5f" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M10.3094 2.25002H13.6908C13.9072 2.24988 14.0957 2.24976 14.2737 2.27819C14.977 2.39049 15.5856 2.82915 15.9146 3.46084C15.9978 3.62073 16.0573 3.79961 16.1256 4.00494L16.2373 4.33984C16.2562 4.39653 16.2616 4.41258 16.2661 4.42522C16.4413 4.90933 16.8953 5.23659 17.4099 5.24964C17.4235 5.24998 17.44 5.25004 17.5001 5.25004H20.5001C20.9143 5.25004 21.2501 5.58582 21.2501 6.00004C21.2501 6.41425 20.9143 6.75004 20.5001 6.75004H3.5C3.08579 6.75004 2.75 6.41425 2.75 6.00004C2.75 5.58582 3.08579 5.25004 3.5 5.25004H6.50008C6.56013 5.25004 6.5767 5.24998 6.59023 5.24964C7.10488 5.23659 7.55891 4.90936 7.73402 4.42524C7.73863 4.41251 7.74392 4.39681 7.76291 4.33984L7.87452 4.00496C7.94281 3.79964 8.00233 3.62073 8.08559 3.46084C8.41453 2.82915 9.02313 2.39049 9.72643 2.27819C9.90445 2.24976 10.093 2.24988 10.3094 2.25002ZM9.00815 5.25004C9.05966 5.14902 9.10531 5.04404 9.14458 4.93548C9.1565 4.90251 9.1682 4.86742 9.18322 4.82234L9.28302 4.52292C9.37419 4.24941 9.39519 4.19363 9.41601 4.15364C9.52566 3.94307 9.72853 3.79686 9.96296 3.75942C10.0075 3.75231 10.067 3.75004 10.3553 3.75004H13.6448C13.9331 3.75004 13.9927 3.75231 14.0372 3.75942C14.2716 3.79686 14.4745 3.94307 14.5842 4.15364C14.605 4.19363 14.626 4.2494 14.7171 4.52292L14.8169 4.82216L14.8556 4.9355C14.8949 5.04405 14.9405 5.14902 14.992 5.25004H9.00815Z" fill="#ff5a5f" />
+                            <path d="M5.91509 8.45015C5.88754 8.03685 5.53016 7.72415 5.11686 7.7517C4.70357 7.77925 4.39086 8.13663 4.41841 8.54993L4.88186 15.5017C4.96736 16.7844 5.03642 17.8205 5.19839 18.6336C5.36679 19.4789 5.65321 20.185 6.2448 20.7385C6.8364 21.2919 7.55995 21.5308 8.4146 21.6425C9.23662 21.7501 10.275 21.7501 11.5606 21.75H12.4395C13.7251 21.7501 14.7635 21.7501 15.5856 21.6425C16.4402 21.5308 17.1638 21.2919 17.7554 20.7385C18.347 20.185 18.6334 19.4789 18.8018 18.6336C18.9638 17.8206 19.0328 16.7844 19.1183 15.5017L19.5818 8.54993C19.6093 8.13663 19.2966 7.77925 18.8833 7.7517C18.47 7.72415 18.1126 8.03685 18.0851 8.45015L17.6251 15.3493C17.5353 16.6971 17.4713 17.6349 17.3307 18.3406C17.1943 19.025 17.004 19.3873 16.7306 19.6431C16.4572 19.8989 16.083 20.0647 15.391 20.1552C14.6776 20.2485 13.7376 20.25 12.3868 20.25H11.6134C10.2626 20.25 9.32255 20.2485 8.60915 20.1552C7.91715 20.0647 7.54299 19.8989 7.26958 19.6431C6.99617 19.3873 6.80583 19.025 6.66948 18.3406C6.52892 17.6349 6.46489 16.6971 6.37503 15.3493L5.91509 8.45015Z" fill="#ff5a5f" />
+                            <path d="M9.42546 10.2538C9.83762 10.2125 10.2052 10.5133 10.2464 10.9254L10.7464 15.9254C10.7876 16.3376 10.4869 16.7051 10.0747 16.7463C9.66256 16.7875 9.29503 16.4868 9.25381 16.0747L8.75381 11.0747C8.7126 10.6625 9.01331 10.295 9.42546 10.2538Z" fill="#ff5a5f" />
+                            <path d="M14.5747 10.2538C14.9869 10.295 15.2876 10.6625 15.2464 11.0747L14.7464 16.0747C14.7052 16.4868 14.3376 16.7875 13.9255 16.7463C13.5133 16.7051 13.2126 16.3376 13.2538 15.9254L13.7538 10.9254C13.795 10.5133 14.1626 10.2125 14.5747 10.2538Z" fill="#ff5a5f" />
+                          </svg>
+                        </a>
+                      </li>
                   </ul>
                 </td>
                 {/* End td */}

@@ -301,11 +301,42 @@ const deleteBlog = async (id) => {
     });
   return res;
 };
+const deleteAppointment = async (id) => {
+  const res = await axios({
+    method: "DELETE",
+    url: `/appointment/${id}`,
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+  return res;
+};
 
 const getAppointmentList = async () => {
   const res = await axios({
     method: "GET",
     url: `/appointment/patient-list`,
+  })
+    .then((res) => res.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
+
+  return res;
+};
+const getDoctorAppointmentList = async () => {
+  const res = await axios({
+    method: "GET",
+    url: `/appointment/doctor-list`,
   })
     .then((res) => res.data)
     .catch((error) => {
@@ -658,6 +689,8 @@ const advertServices = {
   blogToggleStatus,//
   deleteBlog,//
   getAppointmentList,//
+  getDoctorAppointmentList,//
+  deleteAppointment,//
   deleteAdvert,
   getAdvertTypes,
   getProcessType,

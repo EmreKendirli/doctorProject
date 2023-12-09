@@ -45,9 +45,10 @@ const Listings = (officeDataDetail) => {
   const [officeAdvert, setOfficeAdvert] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
   const [excludedTimes, setExcludedTimes] = useState([]);
-  const [totalPages, setTotalPages] = useState(1); 
+  const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [changeDate, setChangeDate] = useState(null);
   const [change, setChange] = useState(null);
   const paginate = 4;
   const dateList = async (id) => {
@@ -57,7 +58,7 @@ const Listings = (officeDataDetail) => {
       // toast.success("Randevu tarihi başarıyla alındı."); 
     }).catch((error) => {
       console.log(error);
-      // toast.error("Randevu tarihi alınamadı.");
+      toast.error("Bir Sorun Oluştu.");
     })
   }
 
@@ -65,50 +66,31 @@ const Listings = (officeDataDetail) => {
     if (officeDataDetail?.officeDataDetail) {
       dateList(officeDataDetail?.officeDataDetail?.userId)
     }
-  }, [officeDataDetail?.officeDataDetail,change]);
+  }, [officeDataDetail?.officeDataDetail, change]);
 
 
 
-  // Tarih seçildiğinde yapılacak işlemler
-
-  const apiDatesAndTimes = [
-    '2023-12-11T09:00', '2023-12-08T14:30', '2023-12-20T16:40' // Örnek tarih ve saatler
-  ];
-  function convertAPIDateToDatePickerFormat(apiDate) {
-    // API'den gelen tarih stringini Date nesnesine dönüştürme
-    const date = new Date(apiDate[0]);
-  
-    // Date nesnesini istenen formata dönüştürme 
-    // const formattedDate = `${('0' + date.getDate()).slice(-2)}/${
-    //   ('0' + (date.getMonth() + 1)).slice(-2)
-    // }/${date.getFullYear()} ${('0' + date.getHours()).slice(-2)}:${(
-    //   '0' + date.getMinutes()
-    // ).slice(-2)}`;
-  
-    // return formattedDate;
-  }
   const handleDateChange = (date) => {
-    console.log(date);
-    const newDate = new Date(date.getTime() + 3 * 60 * 60 * 1000)
-    console.log(newDate);
-    setSelectedDate(newDate);
+    if (date) {
+      setSelectedDate(date);
+      const newDate = new Date(date.getTime() + 3 * 60 * 60 * 1000)
+      setChangeDate(newDate);
+    }
   };
-  const handleAppointment = async() => {
-    if (selectedDate) {
+
+  const handleAppointment = async () => {
+    if (changeDate) {
       const obj = {
-        doktorId: officeDataDetail?.officeDataDetail?.userId,
-        dateTime: selectedDate
-      }; 
-      console.log(obj);
-      // Randevu alınabilir
+        doctorId: officeDataDetail?.officeDataDetail?.userId,
+        dateTime: changeDate
+      };
       await officeData
         .appointmentOffice(obj)
         .then((data) => {
-          console.log(data);
           if (data?.succeded === true) {
-            console.log(data?.message);
             toast.success(data?.message);
             setChange(data?.data?.dateTime);
+             router.push("/randevu");
           } else {
             toast.error(data?.message);
           }
@@ -120,46 +102,11 @@ const Listings = (officeDataDetail) => {
     } else {
       toast.error("Randevu tarihi seçilmedi.");
     }
-  
   };
-  
 
-  // const handleAppointment = async () => {
-
-  //   if (selectedDate) {
-  //     const obj = {
-  //       doktorId: officeDataDetail?.officeDataDetail?.userId,
-  //       dateTime: selectedDate
-  //     }
-  //     // Randevu alınabilir
-  //     await officeData.appointmentOffice(obj).then((data) => {
-  //       console.log(data);
-  //       if(data?.succeded ===true){
-  //         console.log(data?.message);
-  //       toast.success(data?.message);
-  //       setChange(data?.data?.dateTime);
-  //     }
-        
-  //       else{
-  //         toast.error(data?.message);
-  //       }
-  //     }).catch((error) => {
-  //       console.log(error);
-  //       toast.error("Randevu tarihi alınamadı.");
-  //     })
-  //   } else {
-  //     toast.error("Randevu tarihi seçilmedi.");
-  //   }
-
-
-  //   // Randevu alma işlemleri burada yapılır
-  // };
   return (
-
-
     <>
-
-<Toaster
+      <Toaster
         position="top-right"
         containerClassName=""
         containerStyle={{
@@ -197,135 +144,6 @@ const Listings = (officeDataDetail) => {
 
       <div className="row">
         <div className="col-lg-12 mt20">
-
-          {/* <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              showTimeSelect
-              timeIntervals={10}
-              dateFormat="dd/MM/yyyy HH:mm" // Tarih ve saat formatı
-              timeFormat="HH:mm" // Sadece saat formatı
-              minDate={new Date()} // Geçmiş tarihlerin seçilmesini engeller
-              minTime={new Date(0, 0, 0, 9, 0)} // 09:00
-              maxTime={new Date(0, 0, 0, 18, 0)} // 18:00
-              placeholderText="Tarih ve saat seçin"
-              filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
-              excludeTimes={(selectedDate && appointmentList.filter(date => {
-                const appointmentDate = new Date(date);
-                return (
-                  appointmentDate.getDate() === selectedDate.getDate() &&
-                  appointmentDate.getMonth() === selectedDate.getMonth() &&
-                  appointmentDate.getFullYear() === selectedDate.getFullYear()
-                );
-              }).map(date => {
-                const appointmentDate = new Date(date);
-                return new Date(0, 0, 0, appointmentDate.getHours(), appointmentDate.getMinutes());
-              })) || []}
-              filterTime={(time, selectedDate) => {
-                if (!selectedDate) {
-                  return true; // Eğer bir tarih seçilmediyse, tüm saatleri göster
-                }
-
-                const currentDate = new Date();
-                const selectedDay = selectedDate.getDate();
-                const selectedMonth = selectedDate.getMonth();
-                const selectedYear = selectedDate.getFullYear();
-
-                const isSameDay = appointmentList.some(date => {
-                  const appointmentDate = new Date(date);
-                  return (
-                    appointmentDate.getDate() === selectedDay &&
-                    appointmentDate.getMonth() === selectedMonth &&
-                    appointmentDate.getFullYear() === selectedYear
-                  );
-                });
-
-                if (
-                  isSameDay &&
-                  currentDate.getDate() === selectedDay &&
-                  currentDate.getMonth() === selectedMonth &&
-                  currentDate.getFullYear() === selectedYear
-                ) {
-                  return (
-                    time.getHours() >= 9 &&
-                    time.getHours() < 18 &&
-                    time.getHours() > currentDate.getHours() ||
-                    (time.getHours() === currentDate.getHours() &&
-                      time.getMinutes() > currentDate.getMinutes())
-                  );
-                  // Geçmiş saatleri hariç tut, sadece 9-18 saatleri arasındaki gelecek saatleri göster
-                } else if (isSameDay) {
-                  return false; // Seçilen tarihe ait saatleri hariç tut
-                }
-
-                return true; // Diğer durumlar için saatleri göster
-              }}
-            /> */}
-
-          {/* <DatePicker
-              selected={selectedDate}
-              onChange={handleDateChange}
-              showTimeSelect
-              timeIntervals={10}
-              dateFormat="dd/MM/yyyy HH:mm" // Tarih ve saat formatı
-              timeFormat="HH:mm" // Sadece saat formatı
-              minDate={new Date()} // Geçmiş tarihlerin seçilmesini engeller
-              minTime={new Date(0, 0, 0, 9, 0)} // 09:00
-              maxTime={new Date(0, 0, 0, 18, 0)} // 18:00
-              placeholderText="Tarih ve saat seçin"
-              filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
-              excludeTimes={(selectedDate && appointmentList.filter(date => {
-                const appointmentDate = new Date(date);
-                return (
-                  appointmentDate.getDate() === selectedDate.getDate() &&
-                  appointmentDate.getMonth() === selectedDate.getMonth() &&
-                  appointmentDate.getFullYear() === selectedDate.getFullYear()
-                );
-              }).map(date => {
-                const appointmentDate = new Date(date);
-                return new Date(0, 0, 0, appointmentDate.getHours(), appointmentDate.getMinutes());
-              })) || []}
-              filterTime={(time, selectedDate) => {
-                if (!selectedDate) {
-                  return true; // Eğer bir tarih seçilmediyse, tüm saatleri göster
-                }
-
-                const currentDate = new Date();
-                const selectedDay = selectedDate.getDate();
-                const selectedMonth = selectedDate.getMonth();
-                const selectedYear = selectedDate.getFullYear();
-
-                const isSameDay = appointmentList.some(date => {
-                  const appointmentDate = new Date(date);
-                  return (
-                    appointmentDate.getDate() === selectedDay &&
-                    appointmentDate.getMonth() === selectedMonth &&
-                    appointmentDate.getFullYear() === selectedYear
-                  );
-                });
-
-                if (
-                  isSameDay &&
-                  currentDate.getDate() === selectedDay &&
-                  currentDate.getMonth() === selectedMonth &&
-                  currentDate.getFullYear() === selectedYear
-                ) {
-                  return (
-                    time.getHours() >= 9 &&
-                    time.getHours() < 18 &&
-                    time.getHours() > currentDate.getHours() ||
-                    (time.getHours() === currentDate.getHours() &&
-                      time.getMinutes() > currentDate.getMinutes())
-                  );
-                  // Geçmiş saatleri hariç tut, sadece 9-18 saatleri arasındaki gelecek saatleri göster
-                } else if (isSameDay) {
-                  return false; // Seçilen tarihe ait saatleri hariç tut
-                }
-
-                return true; // Diğer durumlar için saatleri göster
-              }}
-            /> */}
-
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
@@ -360,7 +178,6 @@ const Listings = (officeDataDetail) => {
               const selectedDay = selectedDate?.getDate();
               const selectedMonth = selectedDate?.getMonth();
               const selectedYear = selectedDate?.getFullYear();
-
               const isSameDay = appointmentList.some(date => {
                 const appointmentDate = new Date(date);
                 return (
@@ -387,15 +204,12 @@ const Listings = (officeDataDetail) => {
                 );
                 // Seçilen tarihe ait saatleri hariç tut, sadece 9-18 saatleri arasındaki saatleri göster
               }
-
               return true; // Diğer durumlar için saatleri göster
             }}
           />
         </div>
 
         <p className="text-center">  </p>
-
-
         <p className="text-left">  <button className="btn btn-primary mt-3" onClick={handleAppointment}>
           Randevu Al
         </button>  </p>

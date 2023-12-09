@@ -45,7 +45,7 @@ const Listings = (officeDataDetail) => {
   const [officeAdvert, setOfficeAdvert] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
   const [excludedTimes, setExcludedTimes] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(1); 
   const [page, setPage] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
   const [change, setChange] = useState(null);
@@ -54,7 +54,7 @@ const Listings = (officeDataDetail) => {
     await officeData.officeAdvertResponse(id).then((data) => {
       console.log(data);
       setAppointmentList(data?.data);
-      // toast.success("Randevu tarihi başarıyla alındı.");
+      // toast.success("Randevu tarihi başarıyla alındı."); 
     }).catch((error) => {
       console.log(error);
       // toast.error("Randevu tarihi alınamadı.");
@@ -74,17 +74,34 @@ const Listings = (officeDataDetail) => {
   const apiDatesAndTimes = [
     '2023-12-11T09:00', '2023-12-08T14:30', '2023-12-20T16:40' // Örnek tarih ve saatler
   ];
+  function convertAPIDateToDatePickerFormat(apiDate) {
+    // API'den gelen tarih stringini Date nesnesine dönüştürme
+    const date = new Date(apiDate[0]);
+  
+    // Date nesnesini istenen formata dönüştürme 
+    // const formattedDate = `${('0' + date.getDate()).slice(-2)}/${
+    //   ('0' + (date.getMonth() + 1)).slice(-2)
+    // }/${date.getFullYear()} ${('0' + date.getHours()).slice(-2)}:${(
+    //   '0' + date.getMinutes()
+    // ).slice(-2)}`;
+  
+    // return formattedDate;
+  }
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    console.log(date);
+    const newDate = new Date(date.getTime() + 3 * 60 * 60 * 1000)
+    console.log(newDate);
+    setSelectedDate(newDate);
   };
-  const handleAppointment = () => {
+  const handleAppointment = async() => {
     if (selectedDate) {
       const obj = {
         doktorId: officeDataDetail?.officeDataDetail?.userId,
         dateTime: selectedDate
-      };
+      }; 
+      console.log(obj);
       // Randevu alınabilir
-      officeData
+      await officeData
         .appointmentOffice(obj)
         .then((data) => {
           console.log(data);
@@ -104,7 +121,6 @@ const Listings = (officeDataDetail) => {
       toast.error("Randevu tarihi seçilmedi.");
     }
   
-    // Randevu alma işlemleri burada yapılır
   };
   
 
@@ -322,13 +338,13 @@ const Listings = (officeDataDetail) => {
             maxTime={new Date(0, 0, 0, 18, 0)} // 18:00
             placeholderText="Tarih ve saat seçin"
             filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
-            excludeTimes={(selectedDate && apiDatesAndTimes
+            excludeTimes={(selectedDate && appointmentList
               .filter(date => {
                 const appointmentDate = new Date(date);
                 return (
-                  appointmentDate.getDate() === selectedDate.getDate() &&
-                  appointmentDate.getMonth() === selectedDate.getMonth() &&
-                  appointmentDate.getFullYear() === selectedDate.getFullYear()
+                  appointmentDate.getDate() === selectedDate?.getDate() &&
+                  appointmentDate.getMonth() === selectedDate?.getMonth() &&
+                  appointmentDate.getFullYear() === selectedDate?.getFullYear()
                 );
               })
               .map(date => {
@@ -341,9 +357,9 @@ const Listings = (officeDataDetail) => {
                 return true; // Eğer bir tarih seçilmediyse, tüm saatleri göster
               }
 
-              const selectedDay = selectedDate.getDate();
-              const selectedMonth = selectedDate.getMonth();
-              const selectedYear = selectedDate.getFullYear();
+              const selectedDay = selectedDate?.getDate();
+              const selectedMonth = selectedDate?.getMonth();
+              const selectedYear = selectedDate?.getFullYear();
 
               const isSameDay = appointmentList.some(date => {
                 const appointmentDate = new Date(date);

@@ -302,7 +302,22 @@ const deleteBlog = async (id) => {
   return res;
 };
 
+const getAppointmentList = async () => {
+  const res = await axios({
+    method: "GET",
+    url: `/appointment/patient-list`,
+  })
+    .then((res) => res.data)
+    .catch((error) => {
+      if(error?.response?.status == 401) {
+        logoutFromSystem()
+      }else{
+        return error;
+      }
+    });
 
+  return res;
+};
 
 // advertType ıd lazım
 const getFeaturesWithId = async (id) => {
@@ -642,6 +657,7 @@ const advertServices = {
   getAllBlogList,//
   blogToggleStatus,//
   deleteBlog,//
+  getAppointmentList,//
   deleteAdvert,
   getAdvertTypes,
   getProcessType,

@@ -5,6 +5,7 @@ import { useState } from "react";
 const ChatboxContent = ({id, messages, postMessage, senderId, conversationId, advertId }) => {
   const [postData, setPostData] = useState("");
   // const shouldShowSendButton = senderId && conversationId;
+  console.log();
   let shouldShowSendButton;
   if (conversationId || id) {
     shouldShowSendButton = true

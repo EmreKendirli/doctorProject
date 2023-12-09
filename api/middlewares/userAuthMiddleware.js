@@ -72,7 +72,7 @@ const authenticateUserAPIToken = async (req, res, next) => {
         });
     }
 };
-const authenticateUserManageAPIToken = async (req, res, next) => {
+const authenticateUserDoctorAPIToken = async (req, res, next) => {
     try {
         let token;
         if (
@@ -125,7 +125,7 @@ const authenticateUserManageAPIToken = async (req, res, next) => {
                 });
             }
             const type = currentUser.type;
-            if (type === "manager") {
+            if (type === "doctor") {
                 req.user = currentUser;
                 next();
             } else {
@@ -214,7 +214,7 @@ const authenticatePatientAPIToken = async (req, res, next) => {
 };
 const authMiddleware = {
     authenticateUserAPIToken,
-    authenticateUserManageAPIToken,
+    authenticateUserDoctorAPIToken,
     authenticatePatientAPIToken
 }
 export default authMiddleware

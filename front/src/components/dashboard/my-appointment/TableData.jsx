@@ -93,7 +93,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
 
   const tableList = () => {
     let content = [];
-    if (currentUser.type === "user") {
+    if (currentUser?.type === "user") {
       content = [
         "Doktor İsmi",
         "Doktor Email",
@@ -133,7 +133,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                   <div className="feat_property list favorite_page style2">
                     <span className="d-flex justify-content-center">
                       <span className="status_tag ">
-                        {currentUser.type === "user" ? (item?.doctorId?.firstName + " " + item?.doctorId?.lastName) : (item?.patientId?.firstName + " " + item?.patientId?.lastName)}
+                        {currentUser?.type === "user" ? (item?.doctorId?.firstName + " " + item?.doctorId?.lastName) : (item?.patientId?.firstName + " " + item?.patientId?.lastName)}
                       </span>
                     </span>
                   </div>
@@ -145,7 +145,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
 
                   <span className="d-flex justify-content-center">
                     <span className="status_tag ">
-                      {currentUser.type === "user" ? (item?.doctorId?.email) : (item?.patientId?.email)}
+                      {currentUser?.type === "user" ? (item?.doctorId?.email) : (item?.patientId?.email)}
                     </span>
                   </span>
 
@@ -293,7 +293,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                           }).then(async (result) => {
                             if (result.isConfirmed) {
                               await advertServices.deleteAppointment(item?._id);
-                              currentUser.type === "user" ? getAppointmentList() : getDoctorAppointmentList()
+                              currentUser?.type === "user" ? getAppointmentList() : getDoctorAppointmentList()
                               getAllBlogs();
                               Swal.fire({
                                 title: "Başarılı!",

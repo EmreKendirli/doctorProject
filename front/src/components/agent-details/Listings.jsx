@@ -9,36 +9,11 @@ import currencyFormatter from "currency-formatter"
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import toast, { Toaster } from "react-hot-toast";
+import { getCurrentUser } from "../../utils/auth";
+
 const Listings = (officeDataDetail) => {
-  // İki tarih arasındaki farkı hesaplayan fonksiyon
-  // function calculateTimeAgo(date) {
-  //   const currentDate = new Date(); // Günümüz tarihi
-  //   const postDate = new Date(date); // Verilen tarih
-  //   const timeDifference = currentDate - postDate; // İki tarih arasındaki milisaniye farkı
+  const currentUser = getCurrentUser();
 
-  //   // Milisaniyeyi yıl, ay veya gün cinsinden dönüştürmek için hesaplamalar yapılır
-  //   const seconds = Math.floor(timeDifference / 1000);
-  //   const minutes = Math.floor(seconds / 60);
-  //   const hours = Math.floor(minutes / 60);
-  //   const days = Math.floor(hours / 24);
-  //   const months = Math.floor(days / 30);
-  //   const years = Math.floor(months / 12);
-
-  //   // Hesaplamalara göre uygun metni döndürün
-  //   if (years > 0) {
-  //     return `${years} yıl önce`;
-  //   } else if (months > 0) {
-  //     return `${months} ay önce`;
-  //   } else if (days > 0) {
-  //     return `${days} gün önce`;
-  //   } else if (hours > 0) {
-  //     return `${hours} saat önce`;
-  //   } else if (minutes > 0) {
-  //     return `${minutes} dakika önce`;
-  //   } else {
-  //     return `${seconds} saniye önce`;
-  //   }
-  // }
   console.log(officeDataDetail);
   const router = useRouter();
   // const id = router.query.id;
@@ -142,7 +117,7 @@ const Listings = (officeDataDetail) => {
         }}
       />
 
-      <div className="row">
+   {currentUser ?   <div className="row">
         <div className="col-lg-12 mt20">
           <DatePicker
             selected={selectedDate}
@@ -213,7 +188,9 @@ const Listings = (officeDataDetail) => {
         <p className="text-left">  <button className="btn btn-primary mt-3" onClick={handleAppointment}>
           Randevu Al
         </button>  </p>
-      </div>
+      </div> :
+        <p className="text-center">RANDEVU ALMAK İÇİN GİRİŞ YAPINIZ!  </p>
+      }
 
     </>
   );

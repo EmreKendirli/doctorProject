@@ -8,12 +8,13 @@ const create = tryCatch(async (req,res)=>{
         doctorId:req.body.doctorId,
         dateTime:req.body.dateTime
     }
-
+console.log(obj,"5545");
     const create = await Appointment.create(obj)
     if (!create) {
         throw new AppError("Randevu oluşturmada hata oluştu",404)
     }
-    res.status(200).json({
+    console.log(create,"//");
+    res.status(200).json({ 
         succeded:true,
         data:create,
         message:"Randevu Talebiniz Alınmıştır."

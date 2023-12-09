@@ -24,7 +24,6 @@ const appointmentOffice = async (data) => {
   })
     .then((response) => response.data)
     .catch((error) => {
-      console.log(error)
       if(error?.response?.status == 401) {
         logoutFromSystem()
       }else{

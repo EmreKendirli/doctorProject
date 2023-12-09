@@ -12,3 +12,4 @@ router.route("/:id").delete(Auth.authenticateUserDoctorAPIToken,Appointment.dele
 router.route("/doctor-hours-list/:id").get(Appointment.doctorAppointmentHours)
 
 export default router
+ 

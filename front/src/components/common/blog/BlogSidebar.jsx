@@ -2,16 +2,18 @@ import Categories from "./Categories";
 import FeaturedListings from "../listing/FeaturedListings";
 import SearchBox from "./SearchBox";
 import TagList from "./TagList";
+import Link from "next/link";
 
-const BlogSidebar = ({ features, vitrinAdvert }) => {
+const BlogSidebar = ({blog, features, vitrinAdvert }) => {
   return (
     <div className="blog-sidebar_widgets">
       {/* End .sidebar_search_widget */}
 
       <div className="terms_condition_widget">
-        <h4 className="title">İlan Kategorileri</h4>
+        <h4 className="title">Blog Sahibi Doktora/Ofise Ulaş</h4>
         <div className="widget_list">
-          <Categories features={features} />
+          <Link href={`/doktora-yaz/${blog?.userId}`}> Mesaj Gönder</Link>
+          {/* <Categories features={features} /> */}
         </div>
       </div>
       {/* End .Categories widget */}

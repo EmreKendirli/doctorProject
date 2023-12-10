@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import ReactHtmlParser from 'react-html-parser';
 
@@ -7,9 +8,9 @@ const PropertyDescriptionsBlog = ({ property }) => {
   console.log(property);
   return (
     <>
-      <p className={click ? "gpara second_para white_goverlay mt10 mb10" : ""}>
+      <div className={click ? "gpara second_para white_goverlay mt10 mb10" : ""}>
         {ReactHtmlParser(property?.content)}
-      </p>
+      </div>
 
       <p className="overlay_close">
         <a

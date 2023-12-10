@@ -76,7 +76,7 @@ const FeaturedItem = () => {
       {content.length > 0 ? (
         content.map((item) => (
           <Link
-            href={`/blog-detayy/${item._id}`}
+            href={`/blog-detay/${item._id}`}
             className={`${isGridOrList ? "col-12 feature-list" : "col-md-4 col-lg-4"
               } `}
             key={item.advertNo}
@@ -120,7 +120,7 @@ const FeaturedItem = () => {
                 <div className="tc_content">
                   {/* <p className="text-thm">{item?.title || ''}</p> */}
                   <h4>
-                    <Link href={`/blog-detayy/${item?._id}`}>
+                    <Link href={`/blog-detay/${item?._id}`}>
                       {item.title || ''}
                     </Link>
                   </h4>

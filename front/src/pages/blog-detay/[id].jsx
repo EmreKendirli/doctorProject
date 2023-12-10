@@ -22,6 +22,9 @@ import blogData from "../../services/blog.service";
 import imageLoader from "../../utils/imageLoader";
 import SidebarMenu from "../../components/common/header/dashboard/SidebarMenu";
 import LoadingScreen from "../../components/loading-screen";
+import filterService from "../../services/filter.service";
+import ReactHtmlParser from 'react-html-parser';
+
 const BlogDetailsDynamic = () => {
   const router = useRouter();
   const [blog, setBlogItem] = useState({});
@@ -65,14 +68,25 @@ const BlogDetailsDynamic = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   });
+  const extractPTagsContent = () => {
+    if (blog) {
+      const parsedContent = ReactHtmlParser(blog?.content); // API'den gelen içeriği parçala
+      const pTagsContent = parsedContent.filter(item => item.type === 'p'); // Sadece p tag'leri içerisindeki veriyi seç
+      return pTagsContent.map((item, index) => (
+        <p key={index}>{item.props.children}</p> // Her bir p tag'i içerisindeki içeriği yazdır
+      ));
+    }
+    return null;
+  };
 
   useEffect(() => {
     if (id !== undefined) {
-      blogData.blogDetail(id).then((data) => {
-        setBlogItem(data.data);
-        setFetures(data.features);
-        setRandomBlog(data.randomBlog);
-        setVitrinAdvert(data.vitrinAdvert);
+       filterService.getOneBlogWithId(id).then((res) => {
+        console.log(res?.data?.data);
+        setBlogItem(res?.data?.data);
+        setFetures(res?.data?.features);
+        setRandomBlog(res?.data?.randomBlog);
+        setVitrinAdvert(res?.data?.vitrinAdvert);
       });
     }
   }, [id]);
@@ -82,7 +96,7 @@ const BlogDetailsDynamic = () => {
   }
   return (
     <>
-      <Seo pageTitle={"Blog Details"} />
+      <Seo pageTitle={"Blog Detay"} />
       {/* <!-- Main Header Nav --> */}
       <Header />
 
@@ -127,7 +141,7 @@ const BlogDetailsDynamic = () => {
                   <div className="thumb">
                     <Image
                       loader={imageLoader}
-                      width={692}
+                      width={692} 
                       height={414}
                       className="w-100 h-100 cover"
                       src={blog?.img || Logo}
@@ -136,7 +150,9 @@ const BlogDetailsDynamic = () => {
                   </div>
 
                   <div className="details">
-                    <p className="mb30">{blog?.content}</p>
+                     <p className="mb30">{ReactHtmlParser(blog?.content)}
+                    Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.
+                    </p>
                   </div>
                   <ul className="blog_post_share">
                     <li>
@@ -159,7 +175,7 @@ const BlogDetailsDynamic = () => {
             {/* End .col */}
 
             <div className="col-lg-4">
-              <BlogSidebar features={features} vitrinAdvert={vitrinAdvert} />
+              <BlogSidebar blog={blog} features={features} vitrinAdvert={vitrinAdvert} />
             </div>
             {/* End Sidebar column */}
           </div>

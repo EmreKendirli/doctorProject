@@ -45,7 +45,7 @@ const Creaator = ({ property, advertType, sendMsgStatus }) => {
           />
           <div className="media-body d-flex align-items-center">
             <h5 className="mt-0 mb0">
-              Sözleşmeli Emlak
+              Blog
             </h5>
           </div>
         </div> :

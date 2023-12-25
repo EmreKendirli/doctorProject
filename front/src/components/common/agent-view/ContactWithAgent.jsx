@@ -163,22 +163,23 @@
 // export default ContactWithAgent;
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { getCurrentUser } from "../../../utils/auth";
+
 
 const ContactWithAgent = ({id}) => {
-  const route = useRouter();
-
- 
+  const user = getCurrentUser();
+  const route = useRouter(); 
 
   return (
     <div>
       <div></div>
       <div></div>
-      <Link
+    { user && user.type ==="user" &&  <Link
               href={`/doktora-yaz/${id}`}
               className={route.pathname === `/doktora-yaz/${id}` ? "ui-active" : undefined}
             >
-              Mesajx
-            </Link>
+              Mesaj Gönder
+            </Link>}
       
     </div>
   );

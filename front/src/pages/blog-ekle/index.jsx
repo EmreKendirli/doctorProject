@@ -16,7 +16,7 @@ const index = () => {
       error={"/login"}
       render={
         <>
-          <Seo pageTitle="İlan Ekle" />
+          <Seo pageTitle="Blog Ekle" />
           <CreateListing />
         </>
       }

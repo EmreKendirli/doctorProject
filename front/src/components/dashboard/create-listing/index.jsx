@@ -41,7 +41,7 @@ const Index = () => {
 
                   <div className="col-lg-12 mb10">
                     <div className="breadcrumb_content style2 mb0">
-                      <h2 className="breadcrumb_title">Yeni İlan Ekle</h2>
+                      <h2 className="breadcrumb_title">Yeni Blog Ekle</h2>
                     </div>
                   </div>
                   {/* End .col */}

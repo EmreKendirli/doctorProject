@@ -35,7 +35,7 @@ const bringPatientActiveAppointments = tryCatch(async (req,res)=>{
     const data = await Appointment.find({patientId:id}).populate({path:"doctorId",select:"firstName lastName email"})
     res.status(200).json({
         succeded:true,
-        data
+        data:data
     })
 })
 const doctorAppointmentHours = tryCatch (async (req,res)=>{

@@ -24,6 +24,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
   const currentUser = getCurrentUser();
 
   const getAppointmentList = async () => {
+    console.log("sfsrfsrf");
     setLoadingStatus(true)
     const res = advertServices
       .getAppointmentList()
@@ -34,7 +35,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
           setTotalPages(Math.ceil(res.totalRecord / 10))
         }
 
-        if (res?.succeded && res?.data?.length) {
+        if (res?.succeded) {
           console.log(res.data);
           setMyProperties(res.data)
         }
@@ -53,7 +54,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
           setTotalPages(Math.ceil(res.totalRecord / 10))
         }
 
-        if (res?.succeded && res?.data?.length) {
+        if (res?.succeded) {
           console.log(res.data);
           setMyProperties(res.data)
         }

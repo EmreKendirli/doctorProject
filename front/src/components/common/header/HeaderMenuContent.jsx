@@ -23,7 +23,7 @@ const HeaderMenuContent = ({ float = "" }) => {
           Anasayfa
         </Link>
       </li>
-      <li className="last">
+      {/* <li className="last">
         <Link
           href="/ofislerimiz"
           className={
@@ -42,7 +42,7 @@ const HeaderMenuContent = ({ float = "" }) => {
         >
           Harita
         </Link>
-      </li>
+      </li> */}
       <li className="last">
         <Link
           href="/doktorlar"
@@ -50,7 +50,7 @@ const HeaderMenuContent = ({ float = "" }) => {
             route.pathname === "/portfoylerimiz" ? "ui-active" : undefined
           }
         >
-          Doktor/Blog
+          Doktor/Ofis
         </Link>
       </li>
       <li className="last">

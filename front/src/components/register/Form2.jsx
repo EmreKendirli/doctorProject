@@ -56,7 +56,7 @@ export default function Form2({ isPopup }) {
         .required("E-posta adresi zorunludur."),
       phoneNumber: Yup.number()
         .positive("Telefon Numarası pozitif sayı olmak zorundadır.")
-        .integer()
+        .integer(11)
         .required("Telefon numarası zorunludur."),
       password: Yup.string()
         .min(6, "En az 6 karakter gerekli.")
@@ -94,7 +94,7 @@ export default function Form2({ isPopup }) {
       const register = await authServices
         .addIndividualUser(values)
         .then((res) => {
-          console.log("Kayıttan Gelen response : ", res.succeded);
+          console.log("Kayıttan Gelen response : ", res);
           if (res.succeded === true) {
             console.log("Kayıttan Gelen response : ", res);
             toast.dismiss();
@@ -103,11 +103,10 @@ export default function Form2({ isPopup }) {
               router.push("/login");
             }, 1000);
           } else {
-            console.log(
-              toast.error(res.message)
-            );
+            console.log(res);
+            console.log("awdawdad");
             toast.dismiss();
-            toast.error(res.message);
+            toast.error(res?.message);
           }
         })
         .catch((err) => toast.error(err));
@@ -128,7 +127,7 @@ export default function Form2({ isPopup }) {
           } else {
 
             toast.dismiss();
-            toast.error(res.message);
+            toast.error(res?.message);
 
           }
         })

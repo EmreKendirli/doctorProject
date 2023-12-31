@@ -75,7 +75,7 @@ const Index = () => {
               <div className="row justify-content-center">
                 <div className="col-xl-9">
                   <div className="application_statics">
-                    <h4 className="mb-4">İlan Görüntülenme</h4>
+                    <h4 className="mb-4"></h4>
                     {Object.keys(chartDataset).length > 0 && <StatisticsChart dashboardData={dashboardData} chartDataset={chartDataset} />}
                   </div>
                 </div>
@@ -93,7 +93,7 @@ const Index = () => {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        Sözleşmeli Emlak
+                        DoktorBurda
                       </a>
                       . All rights reserved.
                     </p>

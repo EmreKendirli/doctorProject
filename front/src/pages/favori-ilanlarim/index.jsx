@@ -5,7 +5,7 @@ import MyProperties from "../../components/dashboard/favori-ilanlar";
 const index = () => {
   return (
     <>
-      <Seo pageTitle="Favori İlanlarım" />
+      <Seo pageTitle="Favori Bloglarım" />
       <MyProperties />
     </>
   );

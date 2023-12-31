@@ -115,7 +115,7 @@ const Index = ({ content, blog, officeList, processTypes, newsList, advertTypes,
             <div className="row">
               <div className="col-lg-6 offset-lg-3">
                 <div className="main-title text-center mb40">
-                  <h2>İlanlarımız</h2>
+                  <h2>Bloglarımız</h2>
                 </div>
               </div>
               <div className="col-lg-12">

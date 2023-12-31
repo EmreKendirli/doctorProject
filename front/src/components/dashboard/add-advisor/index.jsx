@@ -53,7 +53,7 @@ export default function index() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        Sözleşmeli Emlak
+                       Doktor Burda
                       </a>
                       . All rights reserved.
                     </p>

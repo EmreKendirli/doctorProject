@@ -28,7 +28,7 @@ const CopyrightFooter = () => {
               target="_blank"
               rel="noreferrer"
             >
-              Sözleşmeli Emlak
+              DoktorBurda
             </a>
             . All rights reserved.
           </p>

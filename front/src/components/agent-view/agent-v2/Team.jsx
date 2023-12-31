@@ -51,9 +51,9 @@ const Team = ({ officeDataDetail }) => {
               <div className="thmb_cntnt">
                 <ul className="tag mb0">
                   <li className="list-inline-item dn"></li>
-                  <li className="list-inline-item">
+                  {/* <li className="list-inline-item">
                     <a href="#">{officeDataDetail?.totalNumberOfAds} </a>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>

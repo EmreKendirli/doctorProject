@@ -24,20 +24,18 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
   const currentUser = getCurrentUser();
 
   const getAppointmentList = async () => {
-    console.log("sfsrfsrf");
+    
     setLoadingStatus(true)
     const res = advertServices
       .getAppointmentList()
       .then((res) => {
-        console.log(res);
         setLoadingStatus(false)
-        if (res.succeded && res.totalRecord) {
-          setTotalPages(Math.ceil(res.totalRecord / 10))
+        if (res?.succeded && res?.totalRecord) {
+          setTotalPages(Math.ceil(res?.totalRecord / 10))
         }
 
         if (res?.succeded) {
-          console.log(res.data);
-          setMyProperties(res.data)
+          setMyProperties(res?.data)
         }
       })
       .catch((err) => console.log(err));
@@ -50,8 +48,8 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
       .then((res) => {
         console.log(res);
         setLoadingStatus(false)
-        if (res.succeded && res.totalRecord) {
-          setTotalPages(Math.ceil(res.totalRecord / 10))
+        if (res?.succeded && res?.totalRecord) {
+          setTotalPages(Math.ceil(res?.totalRecord / 10))
         }
 
         if (res?.succeded) {
@@ -295,7 +293,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                             if (result.isConfirmed) {
                               await advertServices.deleteAppointment(item?._id);
                               currentUser?.type === "user" ? getAppointmentList() : getDoctorAppointmentList()
-                              getAllBlogs();
+                              // getAllBlogs();
                               Swal.fire({
                                 title: "Başarılı!",
                                 text: "Silme işlemi başarılı.",

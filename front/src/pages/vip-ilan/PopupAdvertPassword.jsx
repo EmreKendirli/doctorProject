@@ -103,7 +103,7 @@ const PopupAdvertPassword = ({ status = false, setStatus, id, setPageTitle, setP
                     height={494}
                     className="img-fluid w100 h-100 contain"
                     src={advertInfo?.advertCoverPhoto || "/assets/images/logo/logo.jpg"}
-                    alt={advertInfo?.advertTitle || "Sözleşmeli Emlak"}
+                    alt={advertInfo?.advertTitle || "DoktorBurda"}
                   />
                 </div>
               </div>

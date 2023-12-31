@@ -67,7 +67,7 @@ const Footer = () => {
             height={45}
             className="nav_logo_img contain mt20"
             src={logo}
-            alt="Sözleşmeli Emlak"
+            alt="DoktorBurda"
           />
         </div>
         <div className="footer_about_widget">

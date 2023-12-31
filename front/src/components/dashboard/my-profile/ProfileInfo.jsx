@@ -128,9 +128,9 @@ const ProfileInfo = ({ userData }) => {
             console.log(res);
             if (res?.succeded) {
               toast("Güncelleme başarıyla gerçekleşti");
-              // setTimeout(() => {
-              //   router.push("/");
-              // }, 700);
+              setTimeout(() => {
+                router.push("/dashboard");
+              }, 1000);
             } else {
               toast(res?.response?.data?.message);
               

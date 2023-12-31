@@ -123,7 +123,7 @@ const Header = () => {
               height={45}
               className="logo1 contain"
               src={logo}
-              alt="Sözleşmeli Emlak"
+              alt="DoktorBurda"
             />
             <Image
               loader={imageLoader}
@@ -131,7 +131,7 @@ const Header = () => {
               height={45}
               className="logo2 contain"
               src={logo}
-              alt="Sözleşmeli Emlak"
+              alt="DoktorBurda"
             />
           </Link>
           {/* site logo brand */}

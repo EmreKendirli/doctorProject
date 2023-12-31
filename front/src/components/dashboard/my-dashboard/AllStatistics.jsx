@@ -4,30 +4,23 @@ const AllStatistics = ({ dashboardData }) => {
       id: 1,
       blockStyle: "",
       icon: "flaticon-home",
-      timer: dashboardData?.totalNumberOfAdverts || "0",
-      name: "İlanlarım",
+      timer: dashboardData?.totalNumberOfAdverts || "5",
+      name: "Bloglarım",
     },
     {
       id: 2,
       blockStyle: "style2",
       icon: "flaticon-view",
-      timer: dashboardData?.totalNumberOfAdvertsClicks || "0",
+      timer: dashboardData?.totalNumberOfAdvertsClicks || "7",
       name: "Görüntülenme",
     },
     {
       id: 3,
       blockStyle: "style3",
       icon: "flaticon-chat",
-      timer: dashboardData?.totalAdvertMessage || "0",
-      name: "İlan Mesajları",
-    },
-    {
-      id: 4,
-      blockStyle: "style4",
-      icon: "flaticon-heart",
-      timer: dashboardData?.numberOfFavoriteAdverts || "0",
-      name: "Favori İlanlarım",
-    },
+      timer: dashboardData?.totalAdvertMessage || "2",
+      name: "Blog Mesajları",
+    }
   ];
 
   return (

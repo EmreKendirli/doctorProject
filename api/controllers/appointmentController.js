@@ -10,9 +10,17 @@ const create = tryCatch(async (req,res)=>{
     }
     const hasAppointment = await doesDoctorHaveAppointment(req.body.doctorId, req.body.dateTime);
     if (hasAppointment) {
-        res.status(422).json({
+        return res.status(422).json({
             succeded:false,
             message:"Randevu saati dolu."
+        })
+    }
+
+    const check = await checkAppointment(req.user._id,req.body.doctorId,req.body.dateTime)
+    if (check) {
+        return res.status(422).json({
+            succeded:false,
+            message:"Gün İçinde sadece bir randevu hakkınız var."
         })
     }
     const create = await Appointment.create(obj)
@@ -26,6 +34,24 @@ const create = tryCatch(async (req,res)=>{
         message:"Randevu Talebiniz Alınmıştır."
     })
 })
+
+async function checkAppointment (userId,doctorId, dateTime){
+    const check = await Appointment.findOne({
+        patientId: userId,
+        doctorId,
+        dateTime: {
+            $gte: new Date(dateTime).setHours(0, 0, 0, 0), // İstenen günün başlangıcı
+            $lt: new Date(dateTime).setHours(24, 0, 0, 0), // İstenen günün sonu
+        },
+        status: true,
+    });
+    if (check) {
+        return true
+    }else{
+        return false
+    }
+
+}
 const doesDoctorHaveAppointment = async (doctorId, dateTime) => {
     const existingAppointment = await Appointment.findOne({
         doctorId,

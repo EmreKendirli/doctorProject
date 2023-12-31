@@ -4,11 +4,12 @@ import User from "../controllers/user/userController.js"
 import Auth from "../middlewares/userAuthMiddleware.js"
 import UserFormData from "../middlewares/officeMiddleware.js"
 import PasswordValidation from "../validations/resetPassword.validation.js"
+import UserValidate from "../validations/userValidation.js"
 const router = express.Router()
 
 
-router.route("/individual").post(FormData.uploadSettingImages,User.individualRegister)
-router.route("/doctor").post(FormData.uploadSettingImages,User.doctorRegister)
+router.route("/individual").post(UserValidate.userCreateValidate,FormData.uploadSettingImages,User.individualRegister)
+router.route("/doctor").post(UserValidate.userCreateValidate,FormData.uploadSettingImages,User.doctorRegister)
 router.route("/login").post(FormData.uploadSettingImages,User.userLogin)
 // 
 router.route("/user-filter").post(FormData.uploadSettingImages,User.userFilter)

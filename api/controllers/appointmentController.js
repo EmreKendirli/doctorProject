@@ -8,7 +8,13 @@ const create = tryCatch(async (req,res)=>{
         doctorId:req.body.doctorId,
         dateTime:req.body.dateTime
     }
-console.log(obj,"5545");
+    const hasAppointment = await doesDoctorHaveAppointment(req.body.doctorId, req.body.dateTime);
+    if (hasAppointment) {
+        res.status(422).json({
+            succeded:false,
+            message:"Randevu saati dolu."
+        })
+    }
     const create = await Appointment.create(obj)
     if (!create) {
         throw new AppError("Randevu oluşturmada hata oluştu",404)
@@ -20,6 +26,15 @@ console.log(obj,"5545");
         message:"Randevu Talebiniz Alınmıştır."
     })
 })
+const doesDoctorHaveAppointment = async (doctorId, dateTime) => {
+    const existingAppointment = await Appointment.findOne({
+        doctorId,
+        dateTime,
+        status: true // Optional: You may want to check only active appointments
+    });
+
+    return !!existingAppointment; // Returns true if the doctor has an appointment, false otherwise
+};
 const bringDoctorActiveAppointments = tryCatch(async (req,res)=>{
     const id =req.user._id//"656afd7d77f784f999b67eb8" 
 

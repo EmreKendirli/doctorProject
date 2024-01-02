@@ -27,7 +27,7 @@ const appointmentOffice = async (data) => {
       if(error?.response?.status == 401) {
         logoutFromSystem()
       }else{
-        return error;
+        return error.response;
       }
     });
   return res;

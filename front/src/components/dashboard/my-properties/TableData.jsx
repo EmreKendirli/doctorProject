@@ -205,7 +205,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                         </a>
                       </li>
                     }
-                    <li
+                    {/* <li
                       className="list-inline-item"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -265,7 +265,7 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                           </svg>
                         }
                       </a>
-                    </li>
+                    </li> */}
 
                     <li
                       className="list-inline-item"

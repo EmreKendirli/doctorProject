@@ -62,17 +62,24 @@ const Listings = (officeDataDetail) => {
       await officeData
         .appointmentOffice(obj)
         .then((data) => {
+          console.log(data);
           if (data?.succeded === true) {
-            toast.success(data?.message);
+            console.log("++++++");
+            data?.message &&    toast.success(data?.message);
+            data?.data?.message &&    toast.success(data?.data?.message);
             setChange(data?.data?.dateTime);
              router.push("/randevu");
           } else {
-            toast.error(data?.message);
+            console.log("--------");
+            data?.message &&    toast.error(data?.message);
+            data?.data?.message &&    toast.error(data?.data?.message);
           }
         })
         .catch((error) => {
-          console.log(error);
-          toast.error("Randevu tarihi alınamadı.");
+          console.log(error,"error");
+          // toast.error("Randevu tarihi alınamadı.");
+          data?.message &&    toast.error(data?.message);
+            data?.data?.message &&    toast.error(data?.data?.message);
         });
     } else {
       toast.error("Randevu tarihi seçilmedi.");

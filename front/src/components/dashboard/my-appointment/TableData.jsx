@@ -59,6 +59,24 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
       })
       .catch((err) => console.log(err));
   };
+const dateFormatter = (date) => {
+  
+
+    // Tarih nesnesine dönüştürme
+    var dateTime = new Date(date);
+  
+    // Üzerinden 3 saat çıkarma
+    dateTime.setHours(dateTime.getHours() - 3);
+  
+    // Yeni tarihi Türkçe olarak biçimlendirme
+    var formattedDateTime = dateTime.toLocaleString("tr-TR", {
+      dateStyle: "full",
+      timeStyle: "short"
+    });
+  
+   return formattedDateTime // Yeni biçimlendirilmiş tarih ve saat
+  
+}
 
   const getRejectMessage = async (id) => {
     setLoadingStatus(true)
@@ -160,7 +178,8 @@ const TableData = ({ sorting, searchKey, page, setPage, totalPages, setTotalPage
                   <ul className="view_edit_delete_list mb0 d-flex flex-row justify-content-center">
 
                     <span className="h5 d-flex justify-content-center">
-                    {new Date(item?.dateTime).toLocaleString("tr-TR", { dateStyle: "full", timeStyle: "short" })}
+                    {/* {new Date(item?.dateTime).toLocaleString("tr-TR", { dateStyle: "full", timeStyle: "short" })} */}
+                    {dateFormatter(item?.dateTime)} 
 
                     </span>
                   </ul>

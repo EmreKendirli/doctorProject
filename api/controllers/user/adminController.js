@@ -136,12 +136,84 @@ const userDelete = tryCatch(async (req,res)=>{
         succeded:true
     })
 })
+const doctorGetAll = tryCatch(async (req,res)=>{
+    let { page, paginate,searchKey } = req.query
+    if (!page) page = 1
+    if (!paginate) paginate = 10
+    const skip = (page - 1) * paginate
+
+    if (!searchKey) searchKey = ''
+
+    let filterObj = {
+        "$or": [{
+            "firstName": {
+                $regex: searchKey
+            }
+        },
+        {
+            "lastName": {
+                $regex: searchKey
+            }
+        },
+        {
+            "email": {
+                $regex: searchKey
+            }
+        },
+        ],
+    }
+    filterObj.type = "doctor"
+    const data = await User.find(filterObj,"-tokens -password").skip(skip).limit(paginate).populate("userRole")
+    const totalRecord = await User.find(filterObj).count()
+    res.status(200).json({
+        succeded:true,
+        data,
+        totalRecord
+    })
+})
+const userGetAll = tryCatch(async (req,res)=>{
+    let { page, paginate,searchKey } = req.query
+    if (!page) page = 1
+    if (!paginate) paginate = 10
+    const skip = (page - 1) * paginate
+
+    if (!searchKey) searchKey = ''
+
+    let filterObj = {
+        "$or": [{
+            "firstName": {
+                $regex: searchKey
+            }
+        },
+        {
+            "lastName": {
+                $regex: searchKey
+            }
+        },
+        {
+            "email": {
+                $regex: searchKey
+            }
+        },
+        ],
+    }
+    filterObj.type = "user"
+    const data = await User.find(filterObj,"-tokens -password").skip(skip).limit(paginate).populate("userRole")
+    const totalRecord = await User.find(filterObj).count()
+    res.status(200).json({
+        succeded:true,
+        data,
+        totalRecord
+    })
+})
 const admin = {
     registerAdmin,
     loginAdmin,
     adminLogout,
     doctorList,
     confirmDoctor,
-    userDelete
+    userDelete,
+    doctorGetAll,
+    userGetAll
 }
 export default admin

@@ -10,4 +10,7 @@ router.route("/doctor-list").get(Auth.authenticateAdminAPIToken,AdminController.
 router.route("/confirm-doctor/:id").get(Auth.authenticateAdminAPIToken,AdminController.confirmDoctor)
 router.route("/user-delete/:id").delete(Auth.authenticateAdminAPIToken,AdminController.userDelete)
 
+router.route("/doctor-getall").get(AdminController.doctorGetAll)
+router.route("/user-getall").get(AdminController.userGetAll)
+
 export default router

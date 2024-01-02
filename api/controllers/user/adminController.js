@@ -14,7 +14,7 @@ const registerAdmin = tryCatch(async (req, res) => {
         throw new AppError("registration admin failed", 404);
     }
     res.status(200).json({
-        succedd: true,
+        succeded: true,
         data: registerAdmin,
     });
 });
@@ -27,7 +27,7 @@ const remove = tryCatch(async (req, res) => {
         throw new AppError("Admin  not deleted", 404);
     }
     res.status(200).json({
-        succedd: true,
+        succeded: true,
         data: remove,
     });
 });
@@ -39,7 +39,7 @@ const update = tryCatch(async (req, res) => {
         throw new AppError("Admin  not update", 404);
     }
     res.status(200).json({
-        succedd: true,
+        succeded: true,
         data: update,
     });
 });
@@ -71,7 +71,7 @@ const loginAdmin = tryCatch(async (req, res) => {
                 tokens: [...oldTokens, { token, signedAt: Date.now().toString() }],
             });
             res.status(200).json({
-                succedd: true,
+                succeded: true,
                 data: {
                     token,
                     user,

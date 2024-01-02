@@ -11,8 +11,10 @@ import LocationRoute from "./routes/locationRoute.js"
 import OfficeRoute from "./routes/officeRoute.js"
 import AppointmentRoute from "./routes/appointmentRoute.js"
 import chatRoute from './routes/chatRoute.js'
+import AdminRoute from './routes/adminRoute.js'
 const routersFunction = (app) => {
     
+    app.use("/api/v1/admin",AdminRoute)
     app.use("/api/v1/content",contentRoute)
     app.use("/api/v1/blog",blogRoute)
     app.use("/api/v1/faqroute",faqRoute)

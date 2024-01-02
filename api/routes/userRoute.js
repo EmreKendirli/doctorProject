@@ -8,8 +8,8 @@ import UserValidate from "../validations/userValidation.js"
 const router = express.Router()
 
 
-router.route("/individual").post(FormData.uploadSettingImages,User.individualRegister)
-router.route("/doctor").post(FormData.uploadSettingImages,User.doctorRegister)
+router.route("/individual").post(FormData.uploadSettingImages,UserValidate.userCreateValidate,User.individualRegister)
+router.route("/doctor").post(FormData.uploadSettingImages,UserValidate.userCreateValidate,User.doctorRegister)
 router.route("/login").post(FormData.uploadSettingImages,User.userLogin)
 // 
 router.route("/user-filter").post(FormData.uploadSettingImages,User.userFilter)

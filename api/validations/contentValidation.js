@@ -124,11 +124,18 @@ const contentValidate = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const msg = [];
+      const errorObject = {};
       for (let i = 0; i < errors.errors.length; i++) {
-        msg.push(errors.errors[i].msg);
+          const key = errors.errors[i].path;
+          const value = errors.errors[i].msg;
+          errorObject[key] = value;
       }
-      throw new AppError(msg, 422);
+      return res.status(422).json({
+          succeded: false,
+          data: {
+              error: errorObject
+          }
+      });
     } else {
       next();
     }

@@ -38,14 +38,18 @@ const resetPasswordDataValidate = [checkSchema({
 (req, res, next) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        const msg = [];
+        const errorObject = {};
         for (let i = 0; i < errors.errors.length; i++) {
-            msg.push(errors.errors[i].msg)
+            const key = errors.errors[i].path;
+            const value = errors.errors[i].msg;
+            errorObject[key] = value;
         }
-        res.status(422).json({
-            succeded:false,
-            msg
-        })
+        return res.status(422).json({
+            succeded: false,
+            data: {
+                error: errorObject
+            }
+        });
     }
     else {
         next();

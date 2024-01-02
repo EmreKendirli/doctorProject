@@ -24,7 +24,8 @@ const ChangePassword = ({ userData }) => {
         console.log(values);
 
         masterServices.restartPassword(values).then((res) => {
-          if (res?.succeded) {
+          console.log(res,"eadşadwaşwdadwlşawdlş");
+          if (res?.succeded == true) {
             toast(res?.message);
           } else {
             toast(res?.response?.data?.message);

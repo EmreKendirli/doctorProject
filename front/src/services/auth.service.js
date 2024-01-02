@@ -52,7 +52,7 @@ const login = async (data) => {
     .then((response) => response.data)
     .catch((error) => {
       console.log(error)
-      return error.response.data.message;
+      return error.response.data;
     });
   return res;
 };

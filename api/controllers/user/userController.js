@@ -72,8 +72,8 @@ const userLogin = tryCatch(async (req, res) => {
     const user = await User.findOne({
         email,
     });
-    if (!user.isApproved) {
-        return res.status(200).json({
+    if (!user?.isApproved) {
+        return res.status(422).json({
             succeded: false,
             data: {
                message: "Hesabınız onay sürecinde.",
@@ -83,7 +83,7 @@ const userLogin = tryCatch(async (req, res) => {
     console.log(user);
     let same = false;
     if (user) {
-        same = await bcrypt.compare(password, user.password);
+        same = await bcrypt.compare(password, user?.password);
     } else {
         throw new AppError("User Bulunamadı", 404);
     }

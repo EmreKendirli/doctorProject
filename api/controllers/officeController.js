@@ -10,9 +10,12 @@ const officeDetail = tryCatch (async (req,res)=>{
     .populate({ path: 'cityId', select: 'name' })
     .populate({ path: 'districtId', select: 'name' })
     .populate({ path: 'neighbourhoodId', select: 'name' })
+    console.log(data,"data");
     const user = await User.findOne({_id:data?.ownerId}).populate("userRole")
+
+    console.log(user);
     let detail = {}
-    detail.userId = user._id
+    detail.userId = user?._id
     detail.firstName = user?.firstName || ""
     detail.lastName = user?.lastName || ""
     detail.email = user?.email || ""

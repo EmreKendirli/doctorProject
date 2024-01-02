@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import masterServices from "../../../services/user.service";
+import { useRouter } from "next/router";
+
 const ChangePasswordSchema = Yup.object().shape({
   currentpassword: Yup.string().required("Geçerli şifreyi yazmalısınız."),
   password: Yup.string().required("Yeni şifre'yi yazmalısınız"),
@@ -12,6 +14,10 @@ const ChangePasswordSchema = Yup.object().shape({
 });
 
 const ChangePassword = ({ userData }) => {
+
+  const router = useRouter();
+  const currentPath = router.asPath;
+
   return (
     <Formik
       validationSchema={ChangePasswordSchema}
@@ -23,7 +29,8 @@ const ChangePassword = ({ userData }) => {
       onSubmit={(values, { setSubmitting }) => {
 
         masterServices.restartPassword(values).then((res) => {
-          if (res?.succedd === true) {
+          console.log(res, "eadşadwaşwdadwlşawdlş");
+          if (res?.succeded === true) {
             toast(res?.message);
           } else {
             toast(res?.response?.data?.message);

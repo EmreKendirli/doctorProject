@@ -40,7 +40,7 @@ const LoginForm = ({ isPopup }) => {
     try {
       const res = await authServices.login(values);
       await toast.dismiss(); // Dismiss the loading toast
-console.log(res);
+      console.log(res);
       if (res?.succeded == true && res?.data && res?.data?.token) {
         localStorage.setItem("userToken", res?.data?.token);
         console.log('giriş yapan kullancıı', res?.data?.user);
@@ -49,9 +49,9 @@ console.log(res);
         await router.push("/dashboard");
       } else {
         console.log(res);
-          toast.error(res?.data?.message);
-        } 
-      
+        toast.error(res?.data?.message);
+      }
+
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message);

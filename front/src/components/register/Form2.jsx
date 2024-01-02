@@ -149,16 +149,20 @@ export default function Form2({ isPopup }) {
   
       console.log("Kayıttan Gelen response : ", register);
   
-      if (register.succeded === true) {
+      if (register?.succeded === true) {
        await toast.dismiss();
         toast.success("Kayıt İşlemi Başarılı");
           await router.push("/login");
       } else {
+        console.log("sddsds",register);
         toast.dismiss();
-        toast.error(register?.data?.message);
+        register?.data?.data?.error?.phoneNumber && toast.error(register?.data?.data?.error?.phoneNumber);
+        register?.data?.data?.error?.email && toast.error(register?.data?.data?.error?.email);
+
+        
       }
     } catch (error) {
-      console.error(error);
+      console.error(error,"ssssssss");
       toast.error("Bir hata oluştu.");
     }
   };

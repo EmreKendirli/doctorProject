@@ -12,6 +12,8 @@ router.route("/individual").post(FormData.uploadSettingImages,UserValidate.userC
 router.route("/doctor").post(FormData.uploadSettingImages,UserValidate.userCreateValidate,User.doctorRegister)
 router.route("/login").post(FormData.uploadSettingImages,User.userLogin)
 // 
+router.route("/user-count").get(FormData.uploadSettingImages,User.userCount)
+
 router.route("/user-filter").post(FormData.uploadSettingImages,User.userFilter)
 router.route("/detail").get(Auth.authenticateUserAPIToken,User.userDetail)
 router.route("/update").put(Auth.authenticateUserAPIToken,UserFormData.uploadSettingImages,UserFormData.resizeImages,User.userUpdate)

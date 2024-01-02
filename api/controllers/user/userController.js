@@ -1,6 +1,7 @@
 import tryCatch from "../../utils/tryCatch.js"
 import AppError from "../../utils/appError.js"
 import User from "../../models/user/userModel.js";
+import Blog from "../../models/blogModel.js";
 import jwt from "jsonwebtoken"
 
 import bcrypt from "bcrypt"
@@ -466,6 +467,31 @@ const userPasswordUpdate = tryCatch(async(req,res)=>{
         })
     }
 })
+const userCount = tryCatch(async(req,res)=>{
+    
+    const user = await User.find().count()
+    const blog = await Blog.find().count()
+    const office = await Office.find().count()
+    if (user && blog && office) {
+      
+        const obj = {
+            userCount:user,
+            blogCount:blog,
+            officeCount:office
+        }
+        res.status(200).json({
+            succeded: true,
+            message: '',
+            data:obj
+        })
+    } else {
+
+        res.status(422).json({
+            succeded: false,
+            message: 'Mevcut şifrenizi kontrol ediniz'
+        })
+    }
+})
 async function hashpassword(password) {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt)
@@ -477,6 +503,7 @@ const user = {
     userLogin,
     userFilter,
     userDetail,
+    userCount,
     userUpdate,
     userPasswordUpdate
 }

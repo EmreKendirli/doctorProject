@@ -17,7 +17,7 @@ const addIndividualUser = async (data) => {
   })
     .then((response) => response.data)
     .catch((error) => {
-      return error.response.data.message;
+      return error.response;
     });
   return res;
 };
@@ -35,7 +35,7 @@ const addDoctorUser = async (data) => {
       if (error?.response?.status == 401) {
         logoutFromSystem()
       } else {
-        return error;
+        return error.response;
       }
     });
   return res;

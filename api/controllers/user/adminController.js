@@ -85,13 +85,39 @@ const createToken = async (id) => {
     );
 };
 const doctorList = tryCatch(async (req, res) => {
-    const data = await User.find({
-        isApproved:false,
-        type:"doctor"
-    },"-tokens -password").populate("userRole")
+    let { page, paginate,searchKey } = req.query
+    if (!page) page = 1
+    if (!paginate) paginate = 10
+    const skip = (page - 1) * paginate
+
+    if (!searchKey) searchKey = ''
+
+    let filterObj = {
+        "$or": [{
+            "firstName": {
+                $regex: searchKey
+            }
+        },
+        {
+            "lastName": {
+                $regex: searchKey
+            }
+        },
+        {
+            "email": {
+                $regex: searchKey
+            }
+        },
+        ],
+    }
+    filterObj.isApproved = false
+    filterObj.type = "doctor"
+    const data = await User.find(filterObj,"-tokens -password").skip(skip).limit(paginate).populate("userRole")
+    const totalRecord = await User.find(filterObj).count()
     res.status(200).json({
         succeded:true,
-        data
+        data,
+        totalRecord
     })
 })
 

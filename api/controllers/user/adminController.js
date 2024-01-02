@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import tryCatch from "../../utils/tryCatch.js";
 import AppError from "../../utils/appError.js";
 import jwt from "jsonwebtoken";
-
+import User from "../../models/user/userModel.js"
 
 
 
@@ -16,31 +16,6 @@ const registerAdmin = tryCatch(async (req, res) => {
     res.status(200).json({
         succeded: true,
         data: registerAdmin,
-    });
-});
-//Veri tabanından ilgili admin kayıtları siliniyor
-const remove = tryCatch(async (req, res) => {
-    const remove = await Admin.findOneAndRemove({
-        _id: req.params.id,
-    });
-    if (!remove) {
-        throw new AppError("Admin  not deleted", 404);
-    }
-    res.status(200).json({
-        succeded: true,
-        data: remove,
-    });
-});
-//Veri tabanından ilgili admin kayıtları güncelliyor
-const update = tryCatch(async (req, res) => {
-    const id = req.params.id;
-    const update = await Admin.findByIdAndUpdate(id, req.body);
-    if (!update) {
-        throw new AppError("Admin  not update", 404);
-    }
-    res.status(200).json({
-        succeded: true,
-        data: update,
     });
 });
 //admin login giriş işlemlerini yapıyor
@@ -109,9 +84,21 @@ const createToken = async (id) => {
         }
     );
 };
+const doctorList = tryCatch(async (req, res) => {
+    const data = await User.find({
+        isApproved:false,
+        type:"doctor"
+    },"-tokens -password")
+    res.status(200).json({
+        succeded:true,
+        data
+    })
+})
 
 const admin = {
     registerAdmin,
-    loginAdmin
+    loginAdmin,
+    adminLogout,
+    doctorList
 }
 export default admin

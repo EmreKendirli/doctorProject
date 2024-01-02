@@ -71,7 +71,14 @@ const userLogin = tryCatch(async (req, res) => {
     const user = await User.findOne({
         email,
     });
-
+    if (!user.isApproved) {
+        return res.status(422).json({
+            succeded: false,
+            data: {
+               message: "Hesabınız onay sürecinde.",
+            },
+        });
+    }
     let same = false;
     if (user) {
         same = await bcrypt.compare(password, user.password);

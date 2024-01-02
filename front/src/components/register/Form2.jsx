@@ -10,17 +10,11 @@ import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import Select from 'react-select';
 
+
 export default function Form2({ isPopup }) {
-  const [districtList, setDistrcitList] = useState();
-  const [countryList, setCountryList] = useState();
-  const [neighbourhoodList, setNeighbourhoodList] = useState();
+ 
   const [categoriesList, setCategoriesList] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState();
-  const [selectedDistrict, setSelectedDistrict] = useState();
-  const [selectedCity, setSelectedCity] = useState();
-  const [selectedNeighbourhood, setSelectedNeighbourhood] = useState();
-  const [cityList, setCityList] = useState();
+
 
 
   // Kullanıcı tipini seçmek için
@@ -54,10 +48,15 @@ export default function Form2({ isPopup }) {
       email: Yup.string()
         .email("Lütfen geçerli bir e-posta adresi giriniz.")
         .required("E-posta adresi zorunludur."),
-      phoneNumber: Yup.number()
-        .positive("Telefon Numarası pozitif sayı olmak zorundadır.")
-        .integer(11)
-        .required("Telefon numarası zorunludur."),
+      // phoneNumber: Yup.number()
+      //   .positive("Telefon Numarası pozitif sayı olmak zorundadır.")
+      //   .integer()
+      //   .required("Telefon numarası zorunludur."),
+      phoneNumber: Yup.string()
+      .matches(/^[0-9]+$/, 'Geçersiz telefon numarası') // Sadece rakamlar
+      .min(10, 'Telefon numarası en az 10 karakter olmalıdır') // Minimum 10 karakter
+      .max(11, 'Telefon numarası en fazla 11 karakter olabilir') // Maksimum 11 karakter
+      .required('Telefon numarası zorunludur'),
       password: Yup.string()
         .min(6, "En az 6 karakter gerekli.")
         .required("Şifre zorunludur."),
@@ -87,52 +86,80 @@ export default function Form2({ isPopup }) {
     });
   };
 
+  // const onSubmit = async (values) => {
+  //   toast.loading("Kayıt olunuyor...");
+
+  //   if (selectedUserType === "Bireysel Kullanıcı") {
+  //     const register = await authServices
+  //       .addIndividualUser(values)
+  //       .then((res) => {
+  //         console.log("Kayıttan Gelen response : ", res);
+  //         if (res.succeded === true) {
+  //           console.log("Kayıttan Gelen response : ", res);
+  //           toast.dismiss();
+  //           toast.success("Kayıt İşlemi Başarılı");
+  //           setTimeout(() => {
+  //             router.push("/login");
+  //           }, 1000);
+  //         } else {
+  //           console.log(res);
+  //           console.log("awdawdad");
+  //           toast.dismiss();
+  //           toast.error(res?.data?.message);
+  //         }
+  //       })
+  //       .catch((err) => toast.error(err));
+  //     return register;
+  //   } else {
+
+
+  //     const register = await authServices
+  //       .addDoctorUser(values)
+  //       .then((res) => {
+  //         console.log("Kayıttan Gelen response : ", res);
+  //         if (res.succeded === true) {
+  //           toast.dismiss();
+  //           toast.success("Kayıt İşlemi Başarılı");
+  //           setTimeout(() => {
+  //             router.push("/login");
+  //           }, 1000);
+           
+  //         } else {
+
+  //           toast.dismiss();
+  //           toast.error(res?.data?.message);
+
+  //         }
+  //       })
+  //       .catch((err) => setErrorsFromApi(err));
+  //     return register;
+  //   }
+  // };
   const onSubmit = async (values) => {
     toast.loading("Kayıt olunuyor...");
-
-    if (selectedUserType === "Bireysel Kullanıcı") {
-      const register = await authServices
-        .addIndividualUser(values)
-        .then((res) => {
-          console.log("Kayıttan Gelen response : ", res);
-          if (res.succeded === true) {
-            console.log("Kayıttan Gelen response : ", res);
-            toast.dismiss();
-            toast.success("Kayıt İşlemi Başarılı");
-            setTimeout(() => {
-              router.push("/login");
-            }, 1000);
-          } else {
-            console.log(res);
-            console.log("awdawdad");
-            toast.dismiss();
-            toast.error(res?.message);
-          }
-        })
-        .catch((err) => toast.error(err));
-      return register;
-    } else {
-
-
-      const register = await authServices
-        .addDoctorUser(values)
-        .then((res) => {
-          console.log("Kayıttan Gelen response : ", res);
-          if (res.succeded === true) {
-            toast.dismiss();
-            toast.success("Kayıt İşlemi Başarılı");
-            setTimeout(() => {
-              router.push("/login");
-            }, 1000);
-          } else {
-
-            toast.dismiss();
-            toast.error(res?.message);
-
-          }
-        })
-        .catch((err) => setErrorsFromApi(err));
-      return register;
+    
+    try {
+      let register;
+  
+      if (selectedUserType === "Bireysel Kullanıcı") {
+        register = await authServices.addIndividualUser(values);
+      } else {
+        register = await authServices.addDoctorUser(values);
+      }
+  
+      console.log("Kayıttan Gelen response : ", register);
+  
+      if (register.succeded === true) {
+       await toast.dismiss();
+        toast.success("Kayıt İşlemi Başarılı");
+          await router.push("/login");
+      } else {
+        toast.dismiss();
+        toast.error(register?.data?.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Bir hata oluştu.");
     }
   };
 

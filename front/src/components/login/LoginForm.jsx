@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
 import { setCurrentUser } from "../../utils/auth";
 import { useState } from "react";
+
 /*
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -39,21 +40,21 @@ const LoginForm = ({ isPopup }) => {
     try {
       const res = await authServices.login(values);
       await toast.dismiss(); // Dismiss the loading toast
-
-      if (res?.data && res?.data?.token) {
+console.log(res);
+      if (res?.succeded == true && res?.data && res?.data?.token) {
         localStorage.setItem("userToken", res?.data?.token);
         console.log('giriş yapan kullancıı', res?.data?.user);
         setCurrentUser(res?.data?.user);
         toast.success("Giriş Başarılı");
         await router.push("/dashboard");
       } else {
-        
+        console.log(res);
           toast.error(res?.data?.message);
         } 
       
     } catch (err) {
       console.log(err);
-      toast.error("Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+      toast.error(err?.data?.message);
     } finally {
       setLoadingStatus(false);
     }

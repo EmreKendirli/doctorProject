@@ -72,13 +72,14 @@ const userLogin = tryCatch(async (req, res) => {
         email,
     });
     if (!user.isApproved) {
-        return res.status(422).json({
+        return res.status(200).json({
             succeded: false,
             data: {
                message: "Hesabınız onay sürecinde.",
             },
         });
     }
+    console.log(user);
     let same = false;
     if (user) {
         same = await bcrypt.compare(password, user.password);
@@ -103,7 +104,7 @@ const userLogin = tryCatch(async (req, res) => {
                 const timeDiff = (Date.now() - parseInt(t.signedAt)) / 1000;
                 if (timeDiff < 86400) {
                     return t;
-                }
+                } 
             });
         }
         await User.findByIdAndUpdate(user._id, {

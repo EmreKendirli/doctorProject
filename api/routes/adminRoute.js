@@ -8,5 +8,6 @@ router.route("/login").post(FormData.uploadSettingImages,AdminController.loginAd
 router.route("/register").post(FormData.uploadSettingImages,AdminController.registerAdmin)
 router.route("/doctor-list").get(Auth.authenticateAdminAPIToken,AdminController.doctorList)
 router.route("/confirm-doctor/:id").get(Auth.authenticateAdminAPIToken,AdminController.confirmDoctor)
+router.route("/user-delete/:id").delete(Auth.authenticateAdminAPIToken,AdminController.userDelete)
 
 export default router

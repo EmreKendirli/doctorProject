@@ -17,7 +17,6 @@ router.route("/detail").get(Auth.authenticateUserAPIToken,User.userDetail)
 router.route("/update").put(Auth.authenticateUserAPIToken,UserFormData.uploadSettingImages,UserFormData.resizeImages,User.userUpdate)
 router.route("/update-password").put(Auth.authenticateUserAPIToken,UserFormData.uploadSettingImages,PasswordValidation.resetPasswordDataValidate,User.userPasswordUpdate)
 // router.route("/detail/:id").get(UserRole.getDetail)
-// router.route("/:id").delete(UserRole.remove)
 // router.route("/:id").put(FormData.uploadSettingImages,UserRole.update)
 
 export default router

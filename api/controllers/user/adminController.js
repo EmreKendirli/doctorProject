@@ -129,11 +129,19 @@ const confirmDoctor = tryCatch(async (req,res)=>{
         succeded:true
     })
 })
+const userDelete = tryCatch(async (req,res)=>{
+    const id = req.params.id
+    const data = await User.findByIdAndDelete(id)
+    res.status(200).json({
+        succeded:true
+    })
+})
 const admin = {
     registerAdmin,
     loginAdmin,
     adminLogout,
     doctorList,
-    confirmDoctor
+    confirmDoctor,
+    userDelete
 }
 export default admin

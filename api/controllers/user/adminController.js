@@ -88,7 +88,7 @@ const doctorList = tryCatch(async (req, res) => {
     const data = await User.find({
         isApproved:false,
         type:"doctor"
-    },"-tokens -password")
+    },"-tokens -password").populate("userRole")
     res.status(200).json({
         succeded:true,
         data

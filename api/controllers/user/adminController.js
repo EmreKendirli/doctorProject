@@ -4,8 +4,8 @@ import tryCatch from "../../utils/tryCatch.js";
 import AppError from "../../utils/appError.js";
 import jwt from "jsonwebtoken";
 import User from "../../models/user/userModel.js"
-
-
+import Office from "../../models/officeModel.js"
+import Appointment from "../../models/appointmentModel.js"
 
 //Admin için gerekli bilgileri veri tabanına kayıt ediliyor
 const registerAdmin = tryCatch(async (req, res) => {
@@ -85,7 +85,7 @@ const createToken = async (id) => {
     );
 };
 const doctorList = tryCatch(async (req, res) => {
-    let { page, paginate,searchKey } = req.query
+    let { page, paginate, searchKey } = req.query
     if (!page) page = 1
     if (!paginate) paginate = 10
     const skip = (page - 1) * paginate
@@ -112,32 +112,52 @@ const doctorList = tryCatch(async (req, res) => {
     }
     filterObj.isApproved = false
     filterObj.type = "doctor"
-    const data = await User.find(filterObj,"-tokens -password").skip(skip).limit(paginate).populate("userRole")
+    const data = await User.find(filterObj, "-tokens -password").skip(skip).limit(paginate).populate("userRole")
     const totalRecord = await User.find(filterObj).count()
     res.status(200).json({
-        succeded:true,
+        succeded: true,
         data,
         totalRecord
     })
 })
-const confirmDoctor = tryCatch(async (req,res)=>{
+const confirmDoctor = tryCatch(async (req, res) => {
     const id = req.params.id
-    const data = await User.findByIdAndUpdate(id,{
-        isApproved:true
+    const data = await User.findByIdAndUpdate(id, {
+        isApproved: true
     })
     res.status(200).json({
-        succeded:true
+        succeded: true
     })
 })
-const userDelete = tryCatch(async (req,res)=>{
+const userDelete = tryCatch(async (req, res) => {
     const id = req.params.id
     const data = await User.findByIdAndDelete(id)
+
+    if (data.type === "doctor") {
+        const ofis = await Office.findOneAndDelete({
+            ownerId: id
+        })
+        const result = await Appointment.find({ doctorId: id })
+        if (result.length > 0) {
+            for (const i of result) {
+                await Appointment.findByIdAndDelete(i._id)
+            }
+        } else {
+            const result = await Appointment.find({ patientId: id })
+            if (result.length > 0) {
+                for (const i of result) {
+                    await Appointment.findByIdAndDelete(i._id)
+                }
+            }
+        }
+
+    }
     res.status(200).json({
-        succeded:true
+        succeded: true
     })
 })
-const doctorGetAll = tryCatch(async (req,res)=>{
-    let { page, paginate,searchKey } = req.query
+const doctorGetAll = tryCatch(async (req, res) => {
+    let { page, paginate, searchKey } = req.query
     if (!page) page = 1
     if (!paginate) paginate = 10
     const skip = (page - 1) * paginate
@@ -163,16 +183,16 @@ const doctorGetAll = tryCatch(async (req,res)=>{
         ],
     }
     filterObj.type = "doctor"
-    const data = await User.find(filterObj,"-tokens -password").skip(skip).limit(paginate).populate("userRole")
+    const data = await User.find(filterObj, "-tokens -password").skip(skip).limit(paginate).populate("userRole")
     const totalRecord = await User.find(filterObj).count()
     res.status(200).json({
-        succeded:true,
+        succeded: true,
         data,
         totalRecord
     })
 })
-const userGetAll = tryCatch(async (req,res)=>{
-    let { page, paginate,searchKey } = req.query
+const userGetAll = tryCatch(async (req, res) => {
+    let { page, paginate, searchKey } = req.query
     if (!page) page = 1
     if (!paginate) paginate = 10
     const skip = (page - 1) * paginate
@@ -198,10 +218,10 @@ const userGetAll = tryCatch(async (req,res)=>{
         ],
     }
     filterObj.type = "user"
-    const data = await User.find(filterObj,"-tokens -password").skip(skip).limit(paginate).populate("userRole")
+    const data = await User.find(filterObj, "-tokens -password").skip(skip).limit(paginate).populate("userRole")
     const totalRecord = await User.find(filterObj).count()
     res.status(200).json({
-        succeded:true,
+        succeded: true,
         data,
         totalRecord
     })
